@@ -1,0 +1,5 @@
+[[redirects]]
+  from   = "https://brand.nodegrid.dev/*"
+  to     = "/brand/:splat"
+  status = 200
+  force  = true

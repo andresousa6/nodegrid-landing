@@ -1,9 +1,0 @@
-{
-  "rewrites": [
-    {
-      "source": "/:path*",
-      "has": [{ "type": "host", "value": "brand.nodegrid.dev" }],
-      "destination": "/brand/:path*"
-    }
-  ]
-}
