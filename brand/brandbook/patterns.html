@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Patterns — NodeGrid Brand Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/tokens.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-base); }
+    ::-webkit-scrollbar-thumb { background: var(--border-default); border-radius: var(--r-full); }
+    ::-webkit-scrollbar-thumb:hover { background: var(--accent-dim); }
+    * { scrollbar-width: thin; scrollbar-color: var(--border-default) var(--bg-base); }
+
+    body {
+      background: var(--bg-base);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      line-height: var(--leading-normal);
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    .layout { display: flex; min-height: 100vh; }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 260px; flex-shrink: 0;
+      position: sticky; top: 0;
+      height: 100vh; overflow-y: auto;
+      background: var(--bg-surface);
+      border-right: 1px solid var(--border-subtle);
+      padding: var(--s6) 0;
+      display: flex; flex-direction: column;
+    }
+    .sidebar-logo { padding: var(--s4) var(--s6) var(--s6); border-bottom: 1px solid var(--border-subtle); display: flex; align-items: center; gap: var(--s3); }
+    .sidebar-logo img { height: 22px; width: auto; }
+    .sidebar-logo-sub { font-family: var(--font-mono); font-size: 10px; color: var(--text-disabled); letter-spacing: var(--tracking-wide); text-transform: uppercase; }
+    .sidebar-nav { padding: var(--s5) 0; flex: 1; }
+    .sidebar-section { margin-bottom: var(--s6); }
+    .sidebar-section-label { font-family: var(--font-mono); font-size: 10px; color: var(--text-disabled); letter-spacing: var(--tracking-widest); text-transform: uppercase; padding: 0 var(--s6) var(--s3); }
+    .sidebar-link { display: flex; align-items: center; gap: var(--s3); padding: var(--s2) var(--s6); font-size: var(--text-sm); color: var(--text-muted); transition: all var(--duration-fast) var(--ease-default); border-left: 2px solid transparent; }
+    .sidebar-link:hover { color: var(--text-primary); background: var(--bg-surface-raised); }
+    .sidebar-link.active { color: var(--accent-primary); border-left-color: var(--accent-primary); background: rgba(114,184,114,.05); }
+    .sidebar-back { padding: var(--s4) var(--s6); border-top: 1px solid var(--border-subtle); display: flex; align-items: center; gap: var(--s2); font-size: var(--text-sm); color: var(--text-muted); transition: color var(--duration-base) var(--ease-default); }
+    .sidebar-back:hover { color: var(--text-primary); }
+
+    /* CONTENT */
+    .content { flex: 1; min-width: 0; padding: var(--s12) var(--s16); max-width: 960px; }
+    .page-header { margin-bottom: var(--s12); padding-bottom: var(--s8); border-bottom: 1px solid var(--border-subtle); }
+    .breadcrumb { display: flex; align-items: center; gap: var(--s2); font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-disabled); margin-bottom: var(--s5); }
+    .breadcrumb-sep { color: var(--border-default); }
+    .breadcrumb-current { color: var(--accent-primary); }
+    .page-title { font-family: var(--font-display); font-size: var(--text-4xl); font-weight: 700; letter-spacing: var(--tracking-tighter); color: var(--text-primary); line-height: var(--leading-tight); margin-bottom: var(--s4); }
+    .page-desc { font-size: var(--text-md); color: var(--text-muted); max-width: 560px; }
+
+    .doc-section { margin-bottom: var(--s16); scroll-margin-top: var(--s8); }
+    .doc-section-header { display: flex; align-items: center; gap: var(--s4); margin-bottom: var(--s8); }
+    .doc-section-num { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--accent-dim); letter-spacing: var(--tracking-wide); }
+    .doc-section-title { font-family: var(--font-display); font-size: var(--text-2xl); font-weight: 700; color: var(--text-primary); letter-spacing: var(--tracking-tight); }
+    .doc-divider { height: 1px; background: var(--border-subtle); margin: var(--s12) 0; }
+    .prose { color: var(--text-muted); line-height: var(--leading-normal); font-size: var(--text-base); margin-bottom: var(--s5); }
+
+    /* PATTERN CANVAS */
+    .pattern-canvas {
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--r-lg);
+      overflow: hidden;
+      margin: var(--s6) 0;
+    }
+    .pattern-canvas-toolbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: var(--s3) var(--s5);
+      border-bottom: 1px solid var(--border-subtle);
+      background: var(--bg-surface);
+    }
+    .pattern-canvas-label { font-family: var(--font-mono); font-size: 10px; color: var(--text-disabled); letter-spacing: var(--tracking-wider); text-transform: uppercase; }
+    .pattern-canvas-dots { display: flex; gap: 5px; }
+    .pattern-canvas-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border-default); }
+    .pattern-canvas-preview {
+      position: relative;
+      height: 280px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* ── PATTERN 1: DOT GRID ──────────────────────────────── */
+    .pat-dot-grid {
+      background-color: var(--bg-base);
+      background-image: radial-gradient(circle, rgba(114,184,114,.35) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+
+    /* ── PATTERN 2: FINE DOT GRID ────────────────────────── */
+    .pat-dot-grid-fine {
+      background-color: var(--bg-base);
+      background-image: radial-gradient(circle, rgba(114,184,114,.2) 1px, transparent 1px);
+      background-size: 12px 12px;
+    }
+
+    /* ── PATTERN 3: LINE GRID ─────────────────────────────── */
+    .pat-line-grid {
+      background-color: var(--bg-base);
+      background-image:
+        linear-gradient(rgba(114,184,114,.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(114,184,114,.06) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    /* ── PATTERN 4: CIRCUIT TRACES ───────────────────────── */
+    .pat-circuit {
+      background-color: var(--bg-base);
+      background-image:
+        linear-gradient(rgba(114,184,114,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(114,184,114,.04) 1px, transparent 1px),
+        radial-gradient(circle, rgba(114,184,114,.25) 1.5px, transparent 1.5px);
+      background-size: 40px 40px, 40px 40px, 40px 40px;
+      background-position: 0 0, 0 0, 20px 20px;
+    }
+
+    /* ── PATTERN 5: NOISE OVERLAY ────────────────────────── */
+    .pat-noise {
+      background-color: var(--bg-surface);
+    }
+    .pat-noise::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+      opacity: .4;
+      pointer-events: none;
+    }
+
+    /* ── PATTERN 6: RADIAL GLOW ───────────────────────────── */
+    .pat-radial-glow {
+      background:
+        radial-gradient(ellipse 70% 50% at 50% 50%, rgba(114,184,114,.12) 0%, transparent 70%),
+        var(--bg-base);
+    }
+
+    /* ── PATTERN 7: TOP GLOW ──────────────────────────────── */
+    .pat-top-glow {
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(114,184,114,.1) 0%, transparent 70%),
+        var(--bg-base);
+    }
+
+    /* ── HUD FRAME ────────────────────────────────────────── */
+    .hud-frame {
+      position: relative;
+      width: 340px; height: 200px;
+      border: 1px solid rgba(114,184,114,.2);
+      background: rgba(7,14,7,.8);
+    }
+
+    .hud-frame::before, .hud-frame::after {
+      content: '';
+      position: absolute;
+      width: 16px; height: 16px;
+    }
+    /* top-left */
+    .hud-frame::before {
+      top: -1px; left: -1px;
+      border-top: 2px solid var(--accent-primary);
+      border-left: 2px solid var(--accent-primary);
+    }
+    /* bottom-right */
+    .hud-frame::after {
+      bottom: -1px; right: -1px;
+      border-bottom: 2px solid var(--accent-primary);
+      border-right: 2px solid var(--accent-primary);
+    }
+
+    .hud-frame-inner {
+      position: absolute;
+      inset: 0;
+    }
+    /* top-right */
+    .hud-corner-tr {
+      position: absolute;
+      top: -1px; right: -1px;
+      width: 16px; height: 16px;
+      border-top: 2px solid var(--accent-primary);
+      border-right: 2px solid var(--accent-primary);
+    }
+    /* bottom-left */
+    .hud-corner-bl {
+      position: absolute;
+      bottom: -1px; left: -1px;
+      width: 16px; height: 16px;
+      border-bottom: 2px solid var(--accent-primary);
+      border-left: 2px solid var(--accent-primary);
+    }
+
+    .hud-content {
+      position: absolute;
+      inset: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .hud-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--accent-dim);
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      margin-bottom: var(--s3);
+    }
+    .hud-title {
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: var(--s2);
+    }
+    .hud-value {
+      font-family: var(--font-mono);
+      font-size: var(--text-lg);
+      color: var(--accent-primary);
+    }
+
+    /* scan line top of HUD */
+    .hud-scanline {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+      animation: hudScan 3s ease-in-out infinite;
+    }
+    @keyframes hudScan {
+      0%, 100% { opacity: 0; transform: scaleX(.3); }
+      50% { opacity: 1; transform: scaleX(1); }
+    }
+
+    /* ── GRADIENT DIVIDERS ────────────────────────────────── */
+    .grad-divider {
+      height: 1px;
+      width: 100%;
+    }
+    .grad-center { background: linear-gradient(90deg, transparent, var(--accent-dim), transparent); }
+    .grad-left   { background: linear-gradient(90deg, var(--accent-dim), transparent); }
+    .grad-glow   { background: linear-gradient(90deg, transparent, var(--accent-primary), transparent); box-shadow: 0 0 8px rgba(114,184,114,.3); }
+
+    /* USAGE TABLE */
+    .usage-table { width: 100%; border-collapse: collapse; margin: var(--s6) 0; }
+    .usage-table th { font-family: var(--font-mono); font-size: 10px; color: var(--text-disabled); letter-spacing: var(--tracking-wider); text-transform: uppercase; text-align: left; padding: var(--s3) var(--s4); border-bottom: 2px solid var(--border-subtle); }
+    .usage-table td { padding: var(--s3) var(--s4); border-bottom: 1px solid var(--border-subtle); font-size: var(--text-sm); color: var(--text-muted); }
+    .usage-table tr:last-child td { border-bottom: none; }
+    .usage-table td:first-child { font-family: var(--font-mono); font-size: 12px; color: var(--accent-primary); }
+
+    /* COPY BUTTON */
+    .copy-group {
+      display: flex;
+      align-items: center;
+      gap: var(--s3);
+      background: var(--bg-base);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--r-md);
+      padding: var(--s3) var(--s4);
+      margin: var(--s4) 0;
+    }
+    .copy-code { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-muted); flex: 1; }
+    .copy-btn {
+      font-family: var(--font-mono); font-size: 10px;
+      color: var(--accent-primary); background: none; border: none;
+      cursor: pointer; padding: 3px 8px;
+      border: 1px solid rgba(114,184,114,.2);
+      border-radius: var(--r-sm);
+      transition: all var(--duration-base) var(--ease-default);
+    }
+    .copy-btn:hover { background: rgba(114,184,114,.08); }
+
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      .content { padding: var(--s8); max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="layout">
+
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <img src="../assets/logo-nodegrid-white.svg" alt="NodeGrid" />
+      <span class="sidebar-logo-sub">Brand DS</span>
+    </div>
+    <div class="sidebar-nav">
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Brand Design System</div>
+        <a href="../index.html" class="sidebar-link">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+          Início
+        </a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">01 — Guidelines</div>
+        <a href="guidelines.html" class="sidebar-link">Manifesto & WHY</a>
+        <a href="guidelines.html#archetypes" class="sidebar-link">Arquétipos</a>
+        <a href="guidelines.html#logo" class="sidebar-link">Logo & Variantes</a>
+        <a href="guidelines.html#voice" class="sidebar-link">Tom de Voz</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">02 — Foundations</div>
+        <a href="foundations.html" class="sidebar-link">Paleta de Cor</a>
+        <a href="foundations.html#typography" class="sidebar-link">Tipografia</a>
+        <a href="foundations.html#tokens" class="sidebar-link">Design Tokens</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">03 — Components</div>
+        <a href="components.html" class="sidebar-link">Biblioteca</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">04 — Patterns</div>
+        <a href="#backgrounds" class="sidebar-link active">Backgrounds</a>
+        <a href="#hud" class="sidebar-link">HUD Frames</a>
+        <a href="#dividers" class="sidebar-link">Dividers</a>
+        <a href="#usage" class="sidebar-link">Regras de Uso</a>
+      </div>
+    </div>
+    <a href="../index.html" class="sidebar-back">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      Voltar ao início
+    </a>
+  </nav>
+
+  <main class="content">
+
+    <div class="page-header">
+      <div class="breadcrumb">
+        <span>Brand Design System</span>
+        <span class="breadcrumb-sep">/</span>
+        <span class="breadcrumb-current">Patterns</span>
+      </div>
+      <h1 class="page-title">Design Patterns</h1>
+      <p class="page-desc">
+        Texturas, grids e frames que definem o carácter técnico da NodeGrid.
+        Todos implementados em CSS puro usando os design tokens do sistema.
+      </p>
+    </div>
+
+    <!-- ── BACKGROUNDS ─────────────────────────────────────── -->
+    <section class="doc-section" id="backgrounds">
+      <div class="doc-section-header">
+        <span class="doc-section-num">01</span>
+        <h2 class="doc-section-title">Background Patterns</h2>
+      </div>
+
+      <p class="prose">Padrões de fundo que adicionam profundidade e carácter técnico sem distrair o conteúdo. Usados em heroes, headers e secções de destaque.</p>
+
+      <!-- Dot Grid -->
+      <div class="pattern-canvas">
+        <div class="pattern-canvas-toolbar">
+          <span class="pattern-canvas-label">Dot Grid — 24px / rgba(green,.35)</span>
+          <div class="pattern-canvas-dots"><div class="pattern-canvas-dot"></div><div class="pattern-canvas-dot"></div><div class="pattern-canvas-dot"></div></div>
+        </div>
+        <div class="pattern-canvas-preview pat-dot-grid">
+          <div style="text-align:center;position:relative;z-index:1;">
+            <div style="font-family:var(--font-mono);font-size:var(--text-xs);color:var(--accent-primary);letter-spacing:var(--tracking-widest);text-transform:uppercase;margin-bottom:var(--s3);">Dot Grid Standard</div>
+            <div style="font-family:var(--font-display);font-size:var(--text-2xl);font-weight:700;color:var(--text-primary);">Hero & Section Headers</div>
+          </div>
+        </div>
+      </div>
+      <div class="copy-group">
+        <span class="copy-code">background-image: radial-gradient(circle, rgba(114,184,114,.35) 1px, transparent 1px); background-size: 24px 24px;</span>
+        <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+      </div>
+
+      <!-- Fine Dot Grid -->
+      <div class="pattern-canvas">
+        <div class="pattern-canvas-toolbar">
+          <span class="pattern-canvas-label">Dot Grid Fine — 12px / rgba(green,.2)</span>
+          <div class="pattern-canvas-dots"><div class="pattern-canvas-dot"></div><div class="pattern-canvas-dot"></div><div class="pattern-canvas-dot"></div></div>
+        </div>
+        <div class="pattern-canvas-preview pat-dot-grid-fine">
+          <div style="text-align:center;position:relative;z-index:1;">
+            <div style="font-family:var(--font-mono);font-size:var(--text-xs);color:var(--accent-dim);letter-spacing:var(--tracking-widest);text-transform:uppercase;margin-bottom:var(--s3);">Dot Grid Fine</div>
+            <div style="font-family:var(--font-display);font-size:var(--text-xl);font-weight:700;color:var(--text-primary);">Cards & Panels de Detalhe</div>
+          </div>
+        </div>
+      </div>
+      <div class="copy-group">
+        <span class="copy-code">background-image: radial-gradient(circle, rgba(114,184,114,.2) 1px, transparent 1px); background-size: 12px 12px;</span>
+        <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+      </div>
+
+      <!-- Line Grid -->
+      <div class="pattern-canvas">
+        <div class="pattern-canvas-toolbar">
+          <span class="pattern-canvas-label">Line Grid — 40px / rgba(green,.06)</span>
+          <div class="pattern-canvas-dots"><div class="pattern-canvas-dot"></div><div class="pattern-canvas-dot"></div><div class="pattern-canvas-dot"></div></div>
+        </div>
+        <div class="pattern-canvas-preview pat-line-grid">
+          <div style="text-align:center;position:relative;z-index:1;">
+            <div style="font-family:var(--font-mono);font-size:var(--text-xs);color:var(--text-disabled);letter-spacing:var(--tracking-widest);text-transform:uppercase;margin-bottom:var(--s3);">Line Grid</div>
+            <div style="font-family:var(--font-display);font-size:var(--text-xl);font-weight:700;color:var(--text-primary);">Fondos de Aplicação Subtis</div>
+          </div>
+        </div>
+      </div>
+      <div class="copy-group">
+        <span class="copy-code">background-image: linear-gradient(rgba(114,184,114,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(114,184,114,.06) 1px, transparent 1px); background-size: 40px 40px;</span>
+        <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+      </div>
+
+      <!-- Circuit -->
+      <div class="pattern-canvas">
+        <div class="pattern-canvas-toolbar">
+          <span class="pattern-canvas-label">Circuit Traces — Grid + Dot offset</span>
+          <div class="pattern-canvas-dots"><div class="pattern-canvas-dot"></div><div class="pattern-canvas-dot"></div><div class="pattern-canvas-dot"></div></div>
+        </div>
+        <div class="pattern-canvas-preview pat-circuit">
+          <div style="text-align:center;position:relative;z-index:1;">
+            <div style="font-family:var(--font-mono);font-size:var(--text-xs);color:var(--accent-dim);letter-spacing:var(--tracking-widest);text-transform:uppercase;margin-bottom:var(--s3);">Circuit Traces</div>
+            <div style="font-family:var(--font-display);font-size:var(--text-xl);font-weight:700;color:var(--text-primary);">Tech Sections & Footers</div>
+          </div>
+        </div>
+      </div>
+      <div class="copy-group">
+        <span class="copy-code">background-image: linear-gradient(rgba(114,184,114,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(114,184,114,.04) 1px, transparent 1px), radial-gradient(circle, rgba(114,184,114,.25) 1.5px, transparent 1.5px); background-size: 40px 40px, 40px 40px, 40px 40px; background-position: 0 0, 0 0, 20px 20px;</span>
+        <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+      </div>
+
+      <!-- Radial Glow -->
+      <div class="pattern-canvas">
+        <div class="pattern-canvas-toolbar">
+          <span class="pattern-canvas-label">Radial Glow — Centro suave</span>
+          <div class="pattern-canvas-dots"><div class="pattern-canvas-dot"></div><div class="pattern-canvas-dot"></div><div class="pattern-canvas-dot"></div></div>
+        </div>
+        <div class="pattern-canvas-preview pat-radial-glow">
+          <div style="text-align:center;position:relative;z-index:1;">
+            <div style="font-family:var(--font-mono);font-size:var(--text-xs);color:var(--accent-primary);letter-spacing:var(--tracking-widest);text-transform:uppercase;margin-bottom:var(--s3);">Radial Glow</div>
+            <div style="font-family:var(--font-display);font-size:var(--text-xl);font-weight:700;color:var(--text-primary);">Destaques & Callouts</div>
+          </div>
+        </div>
+      </div>
+      <div class="copy-group">
+        <span class="copy-code">background: radial-gradient(ellipse 70% 50% at 50% 50%, rgba(114,184,114,.12) 0%, transparent 70%), var(--bg-base);</span>
+        <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+      </div>
+
+      <!-- Top Glow -->
+      <div class="pattern-canvas">
+        <div class="pattern-canvas-toolbar">
+          <span class="pattern-canvas-label">Top Glow — Topo da secção</span>
+          <div class="pattern-canvas-dots"><div class="pattern-canvas-dot"></div><div class="pattern-canvas-dot"></div><div class="pattern-canvas-dot"></div></div>
+        </div>
+        <div class="pattern-canvas-preview pat-top-glow">
+          <div style="position:absolute;top:0;left:0;right:0;display:flex;flex-direction:column;align-items:center;padding-top:32px;">
+            <div style="font-family:var(--font-mono);font-size:var(--text-xs);color:var(--accent-primary);letter-spacing:var(--tracking-widest);text-transform:uppercase;">Top Glow — Secções Hero</div>
+          </div>
+        </div>
+      </div>
+      <div class="copy-group">
+        <span class="copy-code">background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(114,184,114,.1) 0%, transparent 70%), var(--bg-base);</span>
+        <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+      </div>
+    </section>
+
+    <div class="doc-divider"></div>
+
+    <!-- ── HUD FRAMES ──────────────────────────────────────── -->
+    <section class="doc-section" id="hud">
+      <div class="doc-section-header">
+        <span class="doc-section-num">02</span>
+        <h2 class="doc-section-title">HUD Frames</h2>
+      </div>
+
+      <p class="prose">Frames de interface técnica com cantos angulares — inspirados em HUDs de sistemas de monitorização. Usados em cards de destaque, dashboards e elementos de métricas.</p>
+
+      <div class="pattern-canvas">
+        <div class="pattern-canvas-toolbar">
+          <span class="pattern-canvas-label">HUD Frame — Cantos angulares com scan line</span>
+          <div class="pattern-canvas-dots"><div class="pattern-canvas-dot"></div><div class="pattern-canvas-dot"></div><div class="pattern-canvas-dot"></div></div>
+        </div>
+        <div class="pattern-canvas-preview" style="background:var(--bg-surface);">
+          <div class="hud-frame">
+            <div class="hud-scanline"></div>
+            <div class="hud-frame-inner">
+              <div class="hud-corner-tr"></div>
+              <div class="hud-corner-bl"></div>
+            </div>
+            <div class="hud-content">
+              <div class="hud-label">Sistema / Status</div>
+              <div class="hud-title">Design Tokens</div>
+              <div class="hud-value">80+ tokens activos</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="copy-group">
+        <span class="copy-code">/* HUD Frame — ver patterns.html para implementação completa com ::before/::after */</span>
+        <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+      </div>
+
+      <p class="prose">O HUD frame usa 4 pseudo-elementos e 2 divs para os cantos angulares. A scan line é um elemento CSS animado que não requer JS. Usa <code style="font-family:var(--font-mono);font-size:12px;color:var(--accent-primary);">--accent-primary</code> nos cantos e <code style="font-family:var(--font-mono);font-size:12px;color:var(--accent-primary);">--border-interactive</code> nos lados para hierarquia visual.</p>
+    </section>
+
+    <div class="doc-divider"></div>
+
+    <!-- ── DIVIDERS ────────────────────────────────────────── -->
+    <section class="doc-section" id="dividers">
+      <div class="doc-section-header">
+        <span class="doc-section-num">03</span>
+        <h2 class="doc-section-title">Section Dividers</h2>
+      </div>
+
+      <p class="prose">Separadores entre secções de página. Três variantes com diferentes níveis de ênfase visual. O glow divider marca transições importantes.</p>
+
+      <div class="pattern-canvas">
+        <div class="pattern-canvas-toolbar">
+          <span class="pattern-canvas-label">Divider Variants</span>
+          <div class="pattern-canvas-dots"><div class="pattern-canvas-dot"></div><div class="pattern-canvas-dot"></div><div class="pattern-canvas-dot"></div></div>
+        </div>
+        <div class="pattern-canvas-preview" style="background:var(--bg-surface);flex-direction:column;gap:var(--s10);padding:var(--s10) var(--s12);">
+
+          <div style="width:100%;">
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-disabled);letter-spacing:var(--tracking-wider);text-transform:uppercase;margin-bottom:var(--s3);">Subtle — border-subtle</div>
+            <div class="grad-divider" style="background:var(--border-subtle);"></div>
+          </div>
+
+          <div style="width:100%;">
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-disabled);letter-spacing:var(--tracking-wider);text-transform:uppercase;margin-bottom:var(--s3);">Gradient Center — accent-dim</div>
+            <div class="grad-divider grad-center"></div>
+          </div>
+
+          <div style="width:100%;">
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-disabled);letter-spacing:var(--tracking-wider);text-transform:uppercase;margin-bottom:var(--s3);">Gradient Left — accent-dim</div>
+            <div class="grad-divider grad-left"></div>
+          </div>
+
+          <div style="width:100%;">
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-disabled);letter-spacing:var(--tracking-wider);text-transform:uppercase;margin-bottom:var(--s3);">Glow Divider — accent-primary + shadow</div>
+            <div class="grad-divider grad-glow"></div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="copy-group">
+        <span class="copy-code">/* Gradient center */ background: linear-gradient(90deg, transparent, var(--accent-dim), transparent);</span>
+        <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+      </div>
+      <div class="copy-group">
+        <span class="copy-code">/* Glow */ background: linear-gradient(90deg, transparent, var(--accent-primary), transparent); box-shadow: 0 0 8px rgba(114,184,114,.3);</span>
+        <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+      </div>
+    </section>
+
+    <div class="doc-divider"></div>
+
+    <!-- ── USAGE RULES ────────────────────────────────────── -->
+    <section class="doc-section" id="usage">
+      <div class="doc-section-header">
+        <span class="doc-section-num">04</span>
+        <h2 class="doc-section-title">Regras de Uso</h2>
+      </div>
+
+      <p class="prose">Cada padrão tem contexto de uso adequado. Misturar padrões no mesmo ecrã destrói a hierarquia visual. Segue a tabela de referência.</p>
+
+      <table class="usage-table">
+        <thead>
+          <tr>
+            <th>Padrão</th>
+            <th>Onde usar</th>
+            <th>Onde não usar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Dot Grid (24px)</td>
+            <td>Heroes, page headers, landing sections</td>
+            <td>Cards, modals, conteúdo denso</td>
+          </tr>
+          <tr>
+            <td>Dot Grid Fine (12px)</td>
+            <td>Sidebars, painéis secundários, backgrounds de detalhe</td>
+            <td>Junto com outros padrões de fundo</td>
+          </tr>
+          <tr>
+            <td>Line Grid</td>
+            <td>Fundos de aplicação subtis, dashboard bg</td>
+            <td>Secções com muito texto — reduz legibilidade</td>
+          </tr>
+          <tr>
+            <td>Circuit Traces</td>
+            <td>Footers técnicos, secções de dados, banners</td>
+            <td>Conteúdo editorial ou marketing copy</td>
+          </tr>
+          <tr>
+            <td>Radial Glow</td>
+            <td>Callouts, features de destaque, CTAs</td>
+            <td>Fundo geral — perde impacto com uso excessivo</td>
+          </tr>
+          <tr>
+            <td>Top Glow</td>
+            <td>Secções hero, início de página, above the fold</td>
+            <td>Below the fold — usar apenas uma vez por página</td>
+          </tr>
+          <tr>
+            <td>HUD Frame</td>
+            <td>Métricas de destaque, cards de status, dashboards</td>
+            <td>Conteúdo textual longo, listas, tabelas</td>
+          </tr>
+          <tr>
+            <td>Glow Divider</td>
+            <td>Transição entre hero e conteúdo, separações major</td>
+            <td>Divisores dentro de secções — usar subtle ou center</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div style="background:rgba(114,184,114,.05);border:1px solid rgba(114,184,114,.12);border-radius:var(--r-md);padding:var(--s5);margin-top:var(--s6);">
+        <div style="font-family:var(--font-mono);font-size:10px;color:var(--accent-primary);letter-spacing:var(--tracking-wider);text-transform:uppercase;margin-bottom:var(--s3);">Regra de ouro</div>
+        <p style="font-size:var(--text-sm);color:var(--text-muted);line-height:var(--leading-normal);">
+          Nunca mais do que <strong style="color:var(--text-primary)">um padrão de fundo por secção</strong>.
+          Padrões são subtexto visual — devem sentir-se como a superfície, não como o conteúdo.
+          Se o padrão compete com o texto, está demasiado forte (reduz opacity) ou no lugar errado.
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+</div>
+
+<script>
+  // Copy code
+  function copyCode(btn) {
+    const code = btn.previousElementSibling.textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      btn.textContent = 'COPIADO';
+      btn.style.color = 'var(--status-success)';
+      btn.style.borderColor = 'rgba(52,211,153,.3)';
+      setTimeout(() => {
+        btn.textContent = 'COPY';
+        btn.style.color = '';
+        btn.style.borderColor = '';
+      }, 1500);
+    });
+  }
+
+  // Sidebar active state
+  const sections = document.querySelectorAll('.doc-section');
+  const links = document.querySelectorAll('.sidebar-link[href^="#"]');
+  const scrollObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === `#${id}`));
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  sections.forEach(s => scrollObserver.observe(s));
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NodeGrid Brand Design System</title>
+  <meta name="description" content="O sistema de design oficial da NodeGrid. Guias, tokens, componentes e padrões para construir produtos consistentes." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/tokens.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    /* ── SCROLLBAR ───────────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-base); }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-default);
+      border-radius: var(--r-full);
+    }
+    ::-webkit-scrollbar-thumb:hover { background: var(--accent-dim); }
+    * { scrollbar-width: thin; scrollbar-color: var(--border-default) var(--bg-base); }
+
+    body {
+      background: var(--bg-base);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      line-height: var(--leading-normal);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ── NAV ────────────────────────────────────────────────── */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: var(--z-nav);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--s4) var(--s8);
+      background: rgba(7,14,7,.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: var(--s3);
+    }
+    .nav-logo img { height: 28px; width: auto; }
+    .nav-logo-tag {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-muted);
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--r-sm);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: var(--s8);
+    }
+    .nav-links a {
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      transition: color var(--duration-base) var(--ease-default);
+    }
+    .nav-links a:hover { color: var(--text-primary); }
+
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: var(--s3);
+    }
+    .btn-nav {
+      font-family: var(--font-body);
+      font-size: var(--text-sm);
+      font-weight: 600;
+      padding: 8px 18px;
+      border-radius: var(--r-md);
+      border: 1px solid var(--border-interactive);
+      background: transparent;
+      color: var(--accent-primary);
+      cursor: pointer;
+      transition: all var(--duration-base) var(--ease-default);
+    }
+    .btn-nav:hover {
+      background: var(--accent-surface);
+    }
+
+    /* ── HERO ───────────────────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: var(--s32) var(--s8) var(--s20);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(114,184,114,.08) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 40% at 50% 100%, rgba(114,184,114,.04) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-grid-bg {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(114,184,114,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(114,184,114,.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+    }
+
+    .hero-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s2);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--accent-primary);
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      margin-bottom: var(--s6);
+      padding: 6px 16px;
+      border: 1px solid rgba(114,184,114,.2);
+      border-radius: var(--r-full);
+      background: rgba(114,184,114,.06);
+    }
+    .hero-kicker-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent-primary);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: .4; transform: scale(.7); }
+    }
+
+    .hero-headline {
+      font-family: var(--font-display);
+      font-size: var(--text-5xl);
+      font-weight: 700;
+      line-height: var(--leading-tight);
+      letter-spacing: var(--tracking-tighter);
+      color: var(--text-primary);
+      margin-bottom: var(--s8);
+    }
+
+    .hero-headline-bracket {
+      color: var(--accent-primary);
+    }
+
+    .hero-sub {
+      font-size: var(--text-lg);
+      color: var(--text-muted);
+      line-height: var(--leading-normal);
+      max-width: 580px;
+      margin: 0 auto var(--s10);
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--s4);
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s2);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      font-weight: var(--btn-font-weight);
+      padding: var(--btn-primary-padding);
+      background: var(--btn-primary-bg);
+      color: var(--btn-primary-text);
+      border: none;
+      border-radius: var(--btn-radius);
+      cursor: pointer;
+      transition: var(--btn-transition);
+    }
+    .btn-primary:hover { background: var(--btn-primary-bg-hover); transform: translateY(-1px); }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s2);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      font-weight: var(--btn-font-weight);
+      padding: var(--btn-primary-padding);
+      background: transparent;
+      color: var(--btn-secondary-text);
+      border: 1px solid var(--btn-secondary-border);
+      border-radius: var(--btn-radius);
+      cursor: pointer;
+      transition: var(--btn-transition);
+    }
+    .btn-secondary:hover { background: var(--btn-secondary-bg-hover); }
+
+    .hero-scroll {
+      margin-top: var(--s16);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--s2);
+      color: var(--text-disabled);
+      font-size: var(--text-xs);
+      font-family: var(--font-mono);
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+    }
+    .hero-scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--accent-dim), transparent);
+      animation: scrollLine 2s ease-in-out infinite;
+    }
+    @keyframes scrollLine {
+      0%, 100% { opacity: .3; transform: scaleY(1); }
+      50% { opacity: 1; transform: scaleY(.5); }
+    }
+
+    /* ── STATS BAR ─────────────────────────────────────────── */
+    .stats-bar {
+      background: var(--bg-surface);
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: var(--s8) var(--s8);
+    }
+
+    .stats-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--s1);
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: var(--s6) var(--s4);
+      border-right: 1px solid var(--border-subtle);
+    }
+    .stat-item:last-child { border-right: none; }
+
+    .stat-number {
+      font-family: var(--font-display);
+      font-size: var(--text-3xl);
+      font-weight: 700;
+      color: var(--accent-primary);
+      letter-spacing: var(--tracking-tight);
+      line-height: 1;
+      margin-bottom: var(--s2);
+    }
+
+    .stat-label {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-muted);
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+    }
+
+    /* ── SECTION HEADER ─────────────────────────────────────── */
+    .section-header {
+      text-align: center;
+      margin-bottom: var(--s12);
+    }
+
+    .section-tag {
+      display: inline-block;
+      font-family: var(--tag-font);
+      font-size: var(--tag-size);
+      color: var(--tag-text);
+      letter-spacing: var(--tag-tracking);
+      text-transform: uppercase;
+      padding: var(--badge-padding);
+      background: var(--badge-bg);
+      border: 1px solid var(--badge-border);
+      border-radius: var(--badge-radius);
+      margin-bottom: var(--s5);
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: var(--text-4xl);
+      font-weight: 700;
+      letter-spacing: var(--tracking-tighter);
+      color: var(--text-primary);
+      line-height: var(--leading-tight);
+      margin-bottom: var(--s5);
+    }
+
+    .section-desc {
+      font-size: var(--text-md);
+      color: var(--text-muted);
+      max-width: 560px;
+      margin: 0 auto;
+      line-height: var(--leading-normal);
+    }
+
+    /* ── PILLARS ────────────────────────────────────────────── */
+    .pillars {
+      padding: var(--s20) var(--s8);
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--s5);
+    }
+
+    .pillar-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--card-radius);
+      padding: var(--s8);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all var(--duration-base) var(--ease-default);
+      text-decoration: none;
+      display: block;
+    }
+
+    .pillar-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent-dim), transparent);
+      opacity: 0;
+      transition: opacity var(--duration-base) var(--ease-default);
+    }
+
+    .pillar-card:hover {
+      border-color: var(--card-hover-border);
+      background: var(--bg-surface-raised);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md), var(--shadow-glow);
+    }
+
+    .pillar-card:hover::before { opacity: 1; }
+
+    .pillar-number {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--accent-dim);
+      letter-spacing: var(--tracking-widest);
+      margin-bottom: var(--s5);
+      display: flex;
+      align-items: center;
+      gap: var(--s3);
+    }
+    .pillar-number::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border-subtle);
+    }
+
+    .pillar-icon {
+      width: 48px; height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--r-md);
+      background: rgba(114,184,114,.08);
+      border: 1px solid rgba(114,184,114,.15);
+      margin-bottom: var(--s5);
+      color: var(--accent-primary);
+    }
+
+    .pillar-title {
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: var(--s3);
+      letter-spacing: var(--tracking-tight);
+    }
+
+    .pillar-desc {
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      line-height: var(--leading-normal);
+      margin-bottom: var(--s6);
+    }
+
+    .pillar-items {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s2);
+    }
+
+    .pillar-item {
+      display: flex;
+      align-items: center;
+      gap: var(--s2);
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+    }
+    .pillar-item-dot {
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: var(--accent-dim);
+      flex-shrink: 0;
+    }
+
+    .pillar-link {
+      display: flex;
+      align-items: center;
+      gap: var(--s2);
+      margin-top: var(--s6);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--accent-primary);
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+      transition: gap var(--duration-base) var(--ease-default);
+    }
+    .pillar-card:hover .pillar-link { gap: var(--s3); }
+
+    /* ── TOKEN PREVIEW ──────────────────────────────────────── */
+    .token-section {
+      padding: var(--s20) var(--s8);
+      background: var(--bg-surface);
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .token-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .token-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--s5);
+      margin-top: var(--s12);
+    }
+
+    .token-panel {
+      background: var(--bg-base);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--r-lg);
+      overflow: hidden;
+    }
+
+    .token-panel-header {
+      padding: var(--s4) var(--s5);
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .token-panel-title {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-muted);
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+    }
+
+    .token-panel-count {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--accent-dim);
+    }
+
+    .token-panel-body { padding: var(--s4) var(--s5); }
+
+    .color-swatches {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: var(--s2);
+      margin-bottom: var(--s4);
+    }
+
+    .swatch {
+      aspect-ratio: 1;
+      border-radius: var(--r-sm);
+      border: 1px solid rgba(255,255,255,.05);
+    }
+
+    .type-samples { display: flex; flex-direction: column; gap: var(--s3); }
+
+    .type-row {
+      display: flex;
+      align-items: baseline;
+      gap: var(--s3);
+    }
+    .type-size {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-disabled);
+      width: 28px;
+      flex-shrink: 0;
+    }
+    .type-sample { color: var(--text-primary); }
+
+    .motion-previews { display: flex; flex-direction: column; gap: var(--s3); }
+    .motion-row {
+      display: flex;
+      align-items: center;
+      gap: var(--s3);
+      cursor: pointer;
+    }
+    .motion-bar-wrap {
+      flex: 1;
+      height: 4px;
+      background: var(--bg-surface);
+      border-radius: var(--r-full);
+      overflow: hidden;
+    }
+    .motion-bar {
+      height: 100%;
+      width: 0%;
+      background: var(--accent-primary);
+      border-radius: var(--r-full);
+    }
+    .motion-row.playing .motion-bar { animation: motionPlay var(--dur, 300ms) var(--ease, ease) forwards; }
+    @keyframes motionPlay { from { width: 0% } to { width: 100% } }
+
+    .motion-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-muted);
+      width: 70px;
+      flex-shrink: 0;
+    }
+
+    /* ── EXPLORER ───────────────────────────────────────────── */
+    .explorer {
+      padding: var(--s20) var(--s8);
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .explorer-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--s4);
+      margin-top: var(--s12);
+    }
+
+    .explorer-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--r-lg);
+      padding: var(--s5);
+      transition: all var(--duration-base) var(--ease-default);
+      cursor: pointer;
+      text-decoration: none;
+      display: block;
+    }
+
+    .explorer-card:hover {
+      border-color: var(--border-interactive);
+      background: var(--bg-surface-raised);
+    }
+
+    .explorer-card-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--s3);
+    }
+
+    .explorer-section-tag {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--accent-dim);
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+    }
+
+    .explorer-status {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+    }
+    .explorer-status.live { background: var(--status-success); }
+    .explorer-status.soon { background: var(--status-warning); }
+    .explorer-status.planned { background: var(--border-default); }
+
+    .explorer-card-title {
+      font-family: var(--font-display);
+      font-size: var(--text-base);
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: var(--s2);
+    }
+
+    .explorer-card-desc {
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* ── MANIFESTO ──────────────────────────────────────────── */
+    .manifesto {
+      padding: var(--s20) var(--s8);
+      background: var(--bg-surface);
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .manifesto-inner {
+      max-width: 780px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .manifesto-quote {
+      font-family: var(--font-display);
+      font-size: var(--text-3xl);
+      font-weight: 700;
+      letter-spacing: var(--tracking-tighter);
+      color: var(--text-primary);
+      line-height: var(--leading-snug);
+      margin-bottom: var(--s8);
+    }
+
+    .manifesto-quote em {
+      font-style: normal;
+      color: var(--accent-primary);
+    }
+
+    .manifesto-pillars {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--s5);
+      margin-top: var(--s12);
+    }
+
+    .manifesto-pillar {
+      text-align: center;
+      padding: var(--s6);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--r-lg);
+      background: var(--bg-base);
+    }
+
+    .manifesto-pillar-word {
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      font-weight: 700;
+      color: var(--accent-primary);
+      letter-spacing: var(--tracking-tight);
+      margin-bottom: var(--s2);
+    }
+
+    .manifesto-pillar-desc {
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* ── FAQ ────────────────────────────────────────────────── */
+    .faq {
+      padding: var(--s20) var(--s8);
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .faq-list { margin-top: var(--s12); }
+
+    .faq-item {
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .faq-question {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--s5) 0;
+      cursor: pointer;
+      font-size: var(--text-base);
+      font-weight: 500;
+      color: var(--text-primary);
+      transition: color var(--duration-base) var(--ease-default);
+      user-select: none;
+    }
+    .faq-question:hover { color: var(--accent-primary); }
+
+    .faq-chevron {
+      color: var(--text-muted);
+      transition: transform var(--duration-base) var(--ease-default);
+      flex-shrink: 0;
+    }
+
+    .faq-item.open .faq-chevron { transform: rotate(180deg); }
+    .faq-item.open .faq-question { color: var(--accent-primary); }
+
+    .faq-answer {
+      display: none;
+      padding-bottom: var(--s5);
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      line-height: var(--leading-normal);
+    }
+    .faq-item.open .faq-answer { display: block; }
+
+    /* ── FOOTER ─────────────────────────────────────────────── */
+    .footer {
+      background: var(--bg-surface);
+      border-top: 1px solid var(--border-subtle);
+      padding: var(--s16) var(--s8) var(--s10);
+    }
+
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1.5fr repeat(3, 1fr);
+      gap: var(--s8);
+      padding-bottom: var(--s12);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .footer-brand-logo { height: 32px; width: auto; margin-bottom: var(--s4); }
+
+    .footer-brand-desc {
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      line-height: var(--leading-normal);
+      max-width: 260px;
+      margin-bottom: var(--s5);
+    }
+
+    .footer-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s2);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--accent-dim);
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--r-sm);
+    }
+
+    .footer-col-title {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-disabled);
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      margin-bottom: var(--s4);
+    }
+
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s3);
+    }
+
+    .footer-link {
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      transition: color var(--duration-base) var(--ease-default);
+    }
+    .footer-link:hover { color: var(--text-primary); }
+
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: var(--s8);
+    }
+
+    .footer-copy {
+      font-size: var(--text-xs);
+      color: var(--text-disabled);
+    }
+
+    .footer-version {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-disabled);
+      display: flex;
+      align-items: center;
+      gap: var(--s2);
+    }
+    .footer-version-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--status-success);
+    }
+
+    /* ── RESPONSIVE ─────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .pillars-grid { grid-template-columns: 1fr; }
+      .token-grid { grid-template-columns: 1fr; }
+      .explorer-grid { grid-template-columns: repeat(2, 1fr); }
+      .manifesto-pillars { grid-template-columns: 1fr; }
+      .stats-inner { grid-template-columns: repeat(2, 1fr); }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 480px) {
+      .explorer-grid { grid-template-columns: 1fr; }
+      .stats-inner { grid-template-columns: 1fr 1fr; }
+      .hero-headline { font-size: clamp(32px, 8vw, 56px); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav-logo">
+      <img src="assets/logo-nodegrid-white.svg" alt="NodeGrid" />
+      <span class="nav-logo-tag">Brand DS</span>
+    </div>
+    <div class="nav-links">
+      <a href="#guidelines">Guidelines</a>
+      <a href="#foundations">Foundations</a>
+      <a href="#components">Components</a>
+      <a href="#patterns">Patterns</a>
+    </div>
+    <div class="nav-cta">
+      <a href="https://nodegrid.dev" class="btn-nav">nodegrid.dev</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-grid-bg"></div>
+    <div class="hero-content">
+      <div class="hero-kicker">
+        <span class="hero-kicker-dot"></span>
+        Brand Design System — v1.0
+      </div>
+      <h1 class="hero-headline">
+        THE <span class="hero-headline-bracket">[NODEGRID]</span><br />BRAND DESIGN SYSTEM.
+      </h1>
+      <p class="hero-sub">
+        Guias, tokens, componentes e padrões para construir produtos NodeGrid
+        com consistência, intenção e craft.
+      </p>
+      <div class="hero-actions">
+        <a href="brandbook/guidelines.html" class="btn-primary">
+          Explorar Guidelines
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+        <a href="#pillars" class="btn-secondary">
+          Ver Fundações
+        </a>
+      </div>
+      <div class="hero-scroll">
+        <div class="hero-scroll-line"></div>
+        scroll
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div class="stats-inner">
+      <div class="stat-item">
+        <div class="stat-number">80+</div>
+        <div class="stat-label">Design Tokens</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">4</div>
+        <div class="stat-label">Pilares</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">3</div>
+        <div class="stat-label">Camadas Token</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">v1.0</div>
+        <div class="stat-label">Versão Actual</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PILLARS -->
+  <section class="pillars" id="pillars">
+    <div class="section-header">
+      <span class="section-tag">Estrutura</span>
+      <h2 class="section-title">Quatro pilares.<br />Um sistema coerente.</h2>
+      <p class="section-desc">
+        O Brand Design System da NodeGrid organiza-se em quatro dimensões
+        complementares — da estratégia ao detalhe técnico.
+      </p>
+    </div>
+
+    <div class="pillars-grid">
+
+      <!-- Guidelines -->
+      <a href="brandbook/guidelines.html" class="pillar-card" id="guidelines">
+        <div class="pillar-number">01 — GUIDELINES</div>
+        <div class="pillar-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        </div>
+        <div class="pillar-title">Brand Guidelines</div>
+        <div class="pillar-desc">
+          Estratégia de marca, identidade visual, voz e posicionamento.
+          A base que dá sentido a tudo o resto.
+        </div>
+        <div class="pillar-items">
+          <div class="pillar-item"><div class="pillar-item-dot"></div>Manifesto & WHY</div>
+          <div class="pillar-item"><div class="pillar-item-dot"></div>Arquétipos & Personalidade</div>
+          <div class="pillar-item"><div class="pillar-item-dot"></div>Identidade Visual</div>
+          <div class="pillar-item"><div class="pillar-item-dot"></div>Tom de Voz</div>
+        </div>
+        <div class="pillar-link">
+          Explorar Guidelines
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </div>
+      </a>
+
+      <!-- Foundations -->
+      <a href="brandbook/foundations.html" class="pillar-card" id="foundations">
+        <div class="pillar-number">02 — FOUNDATIONS</div>
+        <div class="pillar-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3"/><path d="M12 19v3"/><path d="m4.22 4.22 2.12 2.12"/><path d="m17.66 17.66 2.12 2.12"/><path d="M2 12h3"/><path d="M19 12h3"/><path d="m4.22 19.78 2.12-2.12"/><path d="m17.66 6.34 2.12-2.12"/></svg>
+        </div>
+        <div class="pillar-title">Design Foundations</div>
+        <div class="pillar-desc">
+          Sistema de tokens em 3 camadas: primitivos, semânticos e de componente.
+          Cor, tipografia, espaçamento e motion.
+        </div>
+        <div class="pillar-items">
+          <div class="pillar-item"><div class="pillar-item-dot"></div>Paleta de Cor (Green + Gold)</div>
+          <div class="pillar-item"><div class="pillar-item-dot"></div>Tipografia (3 famílias)</div>
+          <div class="pillar-item"><div class="pillar-item-dot"></div>Espacamento & Grid</div>
+          <div class="pillar-item"><div class="pillar-item-dot"></div>Motion & Elevação</div>
+        </div>
+        <div class="pillar-link">
+          Explorar Foundations
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </div>
+      </a>
+
+      <!-- Components -->
+      <a href="brandbook/components.html" class="pillar-card" id="components">
+        <div class="pillar-number">03 — COMPONENTS</div>
+        <div class="pillar-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
+        </div>
+        <div class="pillar-title">UI Components</div>
+        <div class="pillar-desc">
+          Biblioteca de componentes reutilizáveis construídos sobre os tokens.
+          Botões, cards, inputs, badges e mais.
+        </div>
+        <div class="pillar-items">
+          <div class="pillar-item"><div class="pillar-item-dot"></div>Buttons & CTAs</div>
+          <div class="pillar-item"><div class="pillar-item-dot"></div>Cards & Surfaces</div>
+          <div class="pillar-item"><div class="pillar-item-dot"></div>Forms & Inputs</div>
+          <div class="pillar-item"><div class="pillar-item-dot"></div>Navigation</div>
+        </div>
+        <div class="pillar-link">
+          Explorar Components
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </div>
+      </a>
+
+      <!-- Patterns -->
+      <a href="brandbook/patterns.html" class="pillar-card" id="patterns">
+        <div class="pillar-number">04 — PATTERNS</div>
+        <div class="pillar-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8H2"/><path d="M22 12H2"/><path d="M22 16H2"/><path d="M18 20H2"/></svg>
+        </div>
+        <div class="pillar-title">Design Patterns</div>
+        <div class="pillar-desc">
+          Padrões visuais recorrentes: dot grids, circuit traces, HUD frames
+          e texturas que definem o carácter visual NodeGrid.
+        </div>
+        <div class="pillar-items">
+          <div class="pillar-item"><div class="pillar-item-dot"></div>Dot Grid & Noise</div>
+          <div class="pillar-item"><div class="pillar-item-dot"></div>Circuit Traces</div>
+          <div class="pillar-item"><div class="pillar-item-dot"></div>HUD Frames</div>
+          <div class="pillar-item"><div class="pillar-item-dot"></div>Section Dividers</div>
+        </div>
+        <div class="pillar-link">
+          Explorar Patterns
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- TOKEN PREVIEW -->
+  <section class="token-section">
+    <div class="token-inner">
+      <div class="section-header">
+        <span class="section-tag">Design Tokens</span>
+        <h2 class="section-title">Arquitectura em 3 camadas.</h2>
+        <p class="section-desc">
+          Primitivos → Semânticos → Componente. Uma hierarquia que torna
+          o sistema escalável, mantível e consistente.
+        </p>
+      </div>
+
+      <div class="token-grid">
+
+        <!-- Colour -->
+        <div class="token-panel">
+          <div class="token-panel-header">
+            <span class="token-panel-title">Paleta de Cor</span>
+            <span class="token-panel-count">14 primitivos</span>
+          </div>
+          <div class="token-panel-body">
+            <div class="color-swatches">
+              <div class="swatch" style="background:#a0b891;" title="--green-200"></div>
+              <div class="swatch" style="background:#72b872;" title="--green-300"></div>
+              <div class="swatch" style="background:#4a9a4a;" title="--green-400"></div>
+              <div class="swatch" style="background:#2a5a2a;" title="--green-500"></div>
+              <div class="swatch" style="background:#1a3d1a;" title="--green-600"></div>
+              <div class="swatch" style="background:#f0d474;" title="--gold-400"></div>
+              <div class="swatch" style="background:#f8e090;" title="--gold-300"></div>
+              <div class="swatch" style="background:#c8a840;" title="--gold-500"></div>
+              <div class="swatch" style="background:#dcdcdc;" title="--neutral-100"></div>
+              <div class="swatch" style="background:#787878;" title="--neutral-400"></div>
+              <div class="swatch" style="background:#f87171;" title="--red-400"></div>
+              <div class="swatch" style="background:#fbbf24;" title="--amber-400"></div>
+              <div class="swatch" style="background:#34d399;" title="--emerald-400"></div>
+              <div class="swatch" style="background:#070e07;" title="--green-900"></div>
+              <div class="swatch" style="background:#0d140d;" title="--green-800"></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px;">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div style="width:24px;height:24px;border-radius:4px;background:var(--bg-base);border:1px solid var(--border-subtle);flex-shrink:0;"></div>
+                <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-muted);">--bg-base → #070e07</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div style="width:24px;height:24px;border-radius:4px;background:var(--accent-primary);border:1px solid var(--border-subtle);flex-shrink:0;"></div>
+                <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-muted);">--accent-primary → #72b872</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div style="width:24px;height:24px;border-radius:4px;background:var(--cta-bg);border:1px solid var(--border-subtle);flex-shrink:0;"></div>
+                <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-muted);">--cta-bg → #f0d474</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Typography -->
+        <div class="token-panel">
+          <div class="token-panel-header">
+            <span class="token-panel-title">Tipografia</span>
+            <span class="token-panel-count">3 famílias</span>
+          </div>
+          <div class="token-panel-body">
+            <div class="type-samples">
+              <div class="type-row">
+                <span class="type-size">5xl</span>
+                <span class="type-sample" style="font-family:var(--font-display);font-size:28px;font-weight:700;letter-spacing:-0.03em;line-height:1;">NodeGrid</span>
+              </div>
+              <div class="type-row">
+                <span class="type-size">2xl</span>
+                <span class="type-sample" style="font-family:var(--font-display);font-size:var(--text-2xl);font-weight:700;letter-spacing:-0.02em;">Space Grotesk</span>
+              </div>
+              <div class="type-row">
+                <span class="type-size">base</span>
+                <span class="type-sample" style="font-family:var(--font-body);font-size:var(--text-base);">Inter Regular para body text e UI</span>
+              </div>
+              <div class="type-row">
+                <span class="type-size">sm</span>
+                <span class="type-sample" style="font-family:var(--font-body);font-size:var(--text-sm);color:var(--text-muted);">Inter para captions e labels</span>
+              </div>
+              <div class="type-row">
+                <span class="type-size">xs</span>
+                <span class="type-sample" style="font-family:var(--font-mono);font-size:var(--text-xs);color:var(--accent-primary);letter-spacing:0.1em;">JETBRAINS MONO</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Motion -->
+        <div class="token-panel">
+          <div class="token-panel-header">
+            <span class="token-panel-title">Motion</span>
+            <span class="token-panel-count">7 easings</span>
+          </div>
+          <div class="token-panel-body">
+            <div class="motion-previews" id="motionPreviews">
+              <div class="motion-row" data-dur="100" data-ease="ease" onclick="playMotion(this)">
+                <span class="motion-label">fast 100ms</span>
+                <div class="motion-bar-wrap"><div class="motion-bar" style="--dur:100ms;--ease:ease;"></div></div>
+              </div>
+              <div class="motion-row" data-dur="180" data-ease="ease" onclick="playMotion(this)">
+                <span class="motion-label">base 180ms</span>
+                <div class="motion-bar-wrap"><div class="motion-bar" style="--dur:180ms;--ease:ease;"></div></div>
+              </div>
+              <div class="motion-row" data-dur="300" data-ease="ease" onclick="playMotion(this)">
+                <span class="motion-label">slow 300ms</span>
+                <div class="motion-bar-wrap"><div class="motion-bar" style="--dur:300ms;--ease:ease;"></div></div>
+              </div>
+              <div class="motion-row" data-dur="500" data-ease="cubic-bezier(0.34,1.56,0.64,1)" onclick="playMotion(this)">
+                <span class="motion-label">spring</span>
+                <div class="motion-bar-wrap"><div class="motion-bar" style="--dur:500ms;--ease:cubic-bezier(0.34,1.56,0.64,1);"></div></div>
+              </div>
+              <div class="motion-row" data-dur="800" data-ease="cubic-bezier(0.68,-0.55,0.265,1.55)" onclick="playMotion(this)">
+                <span class="motion-label">bounce</span>
+                <div class="motion-bar-wrap"><div class="motion-bar" style="--dur:800ms;--ease:cubic-bezier(0.68,-0.55,0.265,1.55);"></div></div>
+              </div>
+            </div>
+            <p style="font-size:10px;color:var(--text-disabled);margin-top:12px;font-family:var(--font-mono);">↑ clica para animar</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPLORER -->
+  <section class="explorer">
+    <div class="section-header">
+      <span class="section-tag">Navegação</span>
+      <h2 class="section-title">Explorar o sistema.</h2>
+      <p class="section-desc">
+        Cada secção do brandbook é um artefacto de referência independente.
+        Encontra exactamente o que precisas.
+      </p>
+    </div>
+
+    <div class="explorer-grid">
+
+      <a href="brandbook/guidelines.html#manifesto" class="explorer-card">
+        <div class="explorer-card-meta">
+          <span class="explorer-section-tag">Guidelines</span>
+          <div class="explorer-status live"></div>
+        </div>
+        <div class="explorer-card-title">Manifesto</div>
+        <div class="explorer-card-desc">WHY / HOW / WHAT — o propósito que guia todas as decisões de marca.</div>
+      </a>
+
+      <a href="brandbook/guidelines.html#archetypes" class="explorer-card">
+        <div class="explorer-card-meta">
+          <span class="explorer-section-tag">Guidelines</span>
+          <div class="explorer-status live"></div>
+        </div>
+        <div class="explorer-card-title">Arquétipos</div>
+        <div class="explorer-card-desc">Creator 60% + Rebel 40% — a personalidade que distingue a NodeGrid.</div>
+      </a>
+
+      <a href="brandbook/guidelines.html#voice" class="explorer-card">
+        <div class="explorer-card-meta">
+          <span class="explorer-section-tag">Guidelines</span>
+          <div class="explorer-status live"></div>
+        </div>
+        <div class="explorer-card-title">Tom de Voz</div>
+        <div class="explorer-card-desc">StoryBrand BrandScript — como a NodeGrid comunica com clareza e intenção.</div>
+      </a>
+
+      <a href="brandbook/foundations.html#colours" class="explorer-card">
+        <div class="explorer-card-meta">
+          <span class="explorer-section-tag">Foundations</span>
+          <div class="explorer-status live"></div>
+        </div>
+        <div class="explorer-card-title">Paleta de Cor</div>
+        <div class="explorer-card-desc">Green scale, Gold CTA, Neutral e Feedback — com valores hex e token names.</div>
+      </a>
+
+      <a href="brandbook/foundations.html#typography" class="explorer-card">
+        <div class="explorer-card-meta">
+          <span class="explorer-section-tag">Foundations</span>
+          <div class="explorer-status live"></div>
+        </div>
+        <div class="explorer-card-title">Tipografia</div>
+        <div class="explorer-card-desc">Space Grotesk, Inter e JetBrains Mono — escala, pesos e uso correcto.</div>
+      </a>
+
+      <a href="brandbook/foundations.html#tokens" class="explorer-card">
+        <div class="explorer-card-meta">
+          <span class="explorer-section-tag">Foundations</span>
+          <div class="explorer-status live"></div>
+        </div>
+        <div class="explorer-card-title">Design Tokens</div>
+        <div class="explorer-card-desc">80+ tokens em 3 camadas. Referência completa com nomes, valores e propósito.</div>
+      </a>
+
+      <a href="brandbook/guidelines.html#logo" class="explorer-card">
+        <div class="explorer-card-meta">
+          <span class="explorer-section-tag">Guidelines</span>
+          <div class="explorer-status live"></div>
+        </div>
+        <div class="explorer-card-title">Logo & Variantes</div>
+        <div class="explorer-card-desc">Logótipo SVG, variante white, uso correcto, espaçamento e fundos permitidos.</div>
+      </a>
+
+      <a href="brandbook/components.html" class="explorer-card">
+        <div class="explorer-card-meta">
+          <span class="explorer-section-tag">Components</span>
+          <div class="explorer-status soon"></div>
+        </div>
+        <div class="explorer-card-title">Biblioteca de Componentes</div>
+        <div class="explorer-card-desc">Buttons, cards, inputs, badges — prontos a usar com tokens correctos.</div>
+      </a>
+
+      <a href="brandbook/patterns.html" class="explorer-card">
+        <div class="explorer-card-meta">
+          <span class="explorer-section-tag">Patterns</span>
+          <div class="explorer-status soon"></div>
+        </div>
+        <div class="explorer-card-title">Padrões Visuais</div>
+        <div class="explorer-card-desc">Dot grid, circuit traces e HUD frames — texturas que definem o carácter NodeGrid.</div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- MANIFESTO -->
+  <section class="manifesto">
+    <div class="manifesto-inner">
+      <span class="section-tag">Manifesto</span>
+      <div class="manifesto-quote">
+        "Construímos software como <em>ofício</em>.<br />
+        Cada linha de código é uma decisão<br />
+        que respeita quem a vai usar."
+      </div>
+      <div class="manifesto-pillars">
+        <div class="manifesto-pillar">
+          <div class="manifesto-pillar-word">CRAFT</div>
+          <div class="manifesto-pillar-desc">Software construído com intenção. Cada detalhe importa.</div>
+        </div>
+        <div class="manifesto-pillar">
+          <div class="manifesto-pillar-word">ARQUITECTURA</div>
+          <div class="manifesto-pillar-desc">Estrutura que aguenta o crescimento. Design que dura.</div>
+        </div>
+        <div class="manifesto-pillar">
+          <div class="manifesto-pillar-word">PARCERIA</div>
+          <div class="manifesto-pillar-desc">Trabalhamos dentro do teu negócio, não só para ele.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq">
+    <div class="section-header">
+      <span class="section-tag">FAQ</span>
+      <h2 class="section-title">Perguntas frequentes.</h2>
+    </div>
+    <div class="faq-list">
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          O que é o NodeGrid Brand Design System?
+          <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="faq-answer">
+          É a referência oficial para todos os artefactos visuais e de comunicação da NodeGrid.
+          Inclui tokens de design, guias de uso do logótipo, tipografia, cor, componentes e padrões —
+          tudo documentado para garantir consistência em qualquer produto ou canal.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          Como devo usar os design tokens?
+          <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="faq-answer">
+          Usa sempre tokens semânticos (ex: <code style="font-family:var(--font-mono);font-size:12px;color:var(--accent-primary);">--accent-primary</code>) em vez de primitivos (ex: <code style="font-family:var(--font-mono);font-size:12px;color:var(--accent-primary);">--green-300</code>).
+          Os tokens semânticos expressam intenção — o que significa, não apenas que cor é.
+          Isto torna o sistema mais fácil de manter e de evoluir.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          Posso usar o logótipo NodeGrid em materiais de marketing?
+          <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="faq-answer">
+          Sim — dentro das regras definidas nas Brand Guidelines. O logótipo original (sage green)
+          deve ser usado em fundos escuros. A variante white está disponível para contextos
+          de contraste elevado. Nunca alteres as proporções, cores ou isolamento mínimo.
+          Consulta a secção Logo & Variantes para guias detalhados.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          Qual é a fonte principal da NodeGrid?
+          <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="faq-answer">
+          O sistema usa três famílias com funções distintas:
+          <strong style="color:var(--text-primary)">Space Grotesk</strong> para headings e display,
+          <strong style="color:var(--text-primary)">Inter</strong> para body text e UI,
+          e <strong style="color:var(--text-primary)">JetBrains Mono</strong> para código, labels técnicos e elementos de identidade.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          Onde está o ficheiro tokens.css?
+          <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="faq-answer">
+          Em <code style="font-family:var(--font-mono);font-size:12px;color:var(--accent-primary);">css/tokens.css</code>.
+          Inclui todas as 3 camadas de tokens, aliases de retrocompatibilidade e tokens de componente.
+          Importa este ficheiro antes de qualquer outro CSS do projecto.
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div>
+          <img src="assets/logo-nodegrid-white.svg" alt="NodeGrid" class="footer-brand-logo" />
+          <p class="footer-brand-desc">
+            Software de ofício para startups e PMEs que precisam de arquitectura
+            sem overhead de enterprise.
+          </p>
+          <div class="footer-badge">
+            <div style="width:5px;height:5px;border-radius:50%;background:var(--status-success);"></div>
+            Design System v1.0
+          </div>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Guidelines</div>
+          <div class="footer-links">
+            <a href="brandbook/guidelines.html#manifesto" class="footer-link">Manifesto</a>
+            <a href="brandbook/guidelines.html#archetypes" class="footer-link">Arquétipos</a>
+            <a href="brandbook/guidelines.html#logo" class="footer-link">Logo & Variantes</a>
+            <a href="brandbook/guidelines.html#voice" class="footer-link">Tom de Voz</a>
+            <a href="brandbook/guidelines.html#positioning" class="footer-link">Posicionamento</a>
+          </div>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Foundations</div>
+          <div class="footer-links">
+            <a href="brandbook/foundations.html#colours" class="footer-link">Paleta de Cor</a>
+            <a href="brandbook/foundations.html#typography" class="footer-link">Tipografia</a>
+            <a href="brandbook/foundations.html#spacing" class="footer-link">Espaçamento</a>
+            <a href="brandbook/foundations.html#motion" class="footer-link">Motion</a>
+            <a href="brandbook/foundations.html#tokens" class="footer-link">Design Tokens</a>
+          </div>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Recursos</div>
+          <div class="footer-links">
+            <a href="css/tokens.css" class="footer-link">tokens.css</a>
+            <a href="assets/logo-nodegrid.svg" class="footer-link">Logo SVG</a>
+            <a href="assets/logo-nodegrid-white.svg" class="footer-link">Logo White SVG</a>
+            <a href="https://nodegrid.dev" class="footer-link">nodegrid.dev</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="footer-copy">© 2025 NodeGrid. Todos os direitos reservados.</div>
+        <div class="footer-version">
+          <div class="footer-version-dot"></div>
+          Brand Design System v1.0 — março 2025
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // FAQ accordion
+    function toggleFaq(el) {
+      const item = el.closest('.faq-item');
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    }
+
+    // Motion preview
+    function playMotion(row) {
+      const bar = row.querySelector('.motion-bar');
+      row.classList.remove('playing');
+      bar.style.animation = 'none';
+      bar.offsetHeight; // reflow
+      row.classList.add('playing');
+      const dur = parseInt(row.dataset.dur) || 300;
+      setTimeout(() => row.classList.remove('playing'), dur + 100);
+    }
+
+    // Animate stats on scroll
+    const statsObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const numbers = entry.target.querySelectorAll('.stat-number');
+          numbers.forEach(n => {
+            n.style.opacity = '0';
+            n.style.transform = 'translateY(8px)';
+            n.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+            setTimeout(() => {
+              n.style.opacity = '1';
+              n.style.transform = 'translateY(0)';
+            }, 100);
+          });
+          statsObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    const statsBar = document.querySelector('.stats-bar');
+    if (statsBar) statsObserver.observe(statsBar);
+
+    // Fade in on scroll
+    const fadeObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+          fadeObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.pillar-card, .explorer-card, .token-panel').forEach((el, i) => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(16px)';
+      el.style.transition = `opacity 0.5s ease ${i * 60}ms, transform 0.5s ease ${i * 60}ms`;
+      fadeObserver.observe(el);
+    });
+  </script>
+
+</body>
+</html>

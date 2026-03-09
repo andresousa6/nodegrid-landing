@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Components — NodeGrid Brand Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/tokens.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-base); }
+    ::-webkit-scrollbar-thumb { background: var(--border-default); border-radius: var(--r-full); }
+    ::-webkit-scrollbar-thumb:hover { background: var(--accent-dim); }
+    * { scrollbar-width: thin; scrollbar-color: var(--border-default) var(--bg-base); }
+
+    body {
+      background: var(--bg-base);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      line-height: var(--leading-normal);
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* ── LAYOUT ──────────────────────────────────────────────── */
+    .layout { display: flex; min-height: 100vh; }
+
+    /* ── SIDEBAR ─────────────────────────────────────────────── */
+    .sidebar {
+      width: 260px; flex-shrink: 0;
+      position: sticky; top: 0;
+      height: 100vh; overflow-y: auto;
+      background: var(--bg-surface);
+      border-right: 1px solid var(--border-subtle);
+      padding: var(--s6) 0;
+      display: flex; flex-direction: column;
+    }
+    .sidebar-logo {
+      padding: var(--s4) var(--s6) var(--s6);
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex; align-items: center; gap: var(--s3);
+    }
+    .sidebar-logo img { height: 22px; width: auto; }
+    .sidebar-logo-sub {
+      font-family: var(--font-mono); font-size: 10px;
+      color: var(--text-disabled); letter-spacing: var(--tracking-wide); text-transform: uppercase;
+    }
+    .sidebar-nav { padding: var(--s5) 0; flex: 1; }
+    .sidebar-section { margin-bottom: var(--s6); }
+    .sidebar-section-label {
+      font-family: var(--font-mono); font-size: 10px;
+      color: var(--text-disabled); letter-spacing: var(--tracking-widest);
+      text-transform: uppercase; padding: 0 var(--s6) var(--s3);
+    }
+    .sidebar-link {
+      display: flex; align-items: center; gap: var(--s3);
+      padding: var(--s2) var(--s6);
+      font-size: var(--text-sm); color: var(--text-muted);
+      transition: all var(--duration-fast) var(--ease-default);
+      border-left: 2px solid transparent;
+    }
+    .sidebar-link:hover { color: var(--text-primary); background: var(--bg-surface-raised); }
+    .sidebar-link.active { color: var(--accent-primary); border-left-color: var(--accent-primary); background: rgba(114,184,114,.05); }
+    .sidebar-back {
+      padding: var(--s4) var(--s6); border-top: 1px solid var(--border-subtle);
+      display: flex; align-items: center; gap: var(--s2);
+      font-size: var(--text-sm); color: var(--text-muted);
+      transition: color var(--duration-base) var(--ease-default);
+    }
+    .sidebar-back:hover { color: var(--text-primary); }
+
+    /* ── CONTENT ─────────────────────────────────────────────── */
+    .content { flex: 1; min-width: 0; padding: var(--s12) var(--s16); max-width: 960px; }
+
+    .page-header { margin-bottom: var(--s12); padding-bottom: var(--s8); border-bottom: 1px solid var(--border-subtle); }
+    .breadcrumb {
+      display: flex; align-items: center; gap: var(--s2);
+      font-family: var(--font-mono); font-size: var(--text-xs);
+      color: var(--text-disabled); margin-bottom: var(--s5);
+    }
+    .breadcrumb-sep { color: var(--border-default); }
+    .breadcrumb-current { color: var(--accent-primary); }
+    .page-title {
+      font-family: var(--font-display); font-size: var(--text-4xl);
+      font-weight: 700; letter-spacing: var(--tracking-tighter);
+      color: var(--text-primary); line-height: var(--leading-tight); margin-bottom: var(--s4);
+    }
+    .page-desc { font-size: var(--text-md); color: var(--text-muted); max-width: 560px; }
+
+    .doc-section { margin-bottom: var(--s16); scroll-margin-top: var(--s8); }
+    .doc-section-header { display: flex; align-items: center; gap: var(--s4); margin-bottom: var(--s8); }
+    .doc-section-num { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--accent-dim); letter-spacing: var(--tracking-wide); }
+    .doc-section-title { font-family: var(--font-display); font-size: var(--text-2xl); font-weight: 700; color: var(--text-primary); letter-spacing: var(--tracking-tight); }
+    .doc-divider { height: 1px; background: var(--border-subtle); margin: var(--s12) 0; }
+    .prose { color: var(--text-muted); line-height: var(--leading-normal); font-size: var(--text-base); margin-bottom: var(--s5); }
+
+    /* ── COMPONENT CANVAS ────────────────────────────────────── */
+    .comp-canvas {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--r-lg);
+      overflow: hidden;
+      margin: var(--s6) 0;
+    }
+
+    .comp-canvas-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--s3) var(--s5);
+      border-bottom: 1px solid var(--border-subtle);
+      background: var(--bg-base);
+    }
+
+    .comp-canvas-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-disabled);
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+    }
+
+    .comp-canvas-dots {
+      display: flex;
+      gap: 5px;
+    }
+    .comp-canvas-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--border-default);
+    }
+
+    .comp-canvas-body {
+      padding: var(--s10) var(--s8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: var(--s4);
+      min-height: 120px;
+    }
+
+    .comp-canvas-body.left { justify-content: flex-start; }
+    .comp-canvas-body.column { flex-direction: column; align-items: flex-start; }
+
+    /* ── CODE BLOCK ──────────────────────────────────────────── */
+    .code-block {
+      background: var(--bg-base);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--r-md);
+      padding: var(--s4) var(--s5);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-muted);
+      line-height: 1.7;
+      overflow-x: auto;
+      margin: var(--s4) 0;
+    }
+    .code-key { color: var(--accent-dim); }
+    .code-val { color: var(--accent-primary); }
+    .code-comment { color: var(--text-disabled); }
+
+    /* ── TOKEN SPEC TABLE ────────────────────────────────────── */
+    .token-spec {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--s2);
+      margin: var(--s5) 0;
+    }
+    .token-spec-row {
+      display: flex;
+      align-items: center;
+      gap: var(--s3);
+      padding: var(--s2) var(--s3);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--r-sm);
+    }
+    .token-spec-name {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--accent-primary);
+      flex: 1;
+    }
+    .token-spec-val {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-disabled);
+    }
+
+    /* ── COMPONENT STATES TABLE ──────────────────────────────── */
+    .states-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--s3);
+      margin: var(--s5) 0;
+    }
+    .state-cell {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--r-md);
+      padding: var(--s4);
+      text-align: center;
+    }
+    .state-cell-preview { margin-bottom: var(--s3); display: flex; justify-content: center; }
+    .state-cell-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-disabled);
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+    }
+
+    /* ════════════════════════════════════════════════════════════
+       COMPONENT DEFINITIONS
+       All live previews use pure CSS — no frameworks.
+       ════════════════════════════════════════════════════════════ */
+
+    /* BUTTON */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s2);
+      font-family: var(--font-body);
+      font-weight: var(--btn-font-weight);
+      border-radius: var(--btn-radius);
+      cursor: pointer;
+      transition: var(--btn-transition);
+      border: none;
+      white-space: nowrap;
+      text-decoration: none;
+    }
+
+    .btn-sm  { font-size: var(--text-sm); padding: 8px 16px; }
+    .btn-md  { font-size: var(--text-base); padding: 11px 22px; }
+    .btn-lg  { font-size: var(--text-md); padding: var(--btn-primary-padding); }
+
+    .btn-primary {
+      background: var(--btn-primary-bg);
+      color: var(--btn-primary-text);
+    }
+    .btn-primary:hover { background: var(--btn-primary-bg-hover); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(240,212,116,.25); }
+    .btn-primary:active { transform: translateY(0); }
+    .btn-primary:disabled { opacity: .4; cursor: not-allowed; transform: none; }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--btn-secondary-text);
+      border: 1px solid var(--btn-secondary-border);
+    }
+    .btn-secondary:hover { background: var(--btn-secondary-bg-hover); }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid transparent;
+    }
+    .btn-ghost:hover { color: var(--text-primary); background: var(--bg-surface-raised); }
+
+    .btn-danger {
+      background: rgba(248,113,113,.12);
+      color: var(--status-error);
+      border: 1px solid rgba(248,113,113,.25);
+    }
+    .btn-danger:hover { background: rgba(248,113,113,.2); }
+
+    /* CARD */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--card-radius);
+      padding: var(--card-padding);
+      transition: all var(--duration-base) var(--ease-default);
+    }
+    .card:hover { border-color: var(--card-hover-border); box-shadow: var(--shadow-md); }
+
+    .card-interactive {
+      cursor: pointer;
+    }
+    .card-interactive:hover { transform: translateY(-2px); box-shadow: var(--shadow-md), var(--shadow-glow); }
+
+    .card-title {
+      font-family: var(--font-display);
+      font-size: var(--text-lg);
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: var(--tracking-tight);
+      margin-bottom: var(--s2);
+    }
+    .card-desc {
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      line-height: var(--leading-normal);
+    }
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: var(--s5);
+      padding-top: var(--s4);
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    /* INPUT */
+    .input-group { display: flex; flex-direction: column; gap: var(--s2); width: 100%; max-width: 320px; }
+    .input-label {
+      font-size: var(--text-sm);
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+    .input {
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: var(--input-radius);
+      color: var(--input-text);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      padding: 10px var(--s4);
+      width: 100%;
+      outline: none;
+      transition: border-color var(--duration-base) var(--ease-default), box-shadow var(--duration-base) var(--ease-default);
+    }
+    .input::placeholder { color: var(--input-placeholder); }
+    .input:focus {
+      border-color: var(--input-border-focus);
+      box-shadow: 0 0 0 3px rgba(114,184,114,.12);
+    }
+    .input.is-error {
+      border-color: var(--status-error);
+    }
+    .input.is-error:focus {
+      box-shadow: 0 0 0 3px rgba(248,113,113,.12);
+    }
+    .input-hint { font-size: var(--text-xs); color: var(--text-disabled); }
+    .input-error-msg { font-size: var(--text-xs); color: var(--status-error); }
+
+    .input-with-icon {
+      position: relative;
+    }
+    .input-with-icon .input { padding-left: 38px; }
+    .input-with-icon .input-icon {
+      position: absolute;
+      left: 12px; top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-disabled);
+      pointer-events: none;
+    }
+
+    /* BADGE */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+      padding: var(--badge-padding);
+      border-radius: var(--badge-radius);
+    }
+
+    .badge-green {
+      background: var(--badge-bg);
+      border: 1px solid var(--badge-border);
+      color: var(--badge-text);
+    }
+    .badge-gold {
+      background: rgba(240,212,116,.08);
+      border: 1px solid rgba(240,212,116,.2);
+      color: var(--cta-bg);
+    }
+    .badge-red {
+      background: rgba(248,113,113,.08);
+      border: 1px solid rgba(248,113,113,.2);
+      color: var(--status-error);
+    }
+    .badge-amber {
+      background: rgba(251,191,36,.08);
+      border: 1px solid rgba(251,191,36,.2);
+      color: var(--status-warning);
+    }
+    .badge-neutral {
+      background: rgba(255,255,255,.04);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+    }
+
+    .badge-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+    }
+    .badge-green .badge-dot { background: var(--accent-primary); }
+    .badge-gold .badge-dot { background: var(--cta-bg); }
+    .badge-red .badge-dot { background: var(--status-error); }
+    .badge-amber .badge-dot { background: var(--status-warning); }
+    .badge-neutral .badge-dot { background: var(--text-disabled); }
+
+    /* TAG */
+    .tag {
+      display: inline-block;
+      font-family: var(--tag-font);
+      font-size: var(--tag-size);
+      color: var(--tag-text);
+      letter-spacing: var(--tag-tracking);
+      text-transform: uppercase;
+      padding: var(--badge-padding);
+      background: var(--tag-bg);
+      border: 1px solid var(--tag-border);
+      border-radius: var(--badge-radius);
+    }
+
+    /* AVATAR */
+    .avatar {
+      border-radius: 50%;
+      background: var(--bg-overlay);
+      border: 2px solid var(--border-subtle);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--accent-primary);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .avatar-xs { width: 28px; height: 28px; font-size: 11px; }
+    .avatar-sm { width: 36px; height: 36px; font-size: 13px; }
+    .avatar-md { width: 48px; height: 48px; font-size: 16px; }
+    .avatar-lg { width: 64px; height: 64px; font-size: 20px; }
+
+    /* TOGGLE */
+    .toggle-wrap {
+      display: flex;
+      align-items: center;
+      gap: var(--s3);
+      cursor: pointer;
+      user-select: none;
+    }
+    .toggle {
+      position: relative;
+      width: 44px; height: 24px;
+      background: var(--border-default);
+      border-radius: var(--r-full);
+      transition: background var(--duration-base) var(--ease-default);
+      cursor: pointer;
+    }
+    .toggle::after {
+      content: '';
+      position: absolute;
+      top: 3px; left: 3px;
+      width: 18px; height: 18px;
+      background: var(--text-muted);
+      border-radius: 50%;
+      transition: transform var(--duration-base) var(--ease-spring), background var(--duration-base) var(--ease-default);
+    }
+    .toggle.on {
+      background: var(--accent-dim);
+    }
+    .toggle.on::after {
+      transform: translateX(20px);
+      background: var(--accent-primary);
+    }
+    .toggle-label { font-size: var(--text-sm); color: var(--text-muted); }
+
+    /* ALERT */
+    .alert {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--s3);
+      padding: var(--s4) var(--s5);
+      border-radius: var(--r-md);
+      font-size: var(--text-sm);
+      line-height: 1.5;
+    }
+    .alert svg { flex-shrink: 0; margin-top: 1px; }
+
+    .alert-info {
+      background: rgba(114,184,114,.06);
+      border: 1px solid rgba(114,184,114,.15);
+      color: var(--text-muted);
+    }
+    .alert-info svg { color: var(--accent-primary); }
+
+    .alert-warning {
+      background: rgba(251,191,36,.06);
+      border: 1px solid rgba(251,191,36,.15);
+      color: var(--text-muted);
+    }
+    .alert-warning svg { color: var(--status-warning); }
+
+    .alert-error {
+      background: rgba(248,113,113,.06);
+      border: 1px solid rgba(248,113,113,.15);
+      color: var(--text-muted);
+    }
+    .alert-error svg { color: var(--status-error); }
+
+    .alert-success {
+      background: rgba(52,211,153,.06);
+      border: 1px solid rgba(52,211,153,.15);
+      color: var(--text-muted);
+    }
+    .alert-success svg { color: var(--status-success); }
+
+    /* DIVIDER */
+    .divider {
+      height: 1px;
+      background: var(--border-subtle);
+      width: 100%;
+    }
+    .divider-label {
+      display: flex;
+      align-items: center;
+      gap: var(--s3);
+      color: var(--text-disabled);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+    }
+    .divider-label::before, .divider-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border-subtle);
+    }
+
+    /* TOOLTIP */
+    .tooltip-wrap {
+      position: relative;
+      display: inline-flex;
+    }
+    .tooltip {
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--bg-overlay);
+      border: 1px solid var(--border-default);
+      border-radius: var(--r-md);
+      padding: 6px 12px;
+      font-size: var(--text-xs);
+      color: var(--text-primary);
+      white-space: nowrap;
+      pointer-events: none;
+      box-shadow: var(--shadow-md);
+    }
+    .tooltip::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%; transform: translateX(-50%);
+      border: 5px solid transparent;
+      border-top-color: var(--border-default);
+    }
+
+    /* SKELETON */
+    .skeleton {
+      background: linear-gradient(90deg, var(--bg-surface) 25%, var(--bg-surface-raised) 50%, var(--bg-surface) 75%);
+      background-size: 200% 100%;
+      animation: skeleton-shimmer 1.5s infinite;
+      border-radius: var(--r-sm);
+    }
+    @keyframes skeleton-shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* PROGRESS */
+    .progress-wrap { width: 100%; }
+    .progress-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--s2);
+    }
+    .progress-label { font-size: var(--text-sm); color: var(--text-muted); }
+    .progress-pct { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--accent-primary); }
+    .progress-track {
+      height: 6px;
+      background: var(--bg-surface-raised);
+      border-radius: var(--r-full);
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      border-radius: var(--r-full);
+      background: linear-gradient(90deg, var(--accent-dim), var(--accent-primary));
+      transition: width 1s var(--ease-out);
+    }
+
+    /* KBD */
+    kbd {
+      display: inline-flex;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      background: var(--bg-surface-raised);
+      border: 1px solid var(--border-default);
+      border-bottom-width: 2px;
+      border-radius: var(--r-sm);
+      padding: 2px 6px;
+      line-height: 1.4;
+    }
+
+    /* COMPONENT GRID */
+    .comp-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: var(--s4);
+    }
+
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      .content { padding: var(--s8); max-width: 100%; }
+      .states-grid { grid-template-columns: repeat(2, 1fr); }
+      .token-spec { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="layout">
+
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <img src="../assets/logo-nodegrid-white.svg" alt="NodeGrid" />
+      <span class="sidebar-logo-sub">Brand DS</span>
+    </div>
+    <div class="sidebar-nav">
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Brand Design System</div>
+        <a href="../index.html" class="sidebar-link">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+          Início
+        </a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">01 — Guidelines</div>
+        <a href="guidelines.html" class="sidebar-link">Manifesto & WHY</a>
+        <a href="guidelines.html#archetypes" class="sidebar-link">Arquétipos</a>
+        <a href="guidelines.html#logo" class="sidebar-link">Logo & Variantes</a>
+        <a href="guidelines.html#voice" class="sidebar-link">Tom de Voz</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">02 — Foundations</div>
+        <a href="foundations.html" class="sidebar-link">Paleta de Cor</a>
+        <a href="foundations.html#typography" class="sidebar-link">Tipografia</a>
+        <a href="foundations.html#tokens" class="sidebar-link">Design Tokens</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">03 — Components</div>
+        <a href="#buttons" class="sidebar-link active">Buttons</a>
+        <a href="#cards" class="sidebar-link">Cards</a>
+        <a href="#inputs" class="sidebar-link">Inputs</a>
+        <a href="#badges" class="sidebar-link">Badges & Tags</a>
+        <a href="#feedback" class="sidebar-link">Feedback</a>
+        <a href="#data" class="sidebar-link">Data Display</a>
+        <a href="#misc" class="sidebar-link">Miscellaneous</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">04 — Patterns</div>
+        <a href="patterns.html" class="sidebar-link">Padrões Visuais</a>
+      </div>
+    </div>
+    <a href="../index.html" class="sidebar-back">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      Voltar ao início
+    </a>
+  </nav>
+
+  <main class="content">
+
+    <div class="page-header">
+      <div class="breadcrumb">
+        <span>Brand Design System</span>
+        <span class="breadcrumb-sep">/</span>
+        <span class="breadcrumb-current">Components</span>
+      </div>
+      <h1 class="page-title">UI Components</h1>
+      <p class="page-desc">
+        Todos os componentes construídos sobre os design tokens.
+        Cada preview é ao vivo — o que vês é CSS puro com variáveis do sistema.
+      </p>
+    </div>
+
+    <!-- ── BUTTONS ─────────────────────────────────────────── -->
+    <section class="doc-section" id="buttons">
+      <div class="doc-section-header">
+        <span class="doc-section-num">01</span>
+        <h2 class="doc-section-title">Buttons</h2>
+      </div>
+
+      <p class="prose">Quatro variantes com três tamanhos. O botão primário usa <code style="font-family:var(--font-mono);font-size:12px;color:var(--accent-primary);">--cta-bg</code> (gold) para máxima atenção. O secundário usa bordas e accent green para acções alternativas.</p>
+
+      <!-- Primary -->
+      <div class="comp-canvas">
+        <div class="comp-canvas-toolbar">
+          <span class="comp-canvas-label">Primary Button</span>
+          <div class="comp-canvas-dots"><div class="comp-canvas-dot"></div><div class="comp-canvas-dot"></div><div class="comp-canvas-dot"></div></div>
+        </div>
+        <div class="comp-canvas-body">
+          <button class="btn btn-primary btn-sm">Small</button>
+          <button class="btn btn-primary btn-md">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            Medium — Default
+          </button>
+          <button class="btn btn-primary btn-lg">Large</button>
+          <button class="btn btn-primary btn-md" disabled>Disabled</button>
+        </div>
+      </div>
+
+      <!-- Secondary + Ghost + Danger -->
+      <div class="comp-canvas">
+        <div class="comp-canvas-toolbar">
+          <span class="comp-canvas-label">Variantes</span>
+          <div class="comp-canvas-dots"><div class="comp-canvas-dot"></div><div class="comp-canvas-dot"></div><div class="comp-canvas-dot"></div></div>
+        </div>
+        <div class="comp-canvas-body">
+          <button class="btn btn-secondary btn-md">Secondary</button>
+          <button class="btn btn-ghost btn-md">Ghost</button>
+          <button class="btn btn-danger btn-md">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+            Danger
+          </button>
+        </div>
+      </div>
+
+      <div class="token-spec">
+        <div class="token-spec-row"><span class="token-spec-name">--btn-primary-bg</span><span class="token-spec-val">→ cta-bg</span></div>
+        <div class="token-spec-row"><span class="token-spec-name">--btn-primary-bg-hover</span><span class="token-spec-val">→ cta-bg-hover</span></div>
+        <div class="token-spec-row"><span class="token-spec-name">--btn-primary-text</span><span class="token-spec-val">→ cta-text</span></div>
+        <div class="token-spec-row"><span class="token-spec-name">--btn-radius</span><span class="token-spec-val">→ r-md (8px)</span></div>
+        <div class="token-spec-row"><span class="token-spec-name">--btn-font-weight</span><span class="token-spec-val">700</span></div>
+        <div class="token-spec-row"><span class="token-spec-name">--btn-transition</span><span class="token-spec-val">all 180ms ease</span></div>
+      </div>
+    </section>
+
+    <div class="doc-divider"></div>
+
+    <!-- ── CARDS ──────────────────────────────────────────── -->
+    <section class="doc-section" id="cards">
+      <div class="doc-section-header">
+        <span class="doc-section-num">02</span>
+        <h2 class="doc-section-title">Cards</h2>
+      </div>
+
+      <p class="prose">Cards são superfícies elevadas sobre o <code style="font-family:var(--font-mono);font-size:12px;color:var(--accent-primary);">--bg-base</code>. Versão estática para conteúdo informativo, versão interactiva com hover para elementos clicáveis.</p>
+
+      <div class="comp-canvas">
+        <div class="comp-canvas-toolbar">
+          <span class="comp-canvas-label">Card — Estático</span>
+          <div class="comp-canvas-dots"><div class="comp-canvas-dot"></div><div class="comp-canvas-dot"></div><div class="comp-canvas-dot"></div></div>
+        </div>
+        <div class="comp-canvas-body">
+          <div class="card" style="max-width:320px;width:100%;">
+            <div style="display:flex;align-items:center;gap:var(--s3);margin-bottom:var(--s4);">
+              <div style="width:36px;height:36px;border-radius:var(--r-md);background:rgba(114,184,114,.08);border:1px solid rgba(114,184,114,.15);display:flex;align-items:center;justify-content:center;color:var(--accent-primary);">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+              </div>
+              <span class="tag">Guidelines</span>
+            </div>
+            <div class="card-title">Brand Guidelines</div>
+            <div class="card-desc">Estratégia de marca, identidade visual e tom de comunicação para todos os pontos de contacto.</div>
+            <div class="card-footer">
+              <span style="font-size:var(--text-xs);color:var(--text-disabled);font-family:var(--font-mono);">v1.0 · 7 secções</span>
+              <button class="btn btn-secondary btn-sm">Explorar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp-canvas">
+        <div class="comp-canvas-toolbar">
+          <span class="comp-canvas-label">Card — Interactivo (hover para ver)</span>
+          <div class="comp-canvas-dots"><div class="comp-canvas-dot"></div><div class="comp-canvas-dot"></div><div class="comp-canvas-dot"></div></div>
+        </div>
+        <div class="comp-canvas-body">
+          <div class="card card-interactive" style="max-width:280px;width:100%;cursor:pointer;">
+            <div style="font-family:var(--font-mono);font-size:var(--text-xs);color:var(--accent-dim);letter-spacing:var(--tracking-wide);margin-bottom:var(--s4);">01 — FOUNDATIONS</div>
+            <div class="card-title">Design Tokens</div>
+            <div class="card-desc">80+ tokens em 3 camadas. Primitivos → Semânticos → Componente.</div>
+            <div style="display:flex;align-items:center;gap:var(--s2);margin-top:var(--s5);font-family:var(--font-mono);font-size:var(--text-xs);color:var(--accent-primary);letter-spacing:var(--tracking-wide);text-transform:uppercase;">
+              Ver tokens
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="token-spec">
+        <div class="token-spec-row"><span class="token-spec-name">--card-bg</span><span class="token-spec-val">→ bg-surface</span></div>
+        <div class="token-spec-row"><span class="token-spec-name">--card-border</span><span class="token-spec-val">→ border-subtle</span></div>
+        <div class="token-spec-row"><span class="token-spec-name">--card-radius</span><span class="token-spec-val">→ r-lg (12px)</span></div>
+        <div class="token-spec-row"><span class="token-spec-name">--card-padding</span><span class="token-spec-val">→ s6 (24px)</span></div>
+        <div class="token-spec-row"><span class="token-spec-name">--card-hover-border</span><span class="token-spec-val">→ accent-dim</span></div>
+        <div class="token-spec-row"><span class="token-spec-name">shadow on hover</span><span class="token-spec-val">shadow-md + shadow-glow</span></div>
+      </div>
+    </section>
+
+    <div class="doc-divider"></div>
+
+    <!-- ── INPUTS ─────────────────────────────────────────── -->
+    <section class="doc-section" id="inputs">
+      <div class="doc-section-header">
+        <span class="doc-section-num">03</span>
+        <h2 class="doc-section-title">Inputs</h2>
+      </div>
+
+      <p class="prose">Campos de texto com estados definidos: default, focus (glow verde), erro e desactivado. O anel de foco usa <code style="font-family:var(--font-mono);font-size:12px;color:var(--accent-primary);">box-shadow</code> para não alterar o layout.</p>
+
+      <div class="comp-canvas">
+        <div class="comp-canvas-toolbar">
+          <span class="comp-canvas-label">Input States</span>
+          <div class="comp-canvas-dots"><div class="comp-canvas-dot"></div><div class="comp-canvas-dot"></div><div class="comp-canvas-dot"></div></div>
+        </div>
+        <div class="comp-canvas-body column" style="padding: var(--s8) var(--s10); gap: var(--s6);">
+
+          <div class="input-group">
+            <label class="input-label">Default</label>
+            <input class="input" type="text" placeholder="email@empresa.pt" />
+            <span class="input-hint">Usa o teu email de trabalho</span>
+          </div>
+
+          <div class="input-group">
+            <label class="input-label">Com ícone</label>
+            <div class="input-with-icon">
+              <svg class="input-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              <input class="input" type="text" placeholder="Pesquisar tokens..." />
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label class="input-label" style="color:var(--status-error);">Erro</label>
+            <input class="input is-error" type="text" value="email-invalido" />
+            <span class="input-error-msg">Formato de email inválido.</span>
+          </div>
+
+          <div class="input-group">
+            <label class="input-label">Desactivado</label>
+            <input class="input" type="text" value="Valor não editável" disabled style="opacity:.4;cursor:not-allowed;" />
+          </div>
+
+        </div>
+      </div>
+
+      <div class="token-spec">
+        <div class="token-spec-row"><span class="token-spec-name">--input-bg</span><span class="token-spec-val">→ bg-surface-raised</span></div>
+        <div class="token-spec-row"><span class="token-spec-name">--input-border</span><span class="token-spec-val">→ border-default</span></div>
+        <div class="token-spec-row"><span class="token-spec-name">--input-border-focus</span><span class="token-spec-val">→ accent-primary</span></div>
+        <div class="token-spec-row"><span class="token-spec-name">--input-text</span><span class="token-spec-val">→ text-primary</span></div>
+        <div class="token-spec-row"><span class="token-spec-name">--input-placeholder</span><span class="token-spec-val">→ text-disabled</span></div>
+        <div class="token-spec-row"><span class="token-spec-name">--input-radius</span><span class="token-spec-val">→ r-md (8px)</span></div>
+      </div>
+    </section>
+
+    <div class="doc-divider"></div>
+
+    <!-- ── BADGES & TAGS ──────────────────────────────────── -->
+    <section class="doc-section" id="badges">
+      <div class="doc-section-header">
+        <span class="doc-section-num">04</span>
+        <h2 class="doc-section-title">Badges & Tags</h2>
+      </div>
+
+      <p class="prose">Badges para estado e categorização. Tags em JetBrains Mono para secções e labels técnicos. Ambos usam border-radius full para distinguir de botões.</p>
+
+      <div class="comp-canvas">
+        <div class="comp-canvas-toolbar">
+          <span class="comp-canvas-label">Badges</span>
+          <div class="comp-canvas-dots"><div class="comp-canvas-dot"></div><div class="comp-canvas-dot"></div><div class="comp-canvas-dot"></div></div>
+        </div>
+        <div class="comp-canvas-body">
+          <span class="badge badge-green"><div class="badge-dot"></div>Live</span>
+          <span class="badge badge-gold"><div class="badge-dot"></div>Em breve</span>
+          <span class="badge badge-amber"><div class="badge-dot"></div>Beta</span>
+          <span class="badge badge-red"><div class="badge-dot"></div>Depreciado</span>
+          <span class="badge badge-neutral"><div class="badge-dot"></div>Planeado</span>
+        </div>
+      </div>
+
+      <div class="comp-canvas">
+        <div class="comp-canvas-toolbar">
+          <span class="comp-canvas-label">Section Tags</span>
+          <div class="comp-canvas-dots"><div class="comp-canvas-dot"></div><div class="comp-canvas-dot"></div><div class="comp-canvas-dot"></div></div>
+        </div>
+        <div class="comp-canvas-body">
+          <span class="tag">Guidelines</span>
+          <span class="tag">Foundations</span>
+          <span class="tag">Components</span>
+          <span class="tag">Patterns</span>
+          <span class="tag">v1.0</span>
+        </div>
+      </div>
+
+      <div class="token-spec">
+        <div class="token-spec-row"><span class="token-spec-name">--badge-bg</span><span class="token-spec-val">rgba(114,184,114,.08)</span></div>
+        <div class="token-spec-row"><span class="token-spec-name">--badge-border</span><span class="token-spec-val">rgba(114,184,114,.2)</span></div>
+        <div class="token-spec-row"><span class="token-spec-name">--badge-text</span><span class="token-spec-val">→ accent-primary</span></div>
+        <div class="token-spec-row"><span class="token-spec-name">--badge-radius</span><span class="token-spec-val">→ r-full (9999px)</span></div>
+        <div class="token-spec-row"><span class="token-spec-name">--badge-padding</span><span class="token-spec-val">4px 12px</span></div>
+        <div class="token-spec-row"><span class="token-spec-name">--tag-font</span><span class="token-spec-val">→ font-mono</span></div>
+      </div>
+    </section>
+
+    <div class="doc-divider"></div>
+
+    <!-- ── FEEDBACK ───────────────────────────────────────── -->
+    <section class="doc-section" id="feedback">
+      <div class="doc-section-header">
+        <span class="doc-section-num">05</span>
+        <h2 class="doc-section-title">Feedback</h2>
+      </div>
+
+      <p class="prose">Alerts, toggles e avatares para comunicar estados ao utilizador. Usam os tokens <code style="font-family:var(--font-mono);font-size:12px;color:var(--accent-primary);">--status-*</code> para consistência.</p>
+
+      <div class="comp-canvas">
+        <div class="comp-canvas-toolbar">
+          <span class="comp-canvas-label">Alerts</span>
+          <div class="comp-canvas-dots"><div class="comp-canvas-dot"></div><div class="comp-canvas-dot"></div><div class="comp-canvas-dot"></div></div>
+        </div>
+        <div class="comp-canvas-body column" style="padding:var(--s8) var(--s8);gap:var(--s3);width:100%;max-width:520px;margin:0 auto;">
+          <div class="alert alert-info">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+            Usa sempre tokens semânticos — nunca valores primitivos directamente nos componentes.
+          </div>
+          <div class="alert alert-success">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>
+            Tokens importados com sucesso. Sistema pronto a usar.
+          </div>
+          <div class="alert alert-warning">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+            Componente em beta — pode ter alterações antes do v1.0.
+          </div>
+          <div class="alert alert-error">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+            Ficheiro tokens.css não encontrado. Verifica o caminho de importação.
+          </div>
+        </div>
+      </div>
+
+      <div class="comp-canvas">
+        <div class="comp-canvas-toolbar">
+          <span class="comp-canvas-label">Toggles & Avatars</span>
+          <div class="comp-canvas-dots"><div class="comp-canvas-dot"></div><div class="comp-canvas-dot"></div><div class="comp-canvas-dot"></div></div>
+        </div>
+        <div class="comp-canvas-body" style="gap:var(--s8);">
+          <div style="display:flex;flex-direction:column;gap:var(--s4);">
+            <div class="toggle-wrap" onclick="this.querySelector('.toggle').classList.toggle('on')">
+              <div class="toggle on"></div>
+              <span class="toggle-label">Dark mode activo</span>
+            </div>
+            <div class="toggle-wrap" onclick="this.querySelector('.toggle').classList.toggle('on')">
+              <div class="toggle"></div>
+              <span class="toggle-label">Notificações</span>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:var(--s3);">
+            <div class="avatar avatar-xs">AN</div>
+            <div class="avatar avatar-sm">NG</div>
+            <div class="avatar avatar-md">DS</div>
+            <div class="avatar avatar-lg">V1</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="doc-divider"></div>
+
+    <!-- ── DATA DISPLAY ───────────────────────────────────── -->
+    <section class="doc-section" id="data">
+      <div class="doc-section-header">
+        <span class="doc-section-num">06</span>
+        <h2 class="doc-section-title">Data Display</h2>
+      </div>
+
+      <p class="prose">Componentes para exibir progresso, estados de carregamento e atalhos de teclado.</p>
+
+      <div class="comp-canvas">
+        <div class="comp-canvas-toolbar">
+          <span class="comp-canvas-label">Progress Bars</span>
+          <div class="comp-canvas-dots"><div class="comp-canvas-dot"></div><div class="comp-canvas-dot"></div><div class="comp-canvas-dot"></div></div>
+        </div>
+        <div class="comp-canvas-body column" style="padding:var(--s8) var(--s10);gap:var(--s5);width:100%;">
+          <div class="progress-wrap">
+            <div class="progress-header">
+              <span class="progress-label">Tokens configurados</span>
+              <span class="progress-pct">100%</span>
+            </div>
+            <div class="progress-track"><div class="progress-fill" style="width:100%;"></div></div>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-header">
+              <span class="progress-label">Componentes documentados</span>
+              <span class="progress-pct">75%</span>
+            </div>
+            <div class="progress-track"><div class="progress-fill" style="width:75%;"></div></div>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-header">
+              <span class="progress-label">Padrões publicados</span>
+              <span class="progress-pct">40%</span>
+            </div>
+            <div class="progress-track"><div class="progress-fill" style="width:40%;"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp-canvas">
+        <div class="comp-canvas-toolbar">
+          <span class="comp-canvas-label">Skeleton Loaders</span>
+          <div class="comp-canvas-dots"><div class="comp-canvas-dot"></div><div class="comp-canvas-dot"></div><div class="comp-canvas-dot"></div></div>
+        </div>
+        <div class="comp-canvas-body column" style="padding:var(--s8) var(--s10);gap:var(--s3);width:100%;max-width:360px;margin:0 auto;">
+          <div class="skeleton" style="height:16px;width:60%;"></div>
+          <div class="skeleton" style="height:14px;width:100%;margin-top:4px;"></div>
+          <div class="skeleton" style="height:14px;width:85%;"></div>
+          <div class="skeleton" style="height:14px;width:90%;"></div>
+          <div style="display:flex;gap:var(--s3);margin-top:var(--s3);">
+            <div class="skeleton" style="width:32px;height:32px;border-radius:50%;"></div>
+            <div style="flex:1;display:flex;flex-direction:column;gap:6px;">
+              <div class="skeleton" style="height:12px;width:50%;"></div>
+              <div class="skeleton" style="height:11px;width:70%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="doc-divider"></div>
+
+    <!-- ── MISC ───────────────────────────────────────────── -->
+    <section class="doc-section" id="misc">
+      <div class="doc-section-header">
+        <span class="doc-section-num">07</span>
+        <h2 class="doc-section-title">Miscellaneous</h2>
+      </div>
+
+      <p class="prose">Dividers, tooltips e keyboard badges — elementos utilitários que completam a biblioteca.</p>
+
+      <div class="comp-canvas">
+        <div class="comp-canvas-toolbar">
+          <span class="comp-canvas-label">Dividers</span>
+          <div class="comp-canvas-dots"><div class="comp-canvas-dot"></div><div class="comp-canvas-dot"></div><div class="comp-canvas-dot"></div></div>
+        </div>
+        <div class="comp-canvas-body column" style="padding:var(--s8) var(--s10);gap:var(--s6);width:100%;">
+          <div class="divider"></div>
+          <div class="divider-label">ou continua com</div>
+          <div class="divider"></div>
+        </div>
+      </div>
+
+      <div class="comp-canvas">
+        <div class="comp-canvas-toolbar">
+          <span class="comp-canvas-label">Tooltip & Keyboard Badges</span>
+          <div class="comp-canvas-dots"><div class="comp-canvas-dot"></div><div class="comp-canvas-dot"></div><div class="comp-canvas-dot"></div></div>
+        </div>
+        <div class="comp-canvas-body" style="gap:var(--s8);padding-top:var(--s12);">
+          <div class="tooltip-wrap">
+            <button class="btn btn-secondary btn-sm">Hover aqui</button>
+            <div class="tooltip">Abre o brandbook completo</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:var(--s2);">
+            <kbd>⌘</kbd>
+            <kbd>K</kbd>
+            <span style="font-size:var(--text-sm);color:var(--text-muted);margin-left:var(--s2);">Pesquisa rápida</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:var(--s2);">
+            <kbd>Ctrl</kbd>
+            <kbd>Shift</kbd>
+            <kbd>P</kbd>
+            <span style="font-size:var(--text-sm);color:var(--text-muted);margin-left:var(--s2);">Command palette</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+</div>
+
+<script>
+  // Sidebar active state on scroll
+  const sections = document.querySelectorAll('.doc-section');
+  const links = document.querySelectorAll('.sidebar-link[href^="#"]');
+  const scrollObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === `#${id}`));
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  sections.forEach(s => scrollObserver.observe(s));
+
+  // Animate progress bars on scroll
+  const progObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.progress-fill').forEach(bar => {
+          const target = bar.style.width;
+          bar.style.width = '0%';
+          setTimeout(() => { bar.style.width = target; }, 100);
+        });
+        progObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  document.querySelectorAll('#data .comp-canvas').forEach(c => progObserver.observe(c));
+</script>
+
+</body>
+</html>

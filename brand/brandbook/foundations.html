@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Foundations — NodeGrid Brand Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/tokens.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    /* ── SCROLLBAR ───────────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-base); }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-default);
+      border-radius: var(--r-full);
+    }
+    ::-webkit-scrollbar-thumb:hover { background: var(--accent-dim); }
+    * { scrollbar-width: thin; scrollbar-color: var(--border-default) var(--bg-base); }
+
+    body {
+      background: var(--bg-base);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      line-height: var(--leading-normal);
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    .layout { display: flex; min-height: 100vh; }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 260px; flex-shrink: 0;
+      position: sticky; top: 0;
+      height: 100vh; overflow-y: auto;
+      background: var(--bg-surface);
+      border-right: 1px solid var(--border-subtle);
+      padding: var(--s6) 0;
+      display: flex; flex-direction: column;
+    }
+    .sidebar-logo {
+      padding: var(--s4) var(--s6) var(--s6);
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex; align-items: center; gap: var(--s3);
+    }
+    .sidebar-logo img { height: 22px; width: auto; }
+    .sidebar-logo-sub {
+      font-family: var(--font-mono); font-size: 10px;
+      color: var(--text-disabled); letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+    }
+    .sidebar-nav { padding: var(--s5) 0; flex: 1; }
+    .sidebar-section { margin-bottom: var(--s6); }
+    .sidebar-section-label {
+      font-family: var(--font-mono); font-size: 10px;
+      color: var(--text-disabled); letter-spacing: var(--tracking-widest);
+      text-transform: uppercase; padding: 0 var(--s6) var(--s3);
+    }
+    .sidebar-link {
+      display: flex; align-items: center; gap: var(--s3);
+      padding: var(--s2) var(--s6);
+      font-size: var(--text-sm); color: var(--text-muted);
+      transition: all var(--duration-fast) var(--ease-default);
+      border-left: 2px solid transparent;
+    }
+    .sidebar-link:hover { color: var(--text-primary); background: var(--bg-surface-raised); }
+    .sidebar-link.active {
+      color: var(--accent-primary);
+      border-left-color: var(--accent-primary);
+      background: rgba(114,184,114,.05);
+    }
+    .sidebar-back {
+      padding: var(--s4) var(--s6); border-top: 1px solid var(--border-subtle);
+      display: flex; align-items: center; gap: var(--s2);
+      font-size: var(--text-sm); color: var(--text-muted);
+      transition: color var(--duration-base) var(--ease-default);
+    }
+    .sidebar-back:hover { color: var(--text-primary); }
+
+    /* CONTENT */
+    .content { flex: 1; min-width: 0; padding: var(--s12) var(--s16); max-width: 900px; }
+
+    .page-header { margin-bottom: var(--s12); padding-bottom: var(--s8); border-bottom: 1px solid var(--border-subtle); }
+    .breadcrumb {
+      display: flex; align-items: center; gap: var(--s2);
+      font-family: var(--font-mono); font-size: var(--text-xs);
+      color: var(--text-disabled); margin-bottom: var(--s5);
+    }
+    .breadcrumb-sep { color: var(--border-default); }
+    .breadcrumb-current { color: var(--accent-primary); }
+    .page-title {
+      font-family: var(--font-display); font-size: var(--text-4xl);
+      font-weight: 700; letter-spacing: var(--tracking-tighter);
+      color: var(--text-primary); line-height: var(--leading-tight);
+      margin-bottom: var(--s4);
+    }
+    .page-desc { font-size: var(--text-md); color: var(--text-muted); max-width: 560px; }
+
+    .doc-section { margin-bottom: var(--s16); scroll-margin-top: var(--s8); }
+    .doc-section-header {
+      display: flex; align-items: center; gap: var(--s4);
+      margin-bottom: var(--s8);
+    }
+    .doc-section-num { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--accent-dim); letter-spacing: var(--tracking-wide); }
+    .doc-section-title { font-family: var(--font-display); font-size: var(--text-2xl); font-weight: 700; color: var(--text-primary); letter-spacing: var(--tracking-tight); }
+    .doc-divider { height: 1px; background: var(--border-subtle); margin: var(--s12) 0; }
+    .prose { color: var(--text-muted); line-height: var(--leading-normal); font-size: var(--text-base); margin-bottom: var(--s5); }
+
+    /* COLOUR */
+    .colour-scale {
+      margin: var(--s6) 0;
+    }
+    .colour-scale-label {
+      font-family: var(--font-mono); font-size: var(--text-xs);
+      color: var(--text-disabled); letter-spacing: var(--tracking-widest);
+      text-transform: uppercase; margin-bottom: var(--s3);
+    }
+    .colour-row { display: flex; gap: var(--s2); flex-wrap: wrap; margin-bottom: var(--s5); }
+    .colour-chip {
+      display: flex; flex-direction: column;
+      align-items: center; gap: 6px;
+    }
+    .colour-swatch {
+      width: 72px; height: 48px;
+      border-radius: var(--r-md);
+      border: 1px solid rgba(255,255,255,.07);
+      transition: transform var(--duration-base) var(--ease-spring);
+      cursor: default;
+    }
+    .colour-swatch:hover { transform: scale(1.05); }
+    .colour-chip-name {
+      font-family: var(--font-mono); font-size: 10px;
+      color: var(--text-disabled); text-align: center;
+    }
+    .colour-chip-hex {
+      font-family: var(--font-mono); font-size: 10px;
+      color: var(--text-muted); text-align: center;
+    }
+
+    .semantic-tokens {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--s3);
+      margin: var(--s6) 0;
+    }
+    .semantic-row {
+      display: flex; align-items: center; gap: var(--s3);
+      padding: var(--s3) var(--s4);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--r-md);
+    }
+    .semantic-swatch {
+      width: 28px; height: 28px;
+      border-radius: var(--r-sm);
+      border: 1px solid rgba(255,255,255,.05);
+      flex-shrink: 0;
+    }
+    .semantic-info { flex: 1; min-width: 0; }
+    .semantic-name {
+      font-family: var(--font-mono); font-size: 11px;
+      color: var(--accent-primary);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .semantic-desc { font-size: 11px; color: var(--text-disabled); }
+
+    /* TYPOGRAPHY */
+    .type-family {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--r-lg);
+      overflow: hidden;
+      margin-bottom: var(--s5);
+    }
+    .type-family-header {
+      padding: var(--s4) var(--s6);
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .type-family-name {
+      font-family: var(--font-display); font-size: var(--text-lg);
+      font-weight: 700; color: var(--text-primary);
+    }
+    .type-family-role {
+      font-family: var(--font-mono); font-size: var(--text-xs);
+      color: var(--accent-primary); letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+    }
+    .type-family-body { padding: var(--s6); }
+    .type-specimen { margin-bottom: var(--s6); }
+    .type-spec-label {
+      font-family: var(--font-mono); font-size: 10px;
+      color: var(--text-disabled); letter-spacing: var(--tracking-wider);
+      text-transform: uppercase; margin-bottom: var(--s3);
+    }
+    .type-scale-grid {
+      display: flex; flex-direction: column; gap: var(--s4);
+    }
+    .type-scale-row {
+      display: grid; grid-template-columns: 48px 1fr;
+      align-items: baseline; gap: var(--s4);
+    }
+    .type-scale-size {
+      font-family: var(--font-mono); font-size: 10px;
+      color: var(--text-disabled); text-align: right;
+    }
+    .type-chars {
+      font-family: var(--font-mono); font-size: var(--text-sm);
+      color: var(--text-muted); line-height: 1.6;
+    }
+
+    /* SPACING */
+    .spacing-grid { display: flex; flex-direction: column; gap: var(--s3); margin: var(--s6) 0; }
+    .spacing-row { display: flex; align-items: center; gap: var(--s4); }
+    .spacing-token {
+      font-family: var(--font-mono); font-size: 11px;
+      color: var(--text-muted); width: 48px; flex-shrink: 0;
+    }
+    .spacing-bar-wrap { flex: 1; height: 12px; position: relative; }
+    .spacing-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-dim), rgba(114,184,114,.2));
+      border-radius: var(--r-sm);
+    }
+    .spacing-value {
+      font-family: var(--font-mono); font-size: 10px;
+      color: var(--text-disabled); width: 40px; text-align: right; flex-shrink: 0;
+    }
+
+    /* TOKEN REFERENCE TABLE */
+    .token-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: var(--s6) 0;
+    }
+    .token-table th {
+      font-family: var(--font-mono); font-size: 10px;
+      color: var(--text-disabled); letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+      text-align: left; padding: var(--s3) var(--s4);
+      border-bottom: 2px solid var(--border-subtle);
+    }
+    .token-table td {
+      padding: var(--s3) var(--s4);
+      border-bottom: 1px solid var(--border-subtle);
+      font-size: var(--text-sm);
+      vertical-align: middle;
+    }
+    .token-table tr:last-child td { border-bottom: none; }
+    .token-table tr:hover td { background: rgba(114,184,114,.03); }
+    .tt-name {
+      font-family: var(--font-mono); font-size: 12px;
+      color: var(--accent-primary);
+    }
+    .tt-value {
+      font-family: var(--font-mono); font-size: 11px;
+      color: var(--text-muted);
+    }
+    .tt-desc { color: var(--text-muted); font-size: 12px; }
+    .tt-swatch {
+      width: 20px; height: 20px;
+      border-radius: var(--r-xs);
+      border: 1px solid rgba(255,255,255,.07);
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .tier-badge {
+      display: inline-block;
+      font-family: var(--font-mono); font-size: 9px;
+      letter-spacing: var(--tracking-wider); text-transform: uppercase;
+      padding: 2px 6px; border-radius: var(--r-sm);
+    }
+    .tier-1 { background: rgba(114,184,114,.1); color: var(--accent-primary); }
+    .tier-2 { background: rgba(240,212,116,.1); color: var(--cta-bg); }
+    .tier-3 { background: rgba(255,255,255,.05); color: var(--text-muted); }
+
+    /* MOTION */
+    .motion-table { display: flex; flex-direction: column; gap: var(--s3); margin: var(--s6) 0; }
+    .motion-row {
+      display: grid; grid-template-columns: 140px 1fr 80px;
+      align-items: center; gap: var(--s4);
+      padding: var(--s3) var(--s4);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--r-md);
+      cursor: pointer;
+      transition: border-color var(--duration-base) var(--ease-default);
+    }
+    .motion-row:hover { border-color: var(--border-interactive); }
+    .motion-token-name { font-family: var(--font-mono); font-size: 12px; color: var(--accent-primary); }
+    .motion-bar-wrap { height: 4px; background: var(--bg-base); border-radius: var(--r-full); overflow: hidden; }
+    .motion-bar { height: 100%; width: 0%; background: var(--accent-primary); border-radius: var(--r-full); }
+    .motion-row.playing .motion-bar { animation: motionPlay var(--dur) var(--ease) forwards; }
+    @keyframes motionPlay { from { width: 0% } to { width: 100% } }
+    .motion-dur { font-family: var(--font-mono); font-size: 11px; color: var(--text-disabled); text-align: right; }
+
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      .content { padding: var(--s8); max-width: 100%; }
+      .semantic-tokens { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="layout">
+
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <img src="../assets/logo-nodegrid-white.svg" alt="NodeGrid" />
+      <span class="sidebar-logo-sub">Brand DS</span>
+    </div>
+    <div class="sidebar-nav">
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Brand Design System</div>
+        <a href="../index.html" class="sidebar-link">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+          Início
+        </a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">01 — Guidelines</div>
+        <a href="guidelines.html" class="sidebar-link">Manifesto & WHY</a>
+        <a href="guidelines.html#archetypes" class="sidebar-link">Arquétipos</a>
+        <a href="guidelines.html#logo" class="sidebar-link">Logo & Variantes</a>
+        <a href="guidelines.html#voice" class="sidebar-link">Tom de Voz</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">02 — Foundations</div>
+        <a href="#colours" class="sidebar-link active">Paleta de Cor</a>
+        <a href="#typography" class="sidebar-link">Tipografia</a>
+        <a href="#spacing" class="sidebar-link">Espaçamento</a>
+        <a href="#motion" class="sidebar-link">Motion</a>
+        <a href="#tokens" class="sidebar-link">Referência de Tokens</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">03 — Components</div>
+        <a href="components.html" class="sidebar-link">Biblioteca</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">04 — Patterns</div>
+        <a href="patterns.html" class="sidebar-link">Padrões Visuais</a>
+      </div>
+    </div>
+    <a href="../index.html" class="sidebar-back">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      Voltar ao início
+    </a>
+  </nav>
+
+  <main class="content">
+
+    <div class="page-header">
+      <div class="breadcrumb">
+        <span>Brand Design System</span>
+        <span class="breadcrumb-sep">/</span>
+        <span class="breadcrumb-current">Foundations</span>
+      </div>
+      <h1 class="page-title">Design Foundations</h1>
+      <p class="page-desc">
+        Sistema de tokens em 3 camadas, paleta de cor, tipografia, espaçamento e motion.
+        A linguagem visual que torna o sistema coerente e mantível.
+      </p>
+    </div>
+
+    <!-- COLOUR -->
+    <section class="doc-section" id="colours">
+      <div class="doc-section-header">
+        <span class="doc-section-num">01</span>
+        <h2 class="doc-section-title">Paleta de Cor</h2>
+      </div>
+
+      <p class="prose">
+        A paleta da NodeGrid nasce do logótipo: forest green escuro como fundo,
+        sage green como accent primário, gold para CTA de alta conversão.
+        Nunca usa primitivos directamente — usa sempre tokens semânticos.
+      </p>
+
+      <div class="colour-scale">
+        <div class="colour-scale-label">Green Scale — extraído do logótipo</div>
+        <div class="colour-row">
+          <div class="colour-chip"><div class="colour-swatch" style="background:#a0b891;"></div><div class="colour-chip-name">green-200</div><div class="colour-chip-hex">#a0b891</div></div>
+          <div class="colour-chip"><div class="colour-swatch" style="background:#72b872;"></div><div class="colour-chip-name">green-300</div><div class="colour-chip-hex">#72b872</div></div>
+          <div class="colour-chip"><div class="colour-swatch" style="background:#4a9a4a;"></div><div class="colour-chip-name">green-400</div><div class="colour-chip-hex">#4a9a4a</div></div>
+          <div class="colour-chip"><div class="colour-swatch" style="background:#2a5a2a;"></div><div class="colour-chip-name">green-500</div><div class="colour-chip-hex">#2a5a2a</div></div>
+          <div class="colour-chip"><div class="colour-swatch" style="background:#1a3d1a;"></div><div class="colour-chip-name">green-600</div><div class="colour-chip-hex">#1a3d1a</div></div>
+          <div class="colour-chip"><div class="colour-swatch" style="background:#0b1e0b;"></div><div class="colour-chip-name">green-700</div><div class="colour-chip-hex">#0b1e0b</div></div>
+          <div class="colour-chip"><div class="colour-swatch" style="background:#0d140d;"></div><div class="colour-chip-name">green-800</div><div class="colour-chip-hex">#0d140d</div></div>
+          <div class="colour-chip"><div class="colour-swatch" style="background:#111811;"></div><div class="colour-chip-name">green-850</div><div class="colour-chip-hex">#111811</div></div>
+          <div class="colour-chip"><div class="colour-swatch" style="background:#070e07;"></div><div class="colour-chip-name">green-900</div><div class="colour-chip-hex">#070e07</div></div>
+        </div>
+      </div>
+
+      <div class="colour-scale">
+        <div class="colour-scale-label">Gold Scale — CTA only</div>
+        <div class="colour-row">
+          <div class="colour-chip"><div class="colour-swatch" style="background:#fef3c7;"></div><div class="colour-chip-name">gold-200</div><div class="colour-chip-hex">#fef3c7</div></div>
+          <div class="colour-chip"><div class="colour-swatch" style="background:#f8e090;"></div><div class="colour-chip-name">gold-300</div><div class="colour-chip-hex">#f8e090</div></div>
+          <div class="colour-chip"><div class="colour-swatch" style="background:#f0d474;"></div><div class="colour-chip-name">gold-400</div><div class="colour-chip-hex">#f0d474</div></div>
+          <div class="colour-chip"><div class="colour-swatch" style="background:#c8a840;"></div><div class="colour-chip-name">gold-500</div><div class="colour-chip-hex">#c8a840</div></div>
+          <div class="colour-chip"><div class="colour-swatch" style="background:#0c0c0c;border-color:rgba(255,255,255,.15);"></div><div class="colour-chip-name">gold-900</div><div class="colour-chip-hex">#0c0c0c</div></div>
+        </div>
+      </div>
+
+      <div class="colour-scale">
+        <div class="colour-scale-label">Neutral Scale</div>
+        <div class="colour-row">
+          <div class="colour-chip"><div class="colour-swatch" style="background:#ffffff;"></div><div class="colour-chip-name">neutral-0</div><div class="colour-chip-hex">#ffffff</div></div>
+          <div class="colour-chip"><div class="colour-swatch" style="background:#dcdcdc;"></div><div class="colour-chip-name">neutral-100</div><div class="colour-chip-hex">#dcdcdc</div></div>
+          <div class="colour-chip"><div class="colour-swatch" style="background:#b8b8b8;"></div><div class="colour-chip-name">neutral-200</div><div class="colour-chip-hex">#b8b8b8</div></div>
+          <div class="colour-chip"><div class="colour-swatch" style="background:#787878;"></div><div class="colour-chip-name">neutral-400</div><div class="colour-chip-hex">#787878</div></div>
+          <div class="colour-chip"><div class="colour-swatch" style="background:#404040;"></div><div class="colour-chip-name">neutral-600</div><div class="colour-chip-hex">#404040</div></div>
+          <div class="colour-chip"><div class="colour-swatch" style="background:#222c22;"></div><div class="colour-chip-name">neutral-750</div><div class="colour-chip-hex">#222c22</div></div>
+          <div class="colour-chip"><div class="colour-swatch" style="background:#1a221a;"></div><div class="colour-chip-name">neutral-800</div><div class="colour-chip-hex">#1a221a</div></div>
+        </div>
+      </div>
+
+      <p class="prose" style="margin-top:var(--s8)"><strong style="color:var(--text-primary)">Tokens semânticos de background e texto mais usados:</strong></p>
+
+      <div class="semantic-tokens">
+        <div class="semantic-row">
+          <div class="semantic-swatch" style="background:var(--bg-base);border-color:rgba(255,255,255,.1);"></div>
+          <div class="semantic-info">
+            <div class="semantic-name">--bg-base</div>
+            <div class="semantic-desc">Fundo principal da aplicação</div>
+          </div>
+        </div>
+        <div class="semantic-row">
+          <div class="semantic-swatch" style="background:var(--bg-surface);"></div>
+          <div class="semantic-info">
+            <div class="semantic-name">--bg-surface</div>
+            <div class="semantic-desc">Cards e superfícies elevadas</div>
+          </div>
+        </div>
+        <div class="semantic-row">
+          <div class="semantic-swatch" style="background:var(--accent-primary);"></div>
+          <div class="semantic-info">
+            <div class="semantic-name">--accent-primary</div>
+            <div class="semantic-desc">Verde principal, links, ícones activos</div>
+          </div>
+        </div>
+        <div class="semantic-row">
+          <div class="semantic-swatch" style="background:var(--cta-bg);"></div>
+          <div class="semantic-info">
+            <div class="semantic-name">--cta-bg</div>
+            <div class="semantic-desc">Fundo do botão CTA primário (gold)</div>
+          </div>
+        </div>
+        <div class="semantic-row">
+          <div class="semantic-swatch" style="background:var(--text-primary);"></div>
+          <div class="semantic-info">
+            <div class="semantic-name">--text-primary</div>
+            <div class="semantic-desc">Texto principal, headings</div>
+          </div>
+        </div>
+        <div class="semantic-row">
+          <div class="semantic-swatch" style="background:var(--text-muted);"></div>
+          <div class="semantic-info">
+            <div class="semantic-name">--text-muted</div>
+            <div class="semantic-desc">Texto secundário, descrições</div>
+          </div>
+        </div>
+        <div class="semantic-row">
+          <div class="semantic-swatch" style="background:var(--status-success);"></div>
+          <div class="semantic-info">
+            <div class="semantic-name">--status-success</div>
+            <div class="semantic-desc">Estados positivos, confirmações</div>
+          </div>
+        </div>
+        <div class="semantic-row">
+          <div class="semantic-swatch" style="background:var(--status-error);"></div>
+          <div class="semantic-info">
+            <div class="semantic-name">--status-error</div>
+            <div class="semantic-desc">Erros e estados críticos</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="doc-divider"></div>
+
+    <!-- TYPOGRAPHY -->
+    <section class="doc-section" id="typography">
+      <div class="doc-section-header">
+        <span class="doc-section-num">02</span>
+        <h2 class="doc-section-title">Tipografia</h2>
+      </div>
+
+      <p class="prose">
+        Três famílias com funções distintas e não permutáveis. Cada uma tem um papel definido
+        no sistema — misturá-las arbitrariamente quebra a hierarquia visual.
+      </p>
+
+      <div class="type-family">
+        <div class="type-family-header">
+          <div class="type-family-name" style="font-family:'Space Grotesk',sans-serif;">Space Grotesk</div>
+          <div class="type-family-role">--font-display — Headings</div>
+        </div>
+        <div class="type-family-body">
+          <div class="type-specimen">
+            <div class="type-spec-label">Specimen</div>
+            <div style="font-family:'Space Grotesk',sans-serif;font-size:clamp(28px,5vw,48px);font-weight:700;letter-spacing:-0.03em;line-height:1;color:var(--text-primary);">NodeGrid</div>
+            <div style="font-family:'Space Grotesk',sans-serif;font-size:var(--text-2xl);font-weight:700;letter-spacing:-0.02em;color:var(--text-primary);margin-top:8px;">Craft & Architecture</div>
+            <div style="font-family:'Space Grotesk',sans-serif;font-size:var(--text-lg);font-weight:500;color:var(--text-muted);margin-top:8px;">Software que envelhece com dignidade.</div>
+          </div>
+          <div class="type-spec-label">Uso</div>
+          <p class="prose" style="margin-bottom:0;">Todos os headings (h1–h3), display text, hero headlines, card titles. Usa sempre <code style="font-family:var(--font-mono);font-size:11px;color:var(--accent-primary);">letter-spacing: -0.02em</code> a -0.03em para efeito editorial. Google Fonts: pesos 400, 500, 600, 700.</p>
+        </div>
+      </div>
+
+      <div class="type-family">
+        <div class="type-family-header">
+          <div class="type-family-name" style="font-family:'Inter',sans-serif;">Inter</div>
+          <div class="type-family-role">--font-body — Body & UI</div>
+        </div>
+        <div class="type-family-body">
+          <div class="type-specimen">
+            <div class="type-spec-label">Specimen</div>
+            <div style="font-family:'Inter',sans-serif;font-size:var(--text-base);color:var(--text-primary);line-height:1.6;">Construímos software como ofício. Cada linha de código é uma decisão que respeita quem a vai usar.</div>
+            <div style="font-family:'Inter',sans-serif;font-size:var(--text-sm);color:var(--text-muted);line-height:1.6;margin-top:8px;">Texto de apoio, descrições, captions e elementos de UI como labels de formulário.</div>
+          </div>
+          <div class="type-spec-label">Uso</div>
+          <p class="prose" style="margin-bottom:0;">Body text, parágrafos, descrições de cards, UI labels, nav links. Tamanho base: 14px (--text-base). Line-height: 1.6 para prosa, 1.25 para UI.</p>
+        </div>
+      </div>
+
+      <div class="type-family">
+        <div class="type-family-header">
+          <div class="type-family-name" style="font-family:'JetBrains Mono',monospace;">JetBrains Mono</div>
+          <div class="type-family-role">--font-mono — Code & Technical</div>
+        </div>
+        <div class="type-family-body">
+          <div class="type-specimen">
+            <div class="type-spec-label">Specimen</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:var(--text-xs);color:var(--accent-primary);letter-spacing:0.1em;text-transform:uppercase;">NODEGRID · v1.0 · BRAND SYSTEM</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:var(--text-sm);color:var(--text-muted);margin-top:8px;">--accent-primary: #72b872</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:var(--text-sm);color:var(--text-muted);">--text-base: 14px</div>
+          </div>
+          <div class="type-spec-label">Uso</div>
+          <p class="prose" style="margin-bottom:0;">Section tags, badges, code snippets, token names, labels técnicos, metadata, valores numéricos em dashboards. Sempre em uppercase para identificadores, lowercase para código.</p>
+        </div>
+      </div>
+
+      <div class="type-scale-grid" style="margin-top:var(--s8);">
+        <p class="prose"><strong style="color:var(--text-primary)">Escala tipográfica:</strong></p>
+        <div style="display:flex;flex-direction:column;gap:var(--s4);">
+          <div style="display:grid;grid-template-columns:80px auto 1fr;align-items:baseline;gap:var(--s4);padding:var(--s3) 0;border-bottom:1px solid var(--border-subtle);">
+            <code style="font-family:var(--font-mono);font-size:10px;color:var(--text-disabled);">--text-5xl</code>
+            <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-disabled);width:60px;">clamp 40-72px</span>
+            <span style="font-family:var(--font-display);font-size:clamp(24px,3vw,48px);font-weight:700;letter-spacing:-0.03em;color:var(--text-primary);">Hero</span>
+          </div>
+          <div style="display:grid;grid-template-columns:80px auto 1fr;align-items:baseline;gap:var(--s4);padding:var(--s3) 0;border-bottom:1px solid var(--border-subtle);">
+            <code style="font-family:var(--font-mono);font-size:10px;color:var(--text-disabled);">--text-3xl</code>
+            <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-disabled);width:60px;">clamp 22-36px</span>
+            <span style="font-family:var(--font-display);font-size:clamp(20px,2.5vw,36px);font-weight:700;letter-spacing:-0.02em;color:var(--text-primary);">Section Title</span>
+          </div>
+          <div style="display:grid;grid-template-columns:80px auto 1fr;align-items:baseline;gap:var(--s4);padding:var(--s3) 0;border-bottom:1px solid var(--border-subtle);">
+            <code style="font-family:var(--font-mono);font-size:10px;color:var(--text-disabled);">--text-xl</code>
+            <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-disabled);width:60px;">20px</span>
+            <span style="font-family:var(--font-display);font-size:var(--text-xl);font-weight:700;color:var(--text-primary);">Card Title</span>
+          </div>
+          <div style="display:grid;grid-template-columns:80px auto 1fr;align-items:baseline;gap:var(--s4);padding:var(--s3) 0;border-bottom:1px solid var(--border-subtle);">
+            <code style="font-family:var(--font-mono);font-size:10px;color:var(--text-disabled);">--text-base</code>
+            <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-disabled);width:60px;">14px</span>
+            <span style="font-size:var(--text-base);color:var(--text-primary);">Body text para UI e prosa</span>
+          </div>
+          <div style="display:grid;grid-template-columns:80px auto 1fr;align-items:baseline;gap:var(--s4);padding:var(--s3) 0;border-bottom:1px solid var(--border-subtle);">
+            <code style="font-family:var(--font-mono);font-size:10px;color:var(--text-disabled);">--text-sm</code>
+            <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-disabled);width:60px;">13px</span>
+            <span style="font-size:var(--text-sm);color:var(--text-muted);">Texto secundário, captions, notas de rodapé</span>
+          </div>
+          <div style="display:grid;grid-template-columns:80px auto 1fr;align-items:baseline;gap:var(--s4);padding:var(--s3) 0;">
+            <code style="font-family:var(--font-mono);font-size:10px;color:var(--text-disabled);">--text-xs</code>
+            <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-disabled);width:60px;">11px</span>
+            <span style="font-family:var(--font-mono);font-size:var(--text-xs);color:var(--accent-primary);letter-spacing:0.1em;text-transform:uppercase;">LABELS TÉCNICOS · BADGES · TAGS</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="doc-divider"></div>
+
+    <!-- SPACING -->
+    <section class="doc-section" id="spacing">
+      <div class="doc-section-header">
+        <span class="doc-section-num">03</span>
+        <h2 class="doc-section-title">Espaçamento</h2>
+      </div>
+
+      <p class="prose">
+        Escala de 4px com tokens nomeados por unidades (--s1 = 4px, --s2 = 8px, etc.).
+        Usa sempre tokens — nunca valores hardcoded. Isto garante consistência e facilita ajustes globais.
+      </p>
+
+      <div class="spacing-grid">
+        <div class="spacing-row"><span class="spacing-token">--s1</span><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:calc(4/128*100%);"></div></div><span class="spacing-value">4px</span></div>
+        <div class="spacing-row"><span class="spacing-token">--s2</span><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:calc(8/128*100%);"></div></div><span class="spacing-value">8px</span></div>
+        <div class="spacing-row"><span class="spacing-token">--s3</span><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:calc(12/128*100%);"></div></div><span class="spacing-value">12px</span></div>
+        <div class="spacing-row"><span class="spacing-token">--s4</span><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:calc(16/128*100%);"></div></div><span class="spacing-value">16px</span></div>
+        <div class="spacing-row"><span class="spacing-token">--s5</span><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:calc(20/128*100%);"></div></div><span class="spacing-value">20px</span></div>
+        <div class="spacing-row"><span class="spacing-token">--s6</span><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:calc(24/128*100%);"></div></div><span class="spacing-value">24px</span></div>
+        <div class="spacing-row"><span class="spacing-token">--s8</span><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:calc(32/128*100%);"></div></div><span class="spacing-value">32px</span></div>
+        <div class="spacing-row"><span class="spacing-token">--s10</span><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:calc(40/128*100%);"></div></div><span class="spacing-value">40px</span></div>
+        <div class="spacing-row"><span class="spacing-token">--s12</span><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:calc(48/128*100%);"></div></div><span class="spacing-value">48px</span></div>
+        <div class="spacing-row"><span class="spacing-token">--s16</span><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:calc(64/128*100%);"></div></div><span class="spacing-value">64px</span></div>
+        <div class="spacing-row"><span class="spacing-token">--s20</span><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:calc(80/128*100%);"></div></div><span class="spacing-value">80px</span></div>
+        <div class="spacing-row"><span class="spacing-token">--s24</span><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:calc(96/128*100%);"></div></div><span class="spacing-value">96px</span></div>
+        <div class="spacing-row"><span class="spacing-token">--s32</span><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:100%;"></div></div><span class="spacing-value">128px</span></div>
+      </div>
+    </section>
+
+    <div class="doc-divider"></div>
+
+    <!-- MOTION -->
+    <section class="doc-section" id="motion">
+      <div class="doc-section-header">
+        <span class="doc-section-num">04</span>
+        <h2 class="doc-section-title">Motion & Easing</h2>
+      </div>
+
+      <p class="prose">
+        Motion discreto e com propósito. As durações base (100–300ms) cobrem 90% dos casos de UI.
+        Spring e bounce são reservados para momentos de delight específicos.
+        Clica em cada linha para pré-visualizar.
+      </p>
+
+      <div class="motion-table" id="motionRows">
+        <div class="motion-row" data-dur="100ms" data-ease="ease" onclick="playMotion(this)">
+          <span class="motion-token-name">--duration-fast</span>
+          <div class="motion-bar-wrap"><div class="motion-bar" style="--dur:100ms;--ease:ease;"></div></div>
+          <span class="motion-dur">100ms</span>
+        </div>
+        <div class="motion-row" data-dur="180ms" data-ease="ease" onclick="playMotion(this)">
+          <span class="motion-token-name">--duration-base</span>
+          <div class="motion-bar-wrap"><div class="motion-bar" style="--dur:180ms;--ease:ease;"></div></div>
+          <span class="motion-dur">180ms</span>
+        </div>
+        <div class="motion-row" data-dur="300ms" data-ease="ease" onclick="playMotion(this)">
+          <span class="motion-token-name">--duration-slow</span>
+          <div class="motion-bar-wrap"><div class="motion-bar" style="--dur:300ms;--ease:ease;"></div></div>
+          <span class="motion-dur">300ms</span>
+        </div>
+        <div class="motion-row" data-dur="500ms" data-ease="ease" onclick="playMotion(this)">
+          <span class="motion-token-name">--duration-slower</span>
+          <div class="motion-bar-wrap"><div class="motion-bar" style="--dur:500ms;--ease:ease;"></div></div>
+          <span class="motion-dur">500ms</span>
+        </div>
+        <div class="motion-row" data-dur="500ms" data-ease="cubic-bezier(0.34,1.56,0.64,1)" onclick="playMotion(this)">
+          <span class="motion-token-name">--ease-spring</span>
+          <div class="motion-bar-wrap"><div class="motion-bar" style="--dur:500ms;--ease:cubic-bezier(0.34,1.56,0.64,1);"></div></div>
+          <span class="motion-dur">spring</span>
+        </div>
+        <div class="motion-row" data-dur="800ms" data-ease="cubic-bezier(0.68,-0.55,0.265,1.55)" onclick="playMotion(this)">
+          <span class="motion-token-name">--ease-bounce</span>
+          <div class="motion-bar-wrap"><div class="motion-bar" style="--dur:800ms;--ease:cubic-bezier(0.68,-0.55,0.265,1.55);"></div></div>
+          <span class="motion-dur">bounce</span>
+        </div>
+        <div class="motion-row" data-dur="180ms" data-ease="cubic-bezier(0.0,0,0.2,1)" onclick="playMotion(this)">
+          <span class="motion-token-name">--ease-out</span>
+          <div class="motion-bar-wrap"><div class="motion-bar" style="--dur:180ms;--ease:cubic-bezier(0.0,0,0.2,1);"></div></div>
+          <span class="motion-dur">ease-out</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="doc-divider"></div>
+
+    <!-- TOKEN REFERENCE -->
+    <section class="doc-section" id="tokens">
+      <div class="doc-section-header">
+        <span class="doc-section-num">05</span>
+        <h2 class="doc-section-title">Referência Completa de Tokens</h2>
+      </div>
+
+      <p class="prose">
+        Todos os tokens disponíveis em <code style="font-family:var(--font-mono);font-size:12px;color:var(--accent-primary);">css/tokens.css</code>.
+        Usa sempre tokens de Tier 2 (semânticos) nos componentes. Tier 1 (primitivos) são apenas para criar tokens semânticos.
+      </p>
+
+      <table class="token-table">
+        <thead>
+          <tr>
+            <th>Token</th>
+            <th>Valor</th>
+            <th></th>
+            <th>Tier</th>
+            <th>Uso</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="tt-name">--bg-base</td><td class="tt-value">→ green-900</td><td><span class="tt-swatch" style="background:#070e07;"></span></td><td><span class="tier-badge tier-2">T2</span></td><td class="tt-desc">Fundo principal da app</td></tr>
+          <tr><td class="tt-name">--bg-surface</td><td class="tt-value">→ green-800</td><td><span class="tt-swatch" style="background:#0d140d;"></span></td><td><span class="tier-badge tier-2">T2</span></td><td class="tt-desc">Cards, panels</td></tr>
+          <tr><td class="tt-name">--bg-surface-raised</td><td class="tt-value">→ green-850</td><td><span class="tt-swatch" style="background:#111811;"></span></td><td><span class="tier-badge tier-2">T2</span></td><td class="tt-desc">Inputs, dropdowns</td></tr>
+          <tr><td class="tt-name">--bg-overlay</td><td class="tt-value">→ green-700</td><td><span class="tt-swatch" style="background:#0b1e0b;"></span></td><td><span class="tier-badge tier-2">T2</span></td><td class="tt-desc">Overlays, tooltips</td></tr>
+          <tr><td class="tt-name">--accent-primary</td><td class="tt-value">→ green-300</td><td><span class="tt-swatch" style="background:#72b872;"></span></td><td><span class="tier-badge tier-2">T2</span></td><td class="tt-desc">Cor accent principal</td></tr>
+          <tr><td class="tt-name">--accent-dim</td><td class="tt-value">→ green-500</td><td><span class="tt-swatch" style="background:#2a5a2a;"></span></td><td><span class="tier-badge tier-2">T2</span></td><td class="tt-desc">Accent dimmed, bordas</td></tr>
+          <tr><td class="tt-name">--cta-bg</td><td class="tt-value">→ gold-400</td><td><span class="tt-swatch" style="background:#f0d474;"></span></td><td><span class="tier-badge tier-2">T2</span></td><td class="tt-desc">Fundo CTA primário</td></tr>
+          <tr><td class="tt-name">--cta-bg-hover</td><td class="tt-value">→ gold-300</td><td><span class="tt-swatch" style="background:#f8e090;"></span></td><td><span class="tier-badge tier-2">T2</span></td><td class="tt-desc">Hover do CTA</td></tr>
+          <tr><td class="tt-name">--text-primary</td><td class="tt-value">→ neutral-100</td><td><span class="tt-swatch" style="background:#dcdcdc;"></span></td><td><span class="tier-badge tier-2">T2</span></td><td class="tt-desc">Texto principal</td></tr>
+          <tr><td class="tt-name">--text-muted</td><td class="tt-value">→ neutral-400</td><td><span class="tt-swatch" style="background:#787878;"></span></td><td><span class="tier-badge tier-2">T2</span></td><td class="tt-desc">Texto secundário</td></tr>
+          <tr><td class="tt-name">--text-disabled</td><td class="tt-value">→ neutral-600</td><td><span class="tt-swatch" style="background:#404040;"></span></td><td><span class="tier-badge tier-2">T2</span></td><td class="tt-desc">Texto desactivado</td></tr>
+          <tr><td class="tt-name">--border-subtle</td><td class="tt-value">→ neutral-800</td><td><span class="tt-swatch" style="background:#1a221a;"></span></td><td><span class="tier-badge tier-2">T2</span></td><td class="tt-desc">Bordas subtis</td></tr>
+          <tr><td class="tt-name">--border-default</td><td class="tt-value">→ neutral-750</td><td><span class="tt-swatch" style="background:#222c22;"></span></td><td><span class="tier-badge tier-2">T2</span></td><td class="tt-desc">Bordas default</td></tr>
+          <tr><td class="tt-name">--border-interactive</td><td class="tt-value">→ green-500</td><td><span class="tt-swatch" style="background:#2a5a2a;"></span></td><td><span class="tier-badge tier-2">T2</span></td><td class="tt-desc">Bordas em foco/hover</td></tr>
+          <tr><td class="tt-name">--status-error</td><td class="tt-value">→ red-400</td><td><span class="tt-swatch" style="background:#f87171;"></span></td><td><span class="tier-badge tier-2">T2</span></td><td class="tt-desc">Estado de erro</td></tr>
+          <tr><td class="tt-name">--status-warning</td><td class="tt-value">→ amber-400</td><td><span class="tt-swatch" style="background:#fbbf24;"></span></td><td><span class="tier-badge tier-2">T2</span></td><td class="tt-desc">Estado de aviso</td></tr>
+          <tr><td class="tt-name">--status-success</td><td class="tt-value">→ emerald-400</td><td><span class="tt-swatch" style="background:#34d399;"></span></td><td><span class="tier-badge tier-2">T2</span></td><td class="tt-desc">Estado de sucesso</td></tr>
+          <tr><td class="tt-name">--btn-primary-bg</td><td class="tt-value">→ cta-bg</td><td><span class="tt-swatch" style="background:#f0d474;"></span></td><td><span class="tier-badge tier-3">T3</span></td><td class="tt-desc">Botão primário fundo</td></tr>
+          <tr><td class="tt-name">--card-bg</td><td class="tt-value">→ bg-surface</td><td><span class="tt-swatch" style="background:#0d140d;"></span></td><td><span class="tier-badge tier-3">T3</span></td><td class="tt-desc">Card background</td></tr>
+          <tr><td class="tt-name">--input-bg</td><td class="tt-value">→ bg-surface-raised</td><td><span class="tt-swatch" style="background:#111811;"></span></td><td><span class="tier-badge tier-3">T3</span></td><td class="tt-desc">Input background</td></tr>
+          <tr><td class="tt-name">--badge-bg</td><td class="tt-value">rgba(114,184,114,.08)</td><td></td><td><span class="tier-badge tier-3">T3</span></td><td class="tt-desc">Badge/tag background</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+  </main>
+
+</div>
+
+<script>
+  function playMotion(row) {
+    const bar = row.querySelector('.motion-bar');
+    row.classList.remove('playing');
+    bar.style.animation = 'none';
+    bar.offsetHeight;
+    const dur = row.dataset.dur;
+    const ease = row.dataset.ease;
+    bar.style.setProperty('--dur', dur);
+    bar.style.setProperty('--ease', ease);
+    row.classList.add('playing');
+    const ms = parseInt(dur) || 300;
+    setTimeout(() => {
+      row.classList.remove('playing');
+      bar.style.width = '0%';
+      bar.style.animation = 'none';
+    }, ms + 200);
+  }
+
+  // Sidebar active state
+  const sections = document.querySelectorAll('.doc-section');
+  const links = document.querySelectorAll('.sidebar-link[href^="#"]');
+  const scrollObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === `#${id}`));
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  sections.forEach(s => scrollObserver.observe(s));
+</script>
+
+</body>
+</html>

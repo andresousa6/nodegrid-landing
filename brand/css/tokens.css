@@ -1,0 +1,239 @@
+/* ══════════════════════════════════════════════════════════════
+   NodeGrid Design System — tokens.css v1.0
+   3-tier token architecture: Primitive → Semantic → Component
+   ══════════════════════════════════════════════════════════════ */
+
+:root {
+
+  /* ─── TIER 1 — PRIMITIVES ──────────────────────────────────
+     Raw values. Never use directly in components.
+     Reference via semantic tokens only.
+     ─────────────────────────────────────────────────────────── */
+
+  /* GREEN SCALE — extracted from logotype */
+  --green-200: #a0b891;   /* logo sage green */
+  --green-300: #72b872;   /* accent primary */
+  --green-400: #4a9a4a;
+  --green-500: #2a5a2a;   /* dim / borders */
+  --green-600: #1a3d1a;
+  --green-700: #0b1e0b;   /* surface tint */
+  --green-800: #0d140d;   /* surface */
+  --green-850: #111811;   /* surface raised */
+  --green-900: #070e07;   /* background */
+  --green-950: #030703;
+
+  /* GOLD SCALE — CTA only */
+  --gold-200: #fef3c7;
+  --gold-300: #f8e090;
+  --gold-400: #f0d474;    /* CTA primary */
+  --gold-500: #c8a840;    /* CTA hover */
+  --gold-900: #0c0c0c;    /* text on CTA */
+
+  /* NEUTRAL SCALE */
+  --neutral-0:   #ffffff;
+  --neutral-50:  #f5f5f5;
+  --neutral-100: #dcdcdc; /* text primary */
+  --neutral-200: #b8b8b8;
+  --neutral-400: #787878; /* text muted */
+  --neutral-600: #404040; /* text disabled */
+  --neutral-750: #222c22; /* border default */
+  --neutral-800: #1a221a; /* border subtle */
+
+  /* FEEDBACK */
+  --red-400:    #f87171;
+  --red-700:    #b91c1c;
+  --amber-400:  #fbbf24;
+  --emerald-400: #34d399;
+
+  /* ─── TIER 2 — SEMANTIC ────────────────────────────────────
+     Purpose-based aliases. Use these in all components.
+     ─────────────────────────────────────────────────────────── */
+
+  /* BACKGROUNDS */
+  --bg-base:            var(--green-900);
+  --bg-surface:         var(--green-800);
+  --bg-surface-raised:  var(--green-850);
+  --bg-overlay:         var(--green-700);
+
+  /* BORDERS */
+  --border-subtle:      var(--neutral-800);
+  --border-default:     var(--neutral-750);
+  --border-interactive: var(--green-500);
+  --border-accent:      var(--green-300);
+
+  /* TEXT */
+  --text-primary:       var(--neutral-100);
+  --text-muted:         var(--neutral-400);
+  --text-disabled:      var(--neutral-600);
+  --text-accent:        var(--green-300);
+  --text-on-cta:        var(--gold-900);
+
+  /* INTERACTIVE */
+  --accent-primary:     var(--green-300);
+  --accent-dim:         var(--green-500);
+  --accent-surface:     var(--green-700);
+  --cta-bg:             var(--gold-400);
+  --cta-bg-hover:       var(--gold-300);
+  --cta-text:           var(--gold-900);
+
+  /* FEEDBACK */
+  --status-error:       var(--red-400);
+  --status-warning:     var(--amber-400);
+  --status-success:     var(--emerald-400);
+
+  /* ─── TYPOGRAPHY ────────────────────────────────────────── */
+  --font-display:  'Space Grotesk', system-ui, sans-serif;
+  --font-body:     'Inter', system-ui, sans-serif;
+  --font-mono:     'JetBrains Mono', monospace;
+
+  /* TYPE SCALE */
+  --text-xs:   11px;
+  --text-sm:   13px;
+  --text-base: 14px;
+  --text-md:   15px;
+  --text-lg:   18px;
+  --text-xl:   20px;
+  --text-2xl:  24px;
+  --text-3xl:  clamp(22px, 3vw, 36px);
+  --text-4xl:  clamp(30px, 5vw, 56px);
+  --text-5xl:  clamp(40px, 6vw, 72px);
+
+  /* LINE HEIGHTS */
+  --leading-tight:  1.1;
+  --leading-snug:   1.25;
+  --leading-normal: 1.6;
+  --leading-loose:  1.8;
+
+  /* LETTER SPACING */
+  --tracking-tighter: -0.03em;
+  --tracking-tight:   -0.02em;
+  --tracking-normal:  0;
+  --tracking-wide:    0.05em;
+  --tracking-wider:   0.1em;
+  --tracking-widest:  0.15em;
+
+  /* ─── SPACING ───────────────────────────────────────────── */
+  --s0:  0px;
+  --s1:  4px;
+  --s2:  8px;
+  --s3:  12px;
+  --s4:  16px;
+  --s5:  20px;
+  --s6:  24px;
+  --s7:  28px;
+  --s8:  32px;
+  --s9:  36px;
+  --s10: 40px;
+  --s12: 48px;
+  --s14: 56px;
+  --s16: 64px;
+  --s20: 80px;
+  --s24: 96px;
+  --s32: 128px;
+
+  /* ─── BORDER RADIUS ─────────────────────────────────────── */
+  --r-xs:   2px;
+  --r-sm:   4px;
+  --r-md:   8px;
+  --r-lg:   12px;
+  --r-xl:   16px;
+  --r-2xl:  24px;
+  --r-full: 9999px;
+
+  /* ─── MOTION ────────────────────────────────────────────── */
+  --duration-instant: 0ms;
+  --duration-fast:    100ms;
+  --duration-base:    180ms;
+  --duration-slow:    300ms;
+  --duration-slower:  500ms;
+  --duration-slowest: 800ms;
+
+  --ease-default:  ease;
+  --ease-linear:   linear;
+  --ease-in:       cubic-bezier(0.4, 0, 1, 1);
+  --ease-out:      cubic-bezier(0.0, 0, 0.2, 1);
+  --ease-in-out:   cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring:   cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-bounce:   cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+  /* ─── ELEVATION / SHADOWS ───────────────────────────────── */
+  --shadow-sm:   0 1px 2px rgba(0,0,0,.4);
+  --shadow-md:   0 4px 12px rgba(0,0,0,.5);
+  --shadow-lg:   0 8px 24px rgba(0,0,0,.6);
+  --shadow-glow: 0 0 20px rgba(114,184,114,.15);
+  --shadow-glow-strong: 0 0 40px rgba(114,184,114,.25);
+
+  /* ─── Z-INDEX ────────────────────────────────────────────── */
+  --z-below:   -1;
+  --z-base:    0;
+  --z-raised:  10;
+  --z-overlay: 50;
+  --z-nav:     100;
+  --z-modal:   200;
+  --z-toast:   300;
+
+  /* ─── TIER 2 BACKWARDS-COMPAT ALIASES ──────────────────────
+     Keep old names pointing to new tokens.
+     Remove in design system v2.
+     ─────────────────────────────────────────────────────────── */
+  --color-bg:        var(--bg-base);
+  --color-surface:   var(--bg-surface);
+  --color-surface-2: var(--bg-surface-raised);
+  --color-border:    var(--border-subtle);
+  --color-border-2:  var(--border-default);
+  --color-green:     var(--accent-primary);
+  --color-green-dim: var(--accent-dim);
+  --color-green-bg:  var(--accent-surface);
+  --color-gold:      var(--cta-bg);
+  --color-gold-dark: var(--cta-bg-hover);
+  --color-gold-text: var(--cta-text);
+  --color-text-1:    var(--text-primary);
+  --color-text-2:    var(--text-muted);
+  --color-text-3:    var(--text-disabled);
+
+  /* ─── TIER 3 — COMPONENT TOKENS ────────────────────────────
+     Component-specific values. Reference semantic tokens.
+     ─────────────────────────────────────────────────────────── */
+
+  /* BUTTON */
+  --btn-primary-bg:        var(--cta-bg);
+  --btn-primary-bg-hover:  var(--cta-bg-hover);
+  --btn-primary-text:      var(--cta-text);
+  --btn-primary-padding:   13px 28px;
+  --btn-secondary-text:    var(--accent-primary);
+  --btn-secondary-border:  var(--accent-dim);
+  --btn-secondary-bg-hover: var(--accent-surface);
+  --btn-radius:             var(--r-md);
+  --btn-font-weight:        700;
+  --btn-transition:         all var(--duration-base) var(--ease-default);
+
+  /* CARD */
+  --card-bg:       var(--bg-surface);
+  --card-border:   var(--border-subtle);
+  --card-radius:   var(--r-lg);
+  --card-padding:  var(--s6);
+  --card-hover-border: var(--accent-dim);
+
+  /* INPUT */
+  --input-bg:      var(--bg-surface-raised);
+  --input-border:  var(--border-default);
+  --input-border-focus: var(--accent-primary);
+  --input-text:    var(--text-primary);
+  --input-placeholder: var(--text-disabled);
+  --input-radius:  var(--r-md);
+
+  /* BADGE */
+  --badge-bg:      rgba(114,184,114,.08);
+  --badge-border:  rgba(114,184,114,.2);
+  --badge-text:    var(--accent-primary);
+  --badge-radius:  var(--r-full);
+  --badge-padding: 4px 12px;
+
+  /* SECTION TAG */
+  --tag-bg:        var(--badge-bg);
+  --tag-border:    var(--badge-border);
+  --tag-text:      var(--accent-primary);
+  --tag-font:      var(--font-mono);
+  --tag-size:      var(--text-xs);
+  --tag-tracking:  var(--tracking-widest);
+}

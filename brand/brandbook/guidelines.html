@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guidelines — NodeGrid Brand Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/tokens.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    /* ── SCROLLBAR ───────────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-base); }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-default);
+      border-radius: var(--r-full);
+    }
+    ::-webkit-scrollbar-thumb:hover { background: var(--accent-dim); }
+    * { scrollbar-width: thin; scrollbar-color: var(--border-default) var(--bg-base); }
+
+    body {
+      background: var(--bg-base);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      line-height: var(--leading-normal);
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* ── LAYOUT ──────────────────────────────────────────────── */
+    .layout { display: flex; min-height: 100vh; }
+
+    /* ── SIDEBAR ─────────────────────────────────────────────── */
+    .sidebar {
+      width: 260px;
+      flex-shrink: 0;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      background: var(--bg-surface);
+      border-right: 1px solid var(--border-subtle);
+      padding: var(--s6) 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar-logo {
+      padding: var(--s4) var(--s6) var(--s6);
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      gap: var(--s3);
+    }
+    .sidebar-logo img { height: 22px; width: auto; }
+    .sidebar-logo-sub {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-disabled);
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+    }
+
+    .sidebar-nav { padding: var(--s5) 0; flex: 1; }
+
+    .sidebar-section {
+      margin-bottom: var(--s6);
+    }
+
+    .sidebar-section-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-disabled);
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      padding: 0 var(--s6) var(--s3);
+    }
+
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: var(--s3);
+      padding: var(--s2) var(--s6);
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      transition: all var(--duration-fast) var(--ease-default);
+      border-left: 2px solid transparent;
+    }
+    .sidebar-link:hover { color: var(--text-primary); background: var(--bg-surface-raised); }
+    .sidebar-link.active {
+      color: var(--accent-primary);
+      border-left-color: var(--accent-primary);
+      background: rgba(114,184,114,.05);
+    }
+
+    .sidebar-back {
+      padding: var(--s4) var(--s6);
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      gap: var(--s2);
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      transition: color var(--duration-base) var(--ease-default);
+    }
+    .sidebar-back:hover { color: var(--text-primary); }
+
+    /* ── CONTENT ─────────────────────────────────────────────── */
+    .content {
+      flex: 1;
+      min-width: 0;
+      padding: var(--s12) var(--s16);
+      max-width: 860px;
+    }
+
+    .page-header {
+      margin-bottom: var(--s12);
+      padding-bottom: var(--s8);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: var(--s2);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-disabled);
+      margin-bottom: var(--s5);
+    }
+    .breadcrumb-sep { color: var(--border-default); }
+    .breadcrumb-current { color: var(--accent-primary); }
+
+    .page-title {
+      font-family: var(--font-display);
+      font-size: var(--text-4xl);
+      font-weight: 700;
+      letter-spacing: var(--tracking-tighter);
+      color: var(--text-primary);
+      line-height: var(--leading-tight);
+      margin-bottom: var(--s4);
+    }
+
+    .page-desc {
+      font-size: var(--text-md);
+      color: var(--text-muted);
+      max-width: 560px;
+      line-height: var(--leading-normal);
+    }
+
+    /* ── SECTIONS ────────────────────────────────────────────── */
+    .doc-section {
+      margin-bottom: var(--s16);
+      scroll-margin-top: var(--s8);
+    }
+
+    .doc-section-header {
+      display: flex;
+      align-items: center;
+      gap: var(--s4);
+      margin-bottom: var(--s8);
+    }
+
+    .doc-section-num {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--accent-dim);
+      letter-spacing: var(--tracking-wide);
+    }
+
+    .doc-section-title {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: var(--tracking-tight);
+    }
+
+    .doc-divider {
+      height: 1px;
+      background: var(--border-subtle);
+      margin: var(--s12) 0;
+    }
+
+    /* ── GOLDEN CIRCLE ───────────────────────────────────────── */
+    .golden-circle {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--s4);
+      margin: var(--s8) 0;
+    }
+
+    .gc-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--r-lg);
+      padding: var(--s6);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .gc-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+    }
+    .gc-card.why::after { background: var(--accent-primary); }
+    .gc-card.how::after { background: var(--accent-dim); }
+    .gc-card.what::after { background: var(--border-interactive); }
+
+    .gc-label {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      margin-bottom: var(--s3);
+    }
+    .gc-card.why .gc-label { color: var(--accent-primary); }
+    .gc-card.how .gc-label { color: var(--accent-dim); }
+    .gc-card.what .gc-label { color: var(--text-muted); }
+
+    .gc-text {
+      font-size: var(--text-sm);
+      color: var(--text-primary);
+      line-height: var(--leading-normal);
+    }
+
+    /* ── ARCHETYPES ──────────────────────────────────────────── */
+    .archetype-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--s5);
+      margin: var(--s8) 0;
+    }
+
+    .archetype-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--r-lg);
+      padding: var(--s6);
+    }
+
+    .archetype-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--s4);
+    }
+
+    .archetype-name {
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .archetype-pct {
+      font-family: var(--font-mono);
+      font-size: var(--text-lg);
+      font-weight: 700;
+      color: var(--accent-primary);
+    }
+
+    .archetype-bar {
+      height: 4px;
+      background: var(--bg-base);
+      border-radius: var(--r-full);
+      margin-bottom: var(--s5);
+      overflow: hidden;
+    }
+
+    .archetype-fill {
+      height: 100%;
+      border-radius: var(--r-full);
+      background: var(--accent-primary);
+    }
+
+    .archetype-traits {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s2);
+    }
+
+    .archetype-trait {
+      display: flex;
+      align-items: center;
+      gap: var(--s2);
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+    }
+    .archetype-trait::before {
+      content: '';
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: var(--accent-dim);
+      flex-shrink: 0;
+    }
+
+    .archetype-keywords {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--s2);
+      margin-top: var(--s4);
+    }
+
+    .keyword-chip {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--accent-primary);
+      background: rgba(114,184,114,.08);
+      border: 1px solid rgba(114,184,114,.2);
+      border-radius: var(--r-sm);
+      padding: 3px 8px;
+      letter-spacing: var(--tracking-wide);
+    }
+
+    /* ── LOGO SECTION ────────────────────────────────────────── */
+    .logo-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--s5);
+      margin: var(--s8) 0;
+    }
+
+    .logo-card {
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--r-lg);
+      overflow: hidden;
+    }
+
+    .logo-preview {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--s10);
+      min-height: 160px;
+    }
+
+    .logo-preview.dark { background: var(--bg-base); }
+    .logo-preview.light { background: #f5f5f5; }
+
+    .logo-preview img { max-width: 200px; max-height: 80px; width: auto; height: auto; }
+
+    .logo-card-footer {
+      padding: var(--s4) var(--s5);
+      border-top: 1px solid var(--border-subtle);
+      background: var(--bg-surface);
+    }
+
+    .logo-card-label {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-muted);
+      letter-spacing: var(--tracking-wide);
+    }
+
+    .logo-usage-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--s4);
+      margin-top: var(--s6);
+    }
+
+    .usage-rule {
+      padding: var(--s4);
+      border-radius: var(--r-md);
+      font-size: var(--text-sm);
+      line-height: 1.5;
+    }
+
+    .usage-rule.do {
+      background: rgba(52,211,153,.06);
+      border: 1px solid rgba(52,211,153,.15);
+      color: var(--text-muted);
+    }
+    .usage-rule.do::before {
+      content: '✓ DO';
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--status-success);
+      letter-spacing: var(--tracking-wider);
+      margin-bottom: var(--s2);
+    }
+
+    .usage-rule.dont {
+      background: rgba(248,113,113,.06);
+      border: 1px solid rgba(248,113,113,.15);
+      color: var(--text-muted);
+    }
+    .usage-rule.dont::before {
+      content: '✕ DON\'T';
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--status-error);
+      letter-spacing: var(--tracking-wider);
+      margin-bottom: var(--s2);
+    }
+
+    /* ── BRAND WORDS ─────────────────────────────────────────── */
+    .brand-words {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--s5);
+      margin: var(--s8) 0;
+    }
+
+    .brand-word-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--r-lg);
+      padding: var(--s8);
+      text-align: center;
+    }
+
+    .brand-word-type {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-disabled);
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      margin-bottom: var(--s4);
+    }
+
+    .brand-word-main {
+      font-family: var(--font-display);
+      font-size: var(--text-3xl);
+      font-weight: 700;
+      color: var(--accent-primary);
+      letter-spacing: var(--tracking-tighter);
+      margin-bottom: var(--s4);
+    }
+
+    .brand-word-desc {
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      line-height: var(--leading-normal);
+    }
+
+    /* ── VOICE ───────────────────────────────────────────────── */
+    .voice-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--s4);
+      margin: var(--s8) 0;
+    }
+
+    .voice-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--r-lg);
+      padding: var(--s5);
+    }
+
+    .voice-attr {
+      font-family: var(--font-display);
+      font-size: var(--text-base);
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: var(--s2);
+    }
+
+    .voice-desc {
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: var(--s4);
+    }
+
+    .voice-example {
+      font-size: var(--text-xs);
+      color: var(--accent-dim);
+      font-style: italic;
+      border-left: 2px solid var(--accent-dim);
+      padding-left: var(--s3);
+    }
+
+    .voice-contrast {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--s5);
+      margin: var(--s8) 0;
+    }
+
+    .voice-contrast-col h4 {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+      margin-bottom: var(--s4);
+    }
+    .voice-contrast-col.is h4 { color: var(--status-success); }
+    .voice-contrast-col.not h4 { color: var(--status-error); }
+
+    .voice-contrast-item {
+      display: flex;
+      align-items: center;
+      gap: var(--s2);
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      margin-bottom: var(--s3);
+    }
+    .voice-contrast-col.is .voice-contrast-item::before {
+      content: ''; width: 4px; height: 4px; border-radius: 50%;
+      background: var(--status-success); flex-shrink: 0;
+    }
+    .voice-contrast-col.not .voice-contrast-item::before {
+      content: ''; width: 4px; height: 4px; border-radius: 50%;
+      background: var(--status-error); flex-shrink: 0;
+    }
+
+    /* ── POSITIONING ─────────────────────────────────────────── */
+    .positioning-statement {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-left: 3px solid var(--accent-primary);
+      border-radius: 0 var(--r-lg) var(--r-lg) 0;
+      padding: var(--s6) var(--s8);
+      margin: var(--s8) 0;
+    }
+
+    .positioning-statement p {
+      font-family: var(--font-display);
+      font-size: var(--text-lg);
+      font-weight: 500;
+      color: var(--text-primary);
+      line-height: var(--leading-normal);
+    }
+
+    .positioning-statement strong { color: var(--accent-primary); }
+
+    .zag-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--s5);
+      margin: var(--s8) 0;
+    }
+
+    .zag-col { }
+
+    .zag-col-label {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+      margin-bottom: var(--s4);
+    }
+    .zag-col.they .zag-col-label { color: var(--status-warning); }
+    .zag-col.we .zag-col-label { color: var(--accent-primary); }
+
+    .zag-item {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--s3);
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      padding: var(--s3) 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .zag-item:last-child { border-bottom: none; }
+
+    .zag-item-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 6px;
+    }
+    .zag-col.they .zag-item-dot { background: var(--status-warning); }
+    .zag-col.we .zag-item-dot { background: var(--accent-primary); }
+
+    /* ── PRISM ───────────────────────────────────────────────── */
+    .prism-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto auto;
+      gap: var(--s4);
+      margin: var(--s8) 0;
+    }
+
+    .prism-cell {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--r-lg);
+      padding: var(--s5);
+    }
+
+    .prism-cell-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-disabled);
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      margin-bottom: var(--s2);
+    }
+
+    .prism-cell-title {
+      font-family: var(--font-display);
+      font-size: var(--text-base);
+      font-weight: 700;
+      color: var(--accent-primary);
+      margin-bottom: var(--s2);
+    }
+
+    .prism-cell-desc {
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* ── GENERIC PROSE ───────────────────────────────────────── */
+    .prose {
+      color: var(--text-muted);
+      line-height: var(--leading-normal);
+      font-size: var(--text-base);
+      margin-bottom: var(--s5);
+    }
+
+    .callout {
+      background: rgba(114,184,114,.06);
+      border: 1px solid rgba(114,184,114,.15);
+      border-radius: var(--r-md);
+      padding: var(--s4) var(--s5);
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      margin: var(--s6) 0;
+    }
+
+    .callout-icon {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--s3);
+    }
+
+    @media (max-width: 1024px) {
+      .sidebar { width: 220px; }
+      .content { padding: var(--s8); }
+    }
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      .content { max-width: 100%; }
+      .golden-circle { grid-template-columns: 1fr; }
+      .archetype-grid { grid-template-columns: 1fr; }
+      .logo-grid { grid-template-columns: 1fr; }
+      .brand-words { grid-template-columns: 1fr; }
+      .voice-grid { grid-template-columns: 1fr 1fr; }
+      .prism-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <img src="../assets/logo-nodegrid-white.svg" alt="NodeGrid" />
+      <span class="sidebar-logo-sub">Brand DS</span>
+    </div>
+
+    <div class="sidebar-nav">
+
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Brand Design System</div>
+        <a href="../index.html" class="sidebar-link">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+          Início
+        </a>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">01 — Guidelines</div>
+        <a href="#manifesto" class="sidebar-link active">Manifesto & WHY</a>
+        <a href="#archetypes" class="sidebar-link">Arquétipos</a>
+        <a href="#logo" class="sidebar-link">Logo & Variantes</a>
+        <a href="#brand-words" class="sidebar-link">Palavras de Marca</a>
+        <a href="#voice" class="sidebar-link">Tom de Voz</a>
+        <a href="#positioning" class="sidebar-link">Posicionamento</a>
+        <a href="#prism" class="sidebar-link">Identity Prism</a>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">02 — Foundations</div>
+        <a href="foundations.html" class="sidebar-link">Paleta de Cor</a>
+        <a href="foundations.html#typography" class="sidebar-link">Tipografia</a>
+        <a href="foundations.html#tokens" class="sidebar-link">Design Tokens</a>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">03 — Components</div>
+        <a href="components.html" class="sidebar-link">Biblioteca</a>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">04 — Patterns</div>
+        <a href="patterns.html" class="sidebar-link">Padrões Visuais</a>
+      </div>
+
+    </div>
+
+    <a href="../index.html" class="sidebar-back">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      Voltar ao início
+    </a>
+  </nav>
+
+  <!-- CONTENT -->
+  <main class="content">
+
+    <!-- PAGE HEADER -->
+    <div class="page-header">
+      <div class="breadcrumb">
+        <span>Brand Design System</span>
+        <span class="breadcrumb-sep">/</span>
+        <span class="breadcrumb-current">Guidelines</span>
+      </div>
+      <h1 class="page-title">Brand Guidelines</h1>
+      <p class="page-desc">
+        Estratégia de marca, identidade visual e tom de comunicação.
+        A base que dá coerência a todos os pontos de contacto da NodeGrid.
+      </p>
+    </div>
+
+    <!-- 1. MANIFESTO -->
+    <section class="doc-section" id="manifesto">
+      <div class="doc-section-header">
+        <span class="doc-section-num">01</span>
+        <h2 class="doc-section-title">Manifesto & Golden Circle</h2>
+      </div>
+
+      <p class="prose">
+        O Simon Sinek ensina que as marcas mais poderosas comunicam de dentro para fora.
+        Não começam pelo que fazem — começam pelo porquê o fazem.
+        Este é o Golden Circle da NodeGrid.
+      </p>
+
+      <div class="golden-circle">
+        <div class="gc-card why">
+          <div class="gc-label">WHY — O Propósito</div>
+          <div class="gc-text">
+            Acreditamos que software de qualidade não devia ser privilégio de grandes empresas.
+            Existimos para democratizar arquitectura de nível enterprise — acessível a quem constrói
+            a próxima geração de produtos portugueses.
+          </div>
+        </div>
+        <div class="gc-card how">
+          <div class="gc-label">HOW — O Processo</div>
+          <div class="gc-text">
+            Com craft e arquitectura: engenharia rigorosa, comunicação honesta,
+            e parceria real — trabalhamos dentro do teu negócio,
+            não apenas para ele.
+          </div>
+        </div>
+        <div class="gc-card what">
+          <div class="gc-label">WHAT — O Serviço</div>
+          <div class="gc-text">
+            Desenvolvimento de software custom: aplicações web, plataformas,
+            integrações e consultoria técnica para startups e PMEs.
+          </div>
+        </div>
+      </div>
+
+      <div class="callout">
+        <div class="callout-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent-primary);flex-shrink:0;margin-top:1px;" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+          <span>O manifesto não é marketing copy — é a bússola que orienta todas as decisões de produto, comunicação e cultura da empresa.</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="doc-divider"></div>
+
+    <!-- 2. ARCHETYPES -->
+    <section class="doc-section" id="archetypes">
+      <div class="doc-section-header">
+        <span class="doc-section-num">02</span>
+        <h2 class="doc-section-title">Arquétipos de Marca</h2>
+      </div>
+
+      <p class="prose">
+        A NodeGrid opera com dois arquétipos em tensão criativa.
+        O Creator fornece a disciplina e a visão de longo prazo.
+        O Rebel fornece a energia para desafiar o status quo da indústria.
+      </p>
+
+      <div class="archetype-grid">
+
+        <div class="archetype-card">
+          <div class="archetype-header">
+            <div class="archetype-name">Creator</div>
+            <div class="archetype-pct">60%</div>
+          </div>
+          <div class="archetype-bar">
+            <div class="archetype-fill" style="width:60%;"></div>
+          </div>
+          <div class="archetype-traits">
+            <div class="archetype-trait">Valoriza craft e excelência técnica</div>
+            <div class="archetype-trait">Orgulho no trabalho bem feito</div>
+            <div class="archetype-trait">Foco em construir algo duradouro</div>
+            <div class="archetype-trait">Disciplina e atenção ao detalhe</div>
+          </div>
+          <div class="archetype-keywords">
+            <span class="keyword-chip">CRAFT</span>
+            <span class="keyword-chip">PRECISÃO</span>
+            <span class="keyword-chip">ARQUITECTURA</span>
+            <span class="keyword-chip">VISÃO</span>
+          </div>
+        </div>
+
+        <div class="archetype-card">
+          <div class="archetype-header">
+            <div class="archetype-name">Rebel</div>
+            <div class="archetype-pct">40%</div>
+          </div>
+          <div class="archetype-bar">
+            <div class="archetype-fill" style="width:40%;background:var(--cta-bg);"></div>
+          </div>
+          <div class="archetype-traits">
+            <div class="archetype-trait">Desafia convenções da indústria</div>
+            <div class="archetype-trait">Honesto sobre o que não funciona</div>
+            <div class="archetype-trait">Transparência radical com clientes</div>
+            <div class="archetype-trait">Rejeita overhead sem propósito</div>
+          </div>
+          <div class="archetype-keywords">
+            <span class="keyword-chip">DISRUPTIVO</span>
+            <span class="keyword-chip">HONESTO</span>
+            <span class="keyword-chip">DIRECTO</span>
+            <span class="keyword-chip">DESTEMIDO</span>
+          </div>
+        </div>
+
+      </div>
+
+      <p class="prose">
+        <strong style="color:var(--text-primary)">Como aplicar:</strong> o Creator aparece na qualidade do trabalho, na atenção ao detalhe e na terminologia técnica.
+        O Rebel aparece na honestidade da comunicação, no tom directo e na recusa em usar jargão vazio de significado.
+      </p>
+    </section>
+
+    <div class="doc-divider"></div>
+
+    <!-- 3. LOGO -->
+    <section class="doc-section" id="logo">
+      <div class="doc-section-header">
+        <span class="doc-section-num">03</span>
+        <h2 class="doc-section-title">Logo & Variantes</h2>
+      </div>
+
+      <p class="prose">
+        O logótipo NodeGrid combina uma ilustração de coruja (símbolo de sabedoria técnica e visão nocturna)
+        com o wordmark "NODEGRID". As cores sage green reflectem a origem portuguesa e o crescimento orgânico.
+      </p>
+
+      <div class="logo-grid">
+        <div class="logo-card">
+          <div class="logo-preview dark">
+            <img src="../assets/logo-nodegrid.svg" alt="Logo NodeGrid — Variante Original" />
+          </div>
+          <div class="logo-card-footer">
+            <div class="logo-card-label">Variante Original (Sage Green) — uso em fundos escuros</div>
+          </div>
+        </div>
+        <div class="logo-card">
+          <div class="logo-preview dark" style="background:var(--bg-surface);">
+            <img src="../assets/logo-nodegrid-white.svg" alt="Logo NodeGrid — Variante White" />
+          </div>
+          <div class="logo-card-footer">
+            <div class="logo-card-label">Variante White (#dcdcdc) — uso em overlays e fundos médios</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="logo-usage-grid">
+        <div class="usage-rule do">Usa o logo com espaçamento mínimo equivalente à altura do "N" em todos os lados.</div>
+        <div class="usage-rule dont">Nunca alteres as proporções ou cores do logo.</div>
+        <div class="usage-rule do">Usa a variante original (sage green) em fundos com --bg-base ou --bg-surface.</div>
+        <div class="usage-rule dont">Nunca coloca o logo em fundos que reduzam o contraste abaixo de 3:1.</div>
+        <div class="usage-rule do">Usa a variante white em overlays, banners escuros e contextos monocromáticos.</div>
+        <div class="usage-rule dont">Nunca adiciona sombra, glow ou efeito ao logótipo.</div>
+      </div>
+    </section>
+
+    <div class="doc-divider"></div>
+
+    <!-- 4. BRAND WORDS -->
+    <section class="doc-section" id="brand-words">
+      <div class="doc-section-header">
+        <span class="doc-section-num">04</span>
+        <h2 class="doc-section-title">Palavras de Marca</h2>
+      </div>
+
+      <p class="prose">
+        Duas palavras encapsulam a dualidade da NodeGrid — uma emocional, uma racional.
+        Todas as mensagens de marca devem poder ser traçadas a uma ou ambas.
+      </p>
+
+      <div class="brand-words">
+        <div class="brand-word-card">
+          <div class="brand-word-type">Emocional</div>
+          <div class="brand-word-main">CRAFT</div>
+          <div class="brand-word-desc">
+            O orgulho do trabalho bem feito. A diferença entre código que funciona
+            e código que envelhece com dignidade. A razão pela qual nos importamos
+            com o que os outros não vêem.
+          </div>
+        </div>
+        <div class="brand-word-card">
+          <div class="brand-word-type">Racional</div>
+          <div class="brand-word-main">ARQUITECTURA</div>
+          <div class="brand-word-desc">
+            Estrutura que aguenta crescimento. Decisões técnicas que ainda fazem sentido
+            em dois anos. A diferença entre construir rápido e construir para durar.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="doc-divider"></div>
+
+    <!-- 5. VOICE -->
+    <section class="doc-section" id="voice">
+      <div class="doc-section-header">
+        <span class="doc-section-num">05</span>
+        <h2 class="doc-section-title">Tom de Voz</h2>
+      </div>
+
+      <p class="prose">
+        A voz da NodeGrid é a do engenheiro sénior que respeita o teu tempo — fala claro,
+        não usa jargão por impressionar, e diz o que outros têm receio de dizer.
+      </p>
+
+      <div class="voice-grid">
+        <div class="voice-card">
+          <div class="voice-attr">Directo</div>
+          <div class="voice-desc">Vai ao assunto. Sem preâmbulos. Sem fluff corporativo.</div>
+          <div class="voice-example">"Entregamos em 4 semanas. Se não cumprirmos, não cobras."</div>
+        </div>
+        <div class="voice-card">
+          <div class="voice-attr">Técnico sem pedantismo</div>
+          <div class="voice-desc">Usa terminologia correcta quando necessário. Explica quando não é óbvio.</div>
+          <div class="voice-example">"RLS garante que cada utilizador só vê os seus dados — sem lógica extra no servidor."</div>
+        </div>
+        <div class="voice-card">
+          <div class="voice-attr">Honesto</div>
+          <div class="voice-desc">Diz o que não funciona. Não vende o que o cliente não precisa.</div>
+          <div class="voice-example">"Para este volume de dados, uma base de dados simples é suficiente. Não precisas de microserviços."</div>
+        </div>
+        <div class="voice-card">
+          <div class="voice-attr">Confiante</div>
+          <div class="voice-desc">Posição de especialista, não de vendedor. Recomenda com convicção.</div>
+          <div class="voice-example">"A solução certa aqui é X. Aqui está porquê."</div>
+        </div>
+        <div class="voice-card">
+          <div class="voice-attr">Humano</div>
+          <div class="voice-desc">Português natural. Sem robotismo. Soa a pessoa real.</div>
+          <div class="voice-example">"Fica à vontade para enviar mensagem — respondemos no próprio dia."</div>
+        </div>
+        <div class="voice-card">
+          <div class="voice-attr">Ambicioso</div>
+          <div class="voice-desc">Aponta para o que é possível, não só para o que é seguro.</div>
+          <div class="voice-example">"Software que escala contigo — da primeira venda ao primeiro milhão."</div>
+        </div>
+      </div>
+
+      <div class="voice-contrast">
+        <div class="voice-contrast-col is">
+          <h4>A NodeGrid é</h4>
+          <div class="voice-contrast-item">Directa e sem fluff</div>
+          <div class="voice-contrast-item">Técnica com clareza</div>
+          <div class="voice-contrast-item">Confiante sem arrogância</div>
+          <div class="voice-contrast-item">Humana e acessível</div>
+          <div class="voice-contrast-item">Parceira, não fornecedora</div>
+        </div>
+        <div class="voice-contrast-col not">
+          <h4>A NodeGrid não é</h4>
+          <div class="voice-contrast-item">Corporativa e formal</div>
+          <div class="voice-contrast-item">Cheia de buzzwords</div>
+          <div class="voice-contrast-item">Vendedora ou insistente</div>
+          <div class="voice-contrast-item">Fria ou distante</div>
+          <div class="voice-contrast-item">Defensiva ou evasiva</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="doc-divider"></div>
+
+    <!-- 6. POSITIONING -->
+    <section class="doc-section" id="positioning">
+      <div class="doc-section-header">
+        <span class="doc-section-num">06</span>
+        <h2 class="doc-section-title">Posicionamento</h2>
+      </div>
+
+      <p class="prose">Declaração de posicionamento (formato Al Ries):</p>
+
+      <div class="positioning-statement">
+        <p>
+          Para <strong>startups e PMEs</strong> que precisam de software robusto sem overhead de enterprise,
+          a NodeGrid é o <strong>estúdio de software de ofício</strong> que entrega
+          arquitectura de nível enterprise <strong>com a agilidade de uma equipa focada</strong> —
+          ao contrário de agências genéricas que entregam código descartável.
+        </p>
+      </div>
+
+      <p class="prose" style="margin-top:var(--s8)">A estratégia Zag (Marty Neumeier) — quando a indústria faz zig, nós fazemos zag:</p>
+
+      <div class="zag-grid">
+        <div class="zag-col they">
+          <div class="zag-col-label">Todos fazem</div>
+          <div class="zag-item">
+            <div class="zag-item-dot"></div>
+            Equipas grandes e processos pesados
+          </div>
+          <div class="zag-item">
+            <div class="zag-item-dot"></div>
+            Sprints infinitos sem entrega clara
+          </div>
+          <div class="zag-item">
+            <div class="zag-item-dot"></div>
+            Over-engineering por omissão
+          </div>
+          <div class="zag-item">
+            <div class="zag-item-dot"></div>
+            Contratos opacos e surpresas
+          </div>
+          <div class="zag-item">
+            <div class="zag-item-dot"></div>
+            Código que dura dois anos
+          </div>
+        </div>
+        <div class="zag-col we">
+          <div class="zag-col-label">NodeGrid faz</div>
+          <div class="zag-item">
+            <div class="zag-item-dot"></div>
+            Equipa pequena e focada, resultado directo
+          </div>
+          <div class="zag-item">
+            <div class="zag-item-dot"></div>
+            Entregáveis definidos com datas reais
+          </div>
+          <div class="zag-item">
+            <div class="zag-item-dot"></div>
+            Complexidade mínima necessária
+          </div>
+          <div class="zag-item">
+            <div class="zag-item-dot"></div>
+            Preços e escopo transparentes à partida
+          </div>
+          <div class="zag-item">
+            <div class="zag-item-dot"></div>
+            Arquitectura que aguenta crescimento
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="doc-divider"></div>
+
+    <!-- 7. PRISM -->
+    <section class="doc-section" id="prism">
+      <div class="doc-section-header">
+        <span class="doc-section-num">07</span>
+        <h2 class="doc-section-title">Brand Identity Prism</h2>
+      </div>
+
+      <p class="prose">
+        O modelo de Kapferer organiza a identidade em seis facetas complementares.
+        Juntas, definem o que significa ser NodeGrid de forma holística.
+      </p>
+
+      <div class="prism-grid">
+        <div class="prism-cell">
+          <div class="prism-cell-label">Physique</div>
+          <div class="prism-cell-title">Identidade Visual</div>
+          <div class="prism-cell-desc">Forest green escuro, sage green como accent, gold para CTA. Tipografia técnica. Coruja como símbolo.</div>
+        </div>
+        <div class="prism-cell">
+          <div class="prism-cell-label">Personality</div>
+          <div class="prism-cell-title">Artesão Técnico</div>
+          <div class="prism-cell-desc">Preciso, honesto, directo. Confortável com complexidade mas não a glorifica.</div>
+        </div>
+        <div class="prism-cell">
+          <div class="prism-cell-label">Culture</div>
+          <div class="prism-cell-title">Craft Português</div>
+          <div class="prism-cell-desc">Orgulho no trabalho bem feito. Influência da tradição artesanal portuguesa aplicada à engenharia.</div>
+        </div>
+        <div class="prism-cell">
+          <div class="prism-cell-label">Relationship</div>
+          <div class="prism-cell-title">Parceiro Técnico</div>
+          <div class="prism-cell-desc">Não vendedor, não subcontratado — co-criador que entende o teu negócio.</div>
+        </div>
+        <div class="prism-cell">
+          <div class="prism-cell-label">Reflection</div>
+          <div class="prism-cell-title">Builder Ambicioso</div>
+          <div class="prism-cell-desc">Clientes que valorizam qualidade sobre velocidade. Que querem software que dura.</div>
+        </div>
+        <div class="prism-cell">
+          <div class="prism-cell-label">Self-image</div>
+          <div class="prism-cell-title">Construtores de Futuro</div>
+          <div class="prism-cell-desc">Sentimo-nos parte de algo maior — a democratização de software de qualidade em Portugal.</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+</div>
+
+<script>
+  // Animate archetype bars
+  const bars = document.querySelectorAll('.archetype-fill');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const bar = entry.target;
+        const target = bar.style.width;
+        bar.style.width = '0%';
+        bar.style.transition = 'width 1s cubic-bezier(0.34,1.56,0.64,1)';
+        setTimeout(() => { bar.style.width = target; }, 100);
+        observer.unobserve(bar);
+      }
+    });
+  }, { threshold: 0.5 });
+  bars.forEach(b => observer.observe(b));
+
+  // Sidebar active state on scroll
+  const sections = document.querySelectorAll('.doc-section');
+  const links = document.querySelectorAll('.sidebar-link[href^="#"]');
+
+  const scrollObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        links.forEach(l => {
+          l.classList.toggle('active', l.getAttribute('href') === `#${id}`);
+        });
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  sections.forEach(s => scrollObserver.observe(s));
+</script>
+
+</body>
+</html>
