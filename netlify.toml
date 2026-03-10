@@ -1,6 +1,1 @@
-[[redirects]]
-  from       = "/*"
-  to         = "/brand/:splat"
-  status     = 200
-  force      = true
-  conditions = {Host = ["brand.nodegrid.dev"]}
+# No redirects needed — brand served at /brand/ path
