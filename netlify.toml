@@ -1,8 +1,6 @@
 [[redirects]]
-  from   = "/*"
-  to     = "/brand/:splat"
-  status = 200
-  force  = true
-
-  [redirects.conditions]
-    Host = ["brand.nodegrid.dev"]
+  from       = "/*"
+  to         = "/brand/:splat"
+  status     = 200
+  force      = true
+  conditions = {Host = ["brand.nodegrid.dev"]}
