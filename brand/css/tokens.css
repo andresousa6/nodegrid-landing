@@ -172,6 +172,108 @@
   --z-modal:   200;
   --z-toast:   300;
 
+}
+
+/* ══════════════════════════════════════════════════════════════
+   THEME TOGGLE — shared component
+   ══════════════════════════════════════════════════════════════ */
+
+.theme-toggle {
+  display: flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px;
+  border-radius: var(--r-full);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-surface-raised);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all var(--duration-base) var(--ease-default);
+  flex-shrink: 0;
+}
+.theme-toggle:hover {
+  border-color: var(--accent-dim);
+  color: var(--accent-primary);
+  background: var(--accent-surface);
+}
+.theme-toggle svg { display: block; pointer-events: none; }
+
+/* sidebar variant — full-width row */
+.theme-toggle-row {
+  display: flex; align-items: center; gap: var(--s3);
+  padding: var(--s3) var(--s6);
+  border-top: 1px solid var(--border-subtle);
+  margin-top: auto;
+}
+.theme-toggle-row .theme-toggle {
+  width: 30px; height: 30px;
+}
+.theme-toggle-row .toggle-label {
+  font-size: var(--text-xs);
+  color: var(--text-disabled);
+  letter-spacing: var(--tracking-wide);
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   LIGHT MODE OVERRIDES
+   Activated via [data-theme="light"] on <html>
+   Only semantic + component tokens need overriding.
+   Primitives stay unchanged.
+   ══════════════════════════════════════════════════════════════ */
+
+[data-theme="light"] {
+
+  /* BACKGROUNDS */
+  --bg-base:            #f4f8f4;
+  --bg-surface:         #ffffff;
+  --bg-surface-raised:  #eef5ee;
+  --bg-overlay:         #e4f0e4;
+
+  /* BORDERS */
+  --border-subtle:      #d4e8d4;
+  --border-default:     #b8d4b8;
+  --border-interactive: var(--green-400);
+  --border-accent:      var(--green-400);
+
+  /* TEXT */
+  --text-primary:       #0d1a0d;
+  --text-muted:         #3a5a3a;
+  --text-disabled:      #7a9a7a;
+  --text-accent:        var(--green-400);
+  --text-on-cta:        var(--gold-900);
+
+  /* INTERACTIVE */
+  --accent-primary:     var(--green-400);
+  --accent-dim:         var(--green-400);
+  --accent-surface:     #e4f0e4;
+
+  /* SHADOWS — subtler on light */
+  --shadow-sm:          0 1px 2px rgba(0,30,0,.08);
+  --shadow-md:          0 4px 12px rgba(0,30,0,.12);
+  --shadow-lg:          0 8px 24px rgba(0,30,0,.16);
+  --shadow-glow:        0 0 20px rgba(74,154,74,.10);
+  --shadow-glow-strong: 0 0 40px rgba(74,154,74,.18);
+
+  /* BACKWARDS-COMPAT */
+  --color-bg:        var(--bg-base);
+  --color-surface:   var(--bg-surface);
+  --color-surface-2: var(--bg-surface-raised);
+  --color-border:    var(--border-subtle);
+  --color-border-2:  var(--border-default);
+  --color-green:     var(--accent-primary);
+  --color-green-dim: var(--accent-dim);
+  --color-green-bg:  var(--accent-surface);
+
+  /* COMPONENT — badge/tag override (hardcoded rgba → adjusted) */
+  --badge-bg:     rgba(74,154,74,.08);
+  --badge-border: rgba(74,154,74,.20);
+  --badge-text:   var(--accent-primary);
+  --tag-bg:       var(--badge-bg);
+  --tag-border:   var(--badge-border);
+  --tag-text:     var(--accent-primary);
+}
+
+:root {
   /* ─── TIER 2 BACKWARDS-COMPAT ALIASES ──────────────────────
      Keep old names pointing to new tokens.
      Remove in design system v2.

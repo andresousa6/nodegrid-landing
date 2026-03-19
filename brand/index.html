@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/tokens.css" />
+  <script src="js/theme-toggle.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -83,6 +84,26 @@
       display: flex;
       align-items: center;
       gap: var(--s3);
+    }
+    .theme-toggle {
+      width: 36px; height: 36px;
+      border-radius: var(--r-full);
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-surface-raised);
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all var(--duration-base) var(--ease-default);
+      flex-shrink: 0;
+    }
+    .theme-toggle:hover {
+      border-color: var(--accent-dim);
+      color: var(--accent-primary);
+      background: var(--accent-surface);
+    }
+    .theme-toggle svg { display: block; pointer-events: none; }
+    [data-theme="light"] .nav {
+      background: rgba(244,248,244,.90);
     }
     .btn-nav {
       font-family: var(--font-body);
@@ -866,6 +887,10 @@
       <a href="#patterns">Patterns</a>
     </div>
     <div class="nav-cta">
+      <button id="theme-toggle" class="theme-toggle" aria-label="Mudar para modo claro" title="Modo claro">
+        <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
       <a href="https://nodegrid.dev" class="btn-nav">nodegrid.dev</a>
     </div>
   </nav>
@@ -1342,7 +1367,7 @@
           <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
         </div>
         <div class="faq-answer">
-          Em <code style="font-family:var(--font-mono);font-size:12px;color:var(--accent-primary);">css/tokens.css</code>.
+          Em <code style="font-family:var(--font-mono);font-size:12px;color:var(--accent-primary);">nodegrid-brand/css/tokens.css</code>.
           Inclui todas as 3 camadas de tokens, aliases de retrocompatibilidade e tokens de componente.
           Importa este ficheiro antes de qualquer outro CSS do projecto.
         </div>
