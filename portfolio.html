@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio — NodeGrid</title>
+  <meta name="description" content="Projectos desenvolvidos pela NodeGrid — plataformas, apps e automações à medida para startups e PMEs portuguesas.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/tokens.css">
+  <style>
+    :root {
+      --text-secondary: var(--neutral-400);
+      --text-tertiary:  var(--neutral-600);
+      --accent-subtle:  var(--green-700);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: var(--border-default) var(--bg-base); }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-base); }
+    ::-webkit-scrollbar-thumb { background: var(--border-default); border-radius: var(--r-full); }
+    body { background: var(--bg-base); color: var(--text-primary); font-family: var(--font-body); font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    .container { max-width: 1080px; margin: 0 auto; padding: 0 var(--s6); }
+    section { padding: var(--s20) 0; }
+    a { text-decoration: none; }
+
+    /* ── TICKER ── */
+    .ticker { background: var(--bg-surface-raised); border-bottom: 1px solid var(--border-subtle); overflow: hidden; padding: 9px 0; }
+    .ticker:hover .ticker-track { animation-play-state: paused; }
+    .ticker-track { display: flex; white-space: nowrap; width: max-content; animation: ticker-move 32s linear infinite; }
+    .ticker-track span { display: inline-block; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-tertiary); }
+    .ticker-track span em { font-style: normal; color: var(--accent-primary); }
+    @keyframes ticker-move { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* ── NAV ── */
+    .nav-wrapper { position: sticky; top: 0; z-index: 100; padding: 8px var(--s6); pointer-events: none; }
+    .nav { background: rgba(4,10,4,.94); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--border-subtle); border-radius: var(--r-lg); padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; gap: var(--s4); max-width: 1080px; margin: 0 auto; pointer-events: all; }
+    .nav-logo { display: flex; align-items: center; flex-shrink: 0; }
+    .nav-logo img { height: 44px; width: auto; }
+    .nav-links { display: flex; align-items: center; gap: var(--s6); list-style: none; }
+    .nav-links a { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; color: var(--text-secondary); text-transform: uppercase; transition: color var(--duration-base); }
+    .nav-links a:hover { color: var(--text-primary); }
+    .nav-links a.active { color: var(--accent-primary); }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: none; cursor: pointer; font-family: var(--font-body); font-weight: 700; border-radius: var(--r-md); transition: all var(--duration-base); }
+    .btn-primary { background: var(--cta-bg); color: var(--cta-text); padding: 10px 20px; font-size: 13px; }
+    .btn-primary:hover { background: var(--cta-bg-hover); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(240,212,116,.2); }
+    .btn-ghost { background: transparent; color: var(--text-secondary); padding: 10px 18px; font-size: 13px; border: 1px solid var(--border-default); }
+    .btn-ghost:hover { color: var(--text-primary); border-color: var(--border-interactive); }
+    @media (max-width: 640px) { .nav-links { display: none; } .nav-logo img { height: 36px; } }
+
+    /* ── SECTION LABELS ── */
+    .s-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent-primary); margin-bottom: 4px; }
+    .s-comment { font-family: var(--font-mono); font-size: 11px; color: var(--text-tertiary); }
+    .s-comment em { font-style: normal; color: var(--accent-primary); }
+    .s-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: var(--s8); gap: var(--s4); }
+
+    /* ── HERO ── */
+    .hero { padding: 64px 0 var(--s12); }
+    .hero-h1 { font-family: var(--font-display); font-size: clamp(52px, 10vw, 132px); font-weight: 800; line-height: 0.93; letter-spacing: -0.04em; color: var(--text-primary); margin: var(--s5) 0 var(--s5); }
+    .hero-h1 .dot { color: var(--cta-bg); }
+    .hero-sub { font-size: 15px; color: var(--text-secondary); max-width: 500px; line-height: 1.8; margin-bottom: var(--s8); }
+
+    /* ── FILTER PILLS ── */
+    .filter-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; }
+    .filter-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-tertiary); margin-right: 2px; }
+    .pill { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-secondary); background: transparent; border: 1px solid var(--border-default); padding: 5px 13px; border-radius: var(--r-full); cursor: pointer; transition: all var(--duration-base); user-select: none; }
+    .pill:hover { border-color: var(--accent-dim); color: var(--text-primary); }
+    .pill.active { background: var(--accent-primary); border-color: var(--accent-primary); color: var(--bg-base); font-weight: 500; }
+    .pill-sep { width: 1px; height: 16px; background: var(--border-subtle); }
+
+    /* ── FEATURED GRID ── */
+    .projects-section { padding: 0 0 var(--s20); }
+    .featured-grid { display: grid; grid-template-columns: 3fr 2fr; gap: 12px; }
+    @media (max-width: 1024px) { .featured-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 640px) { .featured-grid { grid-template-columns: 1fr; } }
+
+    /* ── PROJECT CARDS ── */
+    .pcard { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--r-xl); overflow: hidden; position: relative; transition: border-color var(--duration-base), transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out), opacity 0.25s, filter 0.25s; }
+    .pcard::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--accent-dim), transparent); opacity: 0; transition: opacity var(--duration-slow); z-index: 2; }
+    .pcard:hover { border-color: var(--accent-dim); transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,.5), 0 0 30px rgba(114,184,114,.06); }
+    .pcard:hover::before { opacity: 1; }
+
+    /* card-01: spans 2 rows on desktop */
+    .pcard:nth-child(1) { grid-row: 1 / 3; }
+    .pcard:nth-child(1) .pimg { height: 320px; }
+    @media (max-width: 1024px) { .pcard:nth-child(1) { grid-row: auto; } .pcard:nth-child(1) .pimg { height: 220px; } }
+    @media (max-width: 640px) { .pcard:nth-child(1) .pimg { height: 200px; } }
+
+    /* card-04: full width, horizontal layout */
+    .pcard--wide { grid-column: 1 / -1; display: grid; grid-template-columns: 5fr 7fr; }
+    .pcard--wide .pimg { height: 100%; min-height: 220px; }
+    .pcard--wide .pbody { display: flex; flex-direction: column; justify-content: space-between; }
+    @media (max-width: 640px) { .pcard--wide { grid-template-columns: 1fr; } .pcard--wide .pimg { height: 200px; min-height: unset; } }
+
+    /* image area */
+    .pimg { position: relative; height: 200px; overflow: hidden; background: var(--bg-overlay); flex-shrink: 0; }
+    .pimg img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; transition: transform 0.5s var(--ease-out); }
+    .pcard:hover .pimg img { transform: scale(1.04); }
+    .pimg .pfallback { width: 100%; height: 100%; display: none; align-items: center; justify-content: center; }
+    .pimg::after { content: ''; position: absolute; inset: 0; background: rgba(7,14,7,0); transition: background var(--duration-base); }
+    .pcard:hover .pimg::after { background: rgba(7,14,7,.12); }
+
+    /* project number */
+    .pnum { position: absolute; top: 10px; right: 10px; font-family: var(--font-mono); font-size: 11px; color: var(--text-primary); background: rgba(7,14,7,.88); border: 1px solid var(--border-default); padding: 2px 8px; border-radius: var(--r-sm); backdrop-filter: blur(8px); z-index: 1; letter-spacing: 0.04em; }
+
+    /* card body */
+    .pbody { padding: var(--s5); }
+    .pcat { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 5px; }
+    .pname { font-family: var(--font-display); font-size: 20px; font-weight: 700; letter-spacing: -0.02em; color: var(--text-primary); line-height: 1.2; margin-bottom: 3px; }
+    .purl { font-family: var(--font-mono); font-size: 10px; color: var(--text-tertiary); margin-bottom: var(--s3); }
+    .pdesc { font-size: 13px; color: var(--text-secondary); line-height: 1.65; margin-bottom: var(--s4); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .pstack { font-family: var(--font-mono); font-size: 10px; color: var(--text-tertiary); letter-spacing: 0.04em; }
+    .pstack em { font-style: normal; color: var(--accent-dim); }
+
+    /* ── CATEGORY SECTION ── */
+    .cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+    @media (max-width: 768px) { .cat-grid { grid-template-columns: repeat(2, 1fr); } }
+    .cat-card { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--r-lg); padding: var(--s5) var(--s4); cursor: pointer; display: flex; flex-direction: column; gap: var(--s3); transition: border-color var(--duration-base), transform var(--duration-base), background var(--duration-base); text-align: left; }
+    .cat-card:hover { border-color: var(--accent-dim); transform: translateY(-2px); background: var(--bg-surface-raised); }
+    .cat-icon { width: 36px; height: 36px; color: var(--accent-primary); background: var(--accent-subtle); border: 1px solid var(--accent-dim); border-radius: var(--r-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .cat-name { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-secondary); line-height: 1.5; }
+    .cat-count { font-family: var(--font-display); font-size: 24px; font-weight: 700; color: var(--accent-primary); letter-spacing: -0.02em; }
+
+    /* ── STACK SECTION ── */
+    .stack-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    @media (max-width: 640px) { .stack-grid { grid-template-columns: repeat(2, 1fr); } }
+    .stack-item { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--r-md); padding: var(--s4) var(--s5); cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: var(--s4); transition: border-color var(--duration-base), background var(--duration-base); text-align: left; }
+    .stack-item:hover { border-color: var(--accent-dim); background: var(--bg-surface-raised); }
+    .stack-name { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; color: var(--text-secondary); }
+    .stack-count { font-family: var(--font-display); font-size: 20px; font-weight: 700; color: var(--text-primary); }
+
+    /* ── CTA ── */
+    .cta-wrap { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--r-xl); padding: 80px 40px; text-align: center; position: relative; overflow: hidden; }
+    .cta-wrap::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(114,184,114,.2) 1px, transparent 1px); background-size: 24px 24px; pointer-events: none; }
+    .cta-wrap::after { content: ''; position: absolute; bottom: -100px; left: 50%; transform: translateX(-50%); width: 600px; height: 300px; background: radial-gradient(ellipse, rgba(114,184,114,.14), transparent 70%); pointer-events: none; }
+    .cta-wrap > * { position: relative; z-index: 1; }
+    .hud { position: absolute; width: 20px; height: 20px; }
+    .hud-tl { top: 16px; left: 16px; border-top: 1.5px solid var(--accent-primary); border-left: 1.5px solid var(--accent-primary); }
+    .hud-tr { top: 16px; right: 16px; border-top: 1.5px solid var(--accent-primary); border-right: 1.5px solid var(--accent-primary); }
+    .hud-bl { bottom: 16px; left: 16px; border-bottom: 1.5px solid var(--accent-primary); border-left: 1.5px solid var(--accent-primary); }
+    .hud-br { bottom: 16px; right: 16px; border-bottom: 1.5px solid var(--accent-primary); border-right: 1.5px solid var(--accent-primary); }
+    .cta-heading { font-family: var(--font-display); font-size: clamp(28px, 4vw, 44px); font-weight: 700; letter-spacing: -0.025em; color: var(--text-primary); line-height: 1.1; margin-bottom: var(--s4); }
+    .cta-heading .accent { color: var(--accent-primary); }
+    .cta-sub { font-size: 15px; color: var(--text-secondary); max-width: 460px; margin: 0 auto var(--s8); line-height: 1.8; }
+    .cta-group { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; justify-content: center; margin-bottom: var(--s4); }
+    .cta-note { font-size: 11px; color: var(--text-tertiary); font-family: var(--font-mono); }
+    .ctag { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent-primary); background: var(--badge-bg); border: 1px solid var(--badge-border); padding: 4px 12px; border-radius: var(--r-full); margin-bottom: var(--s5); }
+    @media (max-width: 640px) { .cta-wrap { padding: 56px 24px; } }
+
+    /* ── FOOTER ── */
+    footer { border-top: 1px solid var(--border-subtle); padding: var(--s12) 0 var(--s8); }
+    .fg { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: var(--s12); margin-bottom: var(--s10); }
+    .fb img { height: 40px; margin-bottom: var(--s4); }
+    .fb p { font-size: 12px; color: var(--text-tertiary); line-height: 1.7; max-width: 240px; }
+    .fc h5 { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: var(--s4); }
+    .fc ul { list-style: none; display: flex; flex-direction: column; gap: var(--s3); }
+    .fc a { font-size: 12px; color: var(--text-secondary); transition: color var(--duration-base); }
+    .fc a:hover { color: var(--accent-primary); }
+    .fbot { border-top: 1px solid var(--border-subtle); padding-top: var(--s6); display: flex; align-items: center; justify-content: space-between; gap: var(--s4); flex-wrap: wrap; }
+    .fcopy { font-size: 11px; color: var(--text-disabled); font-family: var(--font-mono); }
+    .fbrand { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; color: var(--text-disabled); transition: color var(--duration-base); }
+    .fbrand:hover { color: var(--accent-primary); }
+    @media (max-width: 768px) { .fg { grid-template-columns: 1fr 1fr; } .fb { grid-column: 1/-1; } }
+    @media (max-width: 480px) { .fg { grid-template-columns: 1fr; gap: var(--s8); } .fbot { flex-direction: column; text-align: center; } }
+  </style>
+</head>
+<body>
+
+  <!-- TICKER -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track">
+      <span>NODEGRID&nbsp;&nbsp;·&nbsp;&nbsp;<em>WEB APPS À MEDIDA</em>&nbsp;&nbsp;·&nbsp;&nbsp;AUTOMAÇÕES&nbsp;&nbsp;·&nbsp;&nbsp;<em>PLATAFORMAS</em>&nbsp;&nbsp;·&nbsp;&nbsp;CÓDIGO LIMPO&nbsp;&nbsp;·&nbsp;&nbsp;STARTUPS&nbsp;&nbsp;·&nbsp;&nbsp;<em>PMEs PORTUGUESAS</em>&nbsp;&nbsp;·&nbsp;&nbsp;ENTREGA RÁPIDA&nbsp;&nbsp;·&nbsp;&nbsp;PARCERIA CONTÍNUA&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+      <span>NODEGRID&nbsp;&nbsp;·&nbsp;&nbsp;<em>WEB APPS À MEDIDA</em>&nbsp;&nbsp;·&nbsp;&nbsp;AUTOMAÇÕES&nbsp;&nbsp;·&nbsp;&nbsp;<em>PLATAFORMAS</em>&nbsp;&nbsp;·&nbsp;&nbsp;CÓDIGO LIMPO&nbsp;&nbsp;·&nbsp;&nbsp;STARTUPS&nbsp;&nbsp;·&nbsp;&nbsp;<em>PMEs PORTUGUESAS</em>&nbsp;&nbsp;·&nbsp;&nbsp;ENTREGA RÁPIDA&nbsp;&nbsp;·&nbsp;&nbsp;PARCERIA CONTÍNUA&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <div class="nav-wrapper">
+    <nav class="nav">
+      <a class="nav-logo" href="index.html" aria-label="NodeGrid — início">
+        <img src="logo-nodegrid.svg" alt="NodeGrid" height="44">
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html#servicos">Serviços</a></li>
+        <li><a href="index.html#processo">Como Funciona</a></li>
+        <li><a href="portfolio.html" class="active">Portfolio</a></li>
+        <li><a href="index.html#faq">FAQ</a></li>
+      </ul>
+      <a class="btn btn-primary" href="https://wa.me/351916530789" target="_blank" rel="noopener" style="padding:10px 20px;font-size:13px;">
+        Falar Connosco
+      </a>
+    </nav>
+  </div>
+
+  <!-- [00] HERO -->
+  <section class="hero">
+    <div class="container">
+      <div class="s-label">[00]PORTFOLIO_</div>
+      <div class="s-comment">// 4 PROJECTOS &middot; WEB APPS &middot; PLATAFORMAS &middot; <em>ENTREGUES</em></div>
+      <h1 class="hero-h1">Projectos<br>à medida<span class="dot">.</span></h1>
+      <p class="hero-sub">Cada projecto foi construído de raiz para resolver um problema real. Sem templates, sem atalhos — só código que funciona.</p>
+      <div class="filter-bar" id="filter-bar">
+        <span class="filter-label">// FILTRAR</span>
+        <button class="pill active" data-filter="all">TODOS</button>
+        <button class="pill" data-filter="gestao">GESTÃO</button>
+        <button class="pill" data-filter="eventos-ticketing">EVENTOS</button>
+        <button class="pill" data-filter="contratos">CONTRATOS</button>
+        <div class="pill-sep"></div>
+        <button class="pill" data-filter="nextjs">NEXT.JS</button>
+        <button class="pill" data-filter="supabase">SUPABASE</button>
+        <button class="pill" data-filter="react">REACT</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- [01] PROJECTOS_ -->
+  <section class="projects-section" id="projectos">
+    <div class="container">
+      <div class="s-header">
+        <div>
+          <div class="s-label">[01]PROJECTOS_</div>
+          <div class="s-comment">// 4 web apps entregues</div>
+        </div>
+      </div>
+      <div class="featured-grid" id="projects-grid">
+
+        <!-- 01 — Video-TaskManager (featured, spans 2 rows) -->
+        <article class="pcard" data-category="gestao" data-stack="nextjs supabase typescript">
+          <div class="pimg">
+            <span class="pnum">01</span>
+            <img src="assets/screenshots/video-task-manager.png" alt="Video-TaskManager"
+              onerror="if(this.src.includes('.png')){this.src=this.src.replace('.png','.svg')}else{this.style.display='none';this.nextElementSibling.style.display='flex';}">
+            <div class="pfallback">
+              <svg width="100%" height="100%" viewBox="0 0 532 320" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <rect width="532" height="320" fill="#020f0e"/>
+                <defs>
+                  <pattern id="p1" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#35998f" opacity="0.3"/></pattern>
+                  <radialGradient id="rg1" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#35998f" stop-opacity="0.3"/><stop offset="100%" stop-color="#35998f" stop-opacity="0"/></radialGradient>
+                </defs>
+                <rect width="532" height="320" fill="url(#p1)"/>
+                <ellipse cx="266" cy="160" rx="210" ry="120" fill="url(#rg1)"/>
+                <text x="50%" y="43%" font-family="monospace" font-size="11" fill="#35998f" opacity="0.55" text-anchor="middle" letter-spacing="3">VIDEO-TASKMANAGER</text>
+                <text x="50%" y="57%" font-family="sans-serif" font-size="26" font-weight="700" fill="#dcdcdc" text-anchor="middle">Gestão de Produção</text>
+              </svg>
+            </div>
+          </div>
+          <div class="pbody">
+            <div class="pcat">GESTÃO DE PRODUÇÃO</div>
+            <div class="pname">Video-TaskManager</div>
+            <div class="purl">videotask.nodegrid.dev</div>
+            <p class="pdesc">Plataforma de gestão de tarefas para equipas de produção de vídeo com dashboard para directores, vista de marketer e fluxo de aprovação integrado.</p>
+            <div class="pstack">Next.js 14 <em>·</em> Supabase <em>·</em> TanStack Query <em>·</em> TypeScript</div>
+          </div>
+        </article>
+
+        <!-- 02 — Hidden Hype -->
+        <article class="pcard" data-category="eventos-ticketing" data-stack="nextjs supabase typescript pwa">
+          <div class="pimg">
+            <span class="pnum">02</span>
+            <img src="assets/screenshots/hidden-hype.png" alt="Hidden Hype"
+              onerror="if(this.src.includes('.png')){this.src=this.src.replace('.png','.svg')}else{this.style.display='none';this.nextElementSibling.style.display='flex';}">
+            <div class="pfallback">
+              <svg width="100%" height="100%" viewBox="0 0 532 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <rect width="532" height="200" fill="#0a0a0a"/>
+                <defs>
+                  <pattern id="p2" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#C9A84C" opacity="0.3"/></pattern>
+                  <radialGradient id="rg2" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#C9A84C" stop-opacity="0.25"/><stop offset="100%" stop-color="#C9A84C" stop-opacity="0"/></radialGradient>
+                </defs>
+                <rect width="532" height="200" fill="url(#p2)"/>
+                <ellipse cx="266" cy="100" rx="180" ry="85" fill="url(#rg2)"/>
+                <text x="50%" y="40%" font-family="monospace" font-size="11" fill="#C9A84C" opacity="0.55" text-anchor="middle" letter-spacing="3">HIDDEN HYPE</text>
+                <text x="50%" y="60%" font-family="sans-serif" font-size="22" font-weight="700" fill="#dcdcdc" text-anchor="middle">Eventos &amp; Ticketing</text>
+              </svg>
+            </div>
+          </div>
+          <div class="pbody">
+            <div class="pcat">EVENTOS &amp; TICKETING</div>
+            <div class="pname">Hidden Hype</div>
+            <div class="purl">hiddenhype.nodegrid.dev</div>
+            <p class="pdesc">App de gestão de eventos com check-in por QR code, autenticação via telemóvel (OTP) e painel de administração para controlo de acessos.</p>
+            <div class="pstack">Next.js 15 <em>·</em> Supabase <em>·</em> PWA <em>·</em> TypeScript</div>
+          </div>
+        </article>
+
+        <!-- 03 — Hype-Gest -->
+        <article class="pcard" data-category="gestao-eventos" data-stack="react supabase typescript vite">
+          <div class="pimg">
+            <span class="pnum">03</span>
+            <img src="assets/screenshots/hype-gest.png" alt="Hype-Gest EventOS"
+              onerror="if(this.src.includes('.png')){this.src=this.src.replace('.png','.svg')}else{this.style.display='none';this.nextElementSibling.style.display='flex';}">
+            <div class="pfallback">
+              <svg width="100%" height="100%" viewBox="0 0 532 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <rect width="532" height="200" fill="#070e07"/>
+                <defs>
+                  <pattern id="p3" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#4a9a4a" opacity="0.35"/></pattern>
+                  <radialGradient id="rg3" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#4a9a4a" stop-opacity="0.3"/><stop offset="100%" stop-color="#4a9a4a" stop-opacity="0"/></radialGradient>
+                </defs>
+                <rect width="532" height="200" fill="url(#p3)"/>
+                <ellipse cx="266" cy="100" rx="180" ry="85" fill="url(#rg3)"/>
+                <text x="50%" y="40%" font-family="monospace" font-size="11" fill="#4a9a4a" opacity="0.55" text-anchor="middle" letter-spacing="3">HYPE-GEST · EVENTOSC</text>
+                <text x="50%" y="60%" font-family="sans-serif" font-size="22" font-weight="700" fill="#dcdcdc" text-anchor="middle">Gestão de Eventos</text>
+              </svg>
+            </div>
+          </div>
+          <div class="pbody">
+            <div class="pcat">GESTÃO DE EVENTOS</div>
+            <div class="pname">Hype-Gest (EventOS)</div>
+            <div class="purl">eventos.nodegrid.dev</div>
+            <p class="pdesc">Plataforma completa para gestão do ciclo de vida de eventos com Gantt interactivo, gestão de riders e previsão de cashflow.</p>
+            <div class="pstack">React <em>·</em> Vite <em>·</em> Supabase <em>·</em> TypeScript</div>
+          </div>
+        </article>
+
+        <!-- 04 — Timetable Contracts (wide) -->
+        <article class="pcard pcard--wide" data-category="contratos" data-stack="nextjs supabase typescript pdf-lib">
+          <div class="pimg">
+            <span class="pnum">04</span>
+            <img src="assets/screenshots/timetable-contracts.png" alt="Timetable Contracts"
+              onerror="if(this.src.includes('.png')){this.src=this.src.replace('.png','.svg')}else{this.style.display='none';this.nextElementSibling.style.display='flex';}">
+            <div class="pfallback">
+              <svg width="100%" height="100%" viewBox="0 0 532 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <rect width="532" height="220" fill="#0a0a0a"/>
+                <defs>
+                  <pattern id="p4" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#B89A5E" opacity="0.3"/></pattern>
+                  <radialGradient id="rg4" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#B89A5E" stop-opacity="0.25"/><stop offset="100%" stop-color="#B89A5E" stop-opacity="0"/></radialGradient>
+                </defs>
+                <rect width="532" height="220" fill="url(#p4)"/>
+                <ellipse cx="266" cy="110" rx="190" ry="95" fill="url(#rg4)"/>
+                <text x="50%" y="41%" font-family="monospace" font-size="11" fill="#B89A5E" opacity="0.55" text-anchor="middle" letter-spacing="3">TIMETABLE CONTRACTS</text>
+                <text x="50%" y="59%" font-family="sans-serif" font-size="22" font-weight="700" fill="#dcdcdc" text-anchor="middle">Contratos Digitais</text>
+              </svg>
+            </div>
+          </div>
+          <div class="pbody">
+            <div>
+              <div class="pcat">CONTRATOS DIGITAIS</div>
+              <div class="pname">Timetable Contracts</div>
+              <div class="purl">contracts.nodegrid.dev</div>
+              <p class="pdesc">Gerador de contratos com assinatura digital para artistas e fornecedores, com templates personalizáveis e exportação PDF automatizada.</p>
+            </div>
+            <div class="pstack">Next.js <em>·</em> Supabase <em>·</em> TypeScript <em>·</em> pdf-lib</div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- [02] POR_CATEGORIA_ -->
+  <section id="por-categoria" style="background:var(--bg-surface);border-top:1px solid var(--border-subtle);border-bottom:1px solid var(--border-subtle);">
+    <div class="container">
+      <div class="s-header">
+        <div>
+          <div class="s-label">[02]POR_CATEGORIA_</div>
+          <div class="s-comment">// navega por área de negócio</div>
+        </div>
+      </div>
+      <div class="cat-grid">
+        <button class="cat-card" data-cat="gestao" aria-label="Filtrar projectos de Gestão">
+          <div class="cat-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          </div>
+          <div class="cat-name">GESTÃO DE<br>PRODUÇÃO</div>
+          <div class="cat-count">01</div>
+        </button>
+        <button class="cat-card" data-cat="eventos-ticketing" aria-label="Filtrar projectos de Eventos e Ticketing">
+          <div class="cat-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2M13 17v2M13 11v2"/></svg>
+          </div>
+          <div class="cat-name">EVENTOS &amp;<br>TICKETING</div>
+          <div class="cat-count">01</div>
+        </button>
+        <button class="cat-card" data-cat="gestao-eventos" aria-label="Filtrar projectos de Gestão de Eventos">
+          <div class="cat-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </div>
+          <div class="cat-name">GESTÃO DE<br>EVENTOS</div>
+          <div class="cat-count">01</div>
+        </button>
+        <button class="cat-card" data-cat="contratos" aria-label="Filtrar projectos de Contratos Digitais">
+          <div class="cat-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          </div>
+          <div class="cat-name">CONTRATOS<br>DIGITAIS</div>
+          <div class="cat-count">01</div>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- [03] POR_STACK_ -->
+  <section id="por-stack">
+    <div class="container">
+      <div class="s-header">
+        <div>
+          <div class="s-label">[03]POR_STACK_</div>
+          <div class="s-comment">// tecnologias que dominamos</div>
+        </div>
+      </div>
+      <div class="stack-grid">
+        <button class="stack-item" data-stack="nextjs"><span class="stack-name">Next.js</span><span class="stack-count">03</span></button>
+        <button class="stack-item" data-stack="supabase"><span class="stack-name">Supabase</span><span class="stack-count">04</span></button>
+        <button class="stack-item" data-stack="typescript"><span class="stack-name">TypeScript</span><span class="stack-count">04</span></button>
+        <button class="stack-item" data-stack="react"><span class="stack-name">React / Vite</span><span class="stack-count">01</span></button>
+        <button class="stack-item" data-stack="pwa"><span class="stack-name">PWA</span><span class="stack-count">01</span></button>
+        <button class="stack-item" data-stack="pdf-lib"><span class="stack-name">pdf-lib</span><span class="stack-count">01</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- [04] START_ CTA -->
+  <section style="padding-bottom:var(--s20);">
+    <div class="container">
+      <div class="cta-wrap">
+        <div class="hud hud-tl"></div><div class="hud hud-tr"></div>
+        <div class="hud hud-bl"></div><div class="hud hud-br"></div>
+        <div class="s-label" style="margin-bottom:var(--s3);">[04]START_</div>
+        <div class="ctag">Queres um projecto como estes?</div>
+        <h2 class="cta-heading">Fala connosco.<br>Sem <span class="accent">compromisso</span>.</h2>
+        <p class="cta-sub">Conta-nos o teu projecto. Em menos de 24h tens uma resposta clara sobre como podemos ajudar.</p>
+        <div class="cta-group">
+          <a class="btn btn-primary" href="https://wa.me/351916530789" target="_blank" rel="noopener" style="font-size:15px;padding:14px 40px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Falar no WhatsApp
+          </a>
+          <a class="btn btn-ghost" href="mailto:hello@nodegrid.dev">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            Enviar email
+          </a>
+        </div>
+        <div class="cta-note">Resposta em menos de 24h · Sem compromisso · 100% Português</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="fg">
+        <div class="fb">
+          <img src="logo-nodegrid.svg" alt="NodeGrid">
+          <p>Arquitectura de Software Modular para startups e PMEs portuguesas. Código limpo, entrega rápida, parceria contínua.</p>
+        </div>
+        <div class="fc">
+          <h5>Serviços</h5>
+          <ul>
+            <li><a href="index.html#servicos">Web Apps</a></li>
+            <li><a href="index.html#servicos">Landing Pages</a></li>
+            <li><a href="index.html#servicos">Automações</a></li>
+            <li><a href="portfolio.html">Portfolio</a></li>
+          </ul>
+        </div>
+        <div class="fc">
+          <h5>Contacto</h5>
+          <ul>
+            <li><a href="https://wa.me/351916530789" target="_blank" rel="noopener">WhatsApp</a></li>
+            <li><a href="mailto:hello@nodegrid.dev">Email</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="fbot">
+        <span class="fcopy">© 2025 NodeGrid · Arquitectura de Software Modular</span>
+        <a class="fbrand" href="/brand/">Brand Design System →</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var active = 'all';
+      var pills = document.querySelectorAll('#filter-bar .pill');
+      var cards = document.querySelectorAll('#projects-grid .pcard');
+
+      function setFilter(f) {
+        active = f;
+        cards.forEach(function (c) {
+          var cat = c.dataset.category || '';
+          var stk = c.dataset.stack || '';
+          var match = f === 'all' || cat === f || stk.includes(f);
+          c.style.opacity = match ? '1' : '0.12';
+          c.style.pointerEvents = match ? '' : 'none';
+          c.style.filter = match ? '' : 'grayscale(0.5)';
+        });
+        pills.forEach(function (p) { p.classList.toggle('active', p.dataset.filter === f); });
+      }
+
+      pills.forEach(function (p) { p.addEventListener('click', function () { setFilter(this.dataset.filter); }); });
+
+      document.querySelectorAll('.cat-card').forEach(function (c) {
+        c.addEventListener('click', function () {
+          setFilter(this.dataset.cat);
+          document.getElementById('projectos').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      });
+
+      document.querySelectorAll('.stack-item').forEach(function (s) {
+        s.addEventListener('click', function () {
+          setFilter(this.dataset.stack);
+          document.getElementById('projectos').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      });
+    }());
+  </script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "nodegrid-landing",
+  "version": "1.0.0",
+  "private": true,
+  "description": "NodeGrid Landing Page — HTML/CSS estático com portfolio",
+  "scripts": {
+    "screenshots": "node scripts/take-screenshots.js",
+    "screenshots:vtm": "node scripts/take-screenshots.js video-task-manager",
+    "screenshots:hh": "node scripts/take-screenshots.js hidden-hype",
+    "screenshots:hg": "node scripts/take-screenshots.js hype-gest",
+    "screenshots:tc": "node scripts/take-screenshots.js timetable-contracts",
+    "serve": "npx serve ."
+  },
+  "devDependencies": {
+    "playwright": "^1.60.0"
+  }
+}
