@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hidden Hype — NodeGrid Portfolio</title>
+  <meta name="description" content="App PWA de gestão de eventos com check-in por QR code — desenvolvida pela NodeGrid.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/tokens.css">
+  <style>
+    :root { --brand: #C9A84C; --brand-rgb: 201,168,76; --brand-dim: rgba(201,168,76,.12); }
+    :root { --accent-subtle: var(--green-700); }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: var(--border-default) var(--bg-base); }
+    ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: var(--bg-base); } ::-webkit-scrollbar-thumb { background: var(--border-default); border-radius: var(--r-full); }
+    body { background: var(--bg-base); color: var(--text-primary); font-family: var(--font-body); font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    a { text-decoration: none; }
+    .container { max-width: 1080px; margin: 0 auto; padding: 0 var(--s6); }
+    .ticker { background: var(--bg-surface-raised); border-bottom: 1px solid var(--border-subtle); overflow: hidden; padding: 9px 0; }
+    .ticker:hover .ticker-track { animation-play-state: paused; }
+    .ticker-track { display: flex; white-space: nowrap; width: max-content; animation: ticker-move 32s linear infinite; }
+    .ticker-track span { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-tertiary); }
+    .ticker-track span em { font-style: normal; color: var(--accent-primary); }
+    @keyframes ticker-move { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    .nav-wrapper { position: sticky; top: 0; z-index: 200; padding: 8px var(--s6); pointer-events: none; }
+    .nav { background: rgba(4,10,4,.94); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--border-subtle); border-radius: var(--r-lg); padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; gap: var(--s4); max-width: 1080px; margin: 0 auto; pointer-events: all; }
+    .nav-logo img { height: 44px; width: auto; }
+    .nav-links { display: flex; align-items: center; gap: var(--s6); list-style: none; }
+    .nav-links a { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; color: var(--text-secondary); text-transform: uppercase; transition: color var(--duration-base); }
+    .nav-links a:hover { color: var(--text-primary); } .nav-links a.active { color: var(--accent-primary); }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: none; cursor: pointer; font-family: var(--font-body); font-weight: 700; border-radius: var(--r-md); transition: all var(--duration-base); }
+    .btn-primary { background: var(--cta-bg); color: var(--cta-text); padding: 10px 20px; font-size: 13px; }
+    .btn-primary:hover { background: var(--cta-bg-hover); transform: translateY(-1px); }
+    .btn-ghost { background: transparent; color: var(--text-secondary); padding: 10px 18px; font-size: 13px; border: 1px solid var(--border-default); }
+    .btn-ghost:hover { color: var(--text-primary); border-color: var(--border-interactive); }
+    @media (max-width: 640px) { .nav-links { display: none; } .nav-logo img { height: 36px; } }
+    .page-header { padding: var(--s5) 0 0; }
+    .page-header .container { display: flex; align-items: center; justify-content: space-between; gap: var(--s4); }
+    .breadcrumb { display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-tertiary); }
+    .breadcrumb a { color: var(--text-tertiary); transition: color var(--duration-base); } .breadcrumb a:hover { color: var(--accent-primary); }
+    .breadcrumb .sep { opacity: 0.4; } .breadcrumb .current { color: var(--text-secondary); }
+    .prevnext { display: flex; align-items: center; gap: 8px; }
+    .pn-btn { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-tertiary); border: 1px solid var(--border-subtle); padding: 5px 12px; border-radius: var(--r-sm); transition: all var(--duration-base); display: flex; align-items: center; gap: 6px; }
+    .pn-btn:hover { border-color: var(--brand); color: var(--brand); }
+    .hero-project { padding: var(--s8) 0 var(--s12); position: relative; overflow: hidden; }
+    .hero-project::before { content: ''; position: absolute; top: -80px; left: -100px; width: 700px; height: 500px; background: radial-gradient(ellipse 60% 50% at 30% 30%, rgba(var(--brand-rgb), .14) 0%, transparent 70%); pointer-events: none; }
+    .hero-project .container { position: relative; z-index: 1; }
+    .hero-cat { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--brand); background: rgba(var(--brand-rgb), .1); border: 1px solid rgba(var(--brand-rgb), .25); padding: 4px 12px; border-radius: var(--r-full); display: inline-block; margin-bottom: var(--s5); }
+    .hero-name { font-family: var(--font-display); font-size: clamp(42px, 9vw, 120px); font-weight: 800; line-height: 0.9; letter-spacing: -0.04em; color: var(--text-primary); text-transform: uppercase; margin-bottom: var(--s5); }
+    .hero-meta { display: flex; align-items: center; gap: var(--s6); flex-wrap: wrap; margin-top: var(--s4); }
+    .hero-url { font-family: var(--font-mono); font-size: 11px; color: var(--text-tertiary); letter-spacing: 0.05em; }
+    .hero-by { font-size: 13px; color: var(--text-secondary); }
+    .tabs-wrap { position: sticky; top: 78px; z-index: 100; background: rgba(7,14,7,.96); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border-subtle); }
+    .tabs { display: flex; gap: 0; max-width: 1080px; margin: 0 auto; padding: 0 var(--s6); }
+    .tab { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-tertiary); background: transparent; border: none; padding: 14px 20px; cursor: pointer; border-bottom: 2px solid transparent; transition: color var(--duration-base), border-color var(--duration-base); }
+    .tab:hover { color: var(--text-primary); } .tab.active { color: var(--brand); border-bottom-color: var(--brand); }
+    @media (max-width: 640px) { .tab { padding: 12px 12px; font-size: 10px; } }
+    .s-num { font-family: var(--font-mono); font-size: 11px; color: var(--brand); margin-bottom: 3px; }
+    .s-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: var(--s8); }
+    .preview-section { padding: var(--s16) 0; border-top: 1px solid var(--border-subtle); }
+    .browser-frame { border: 1px solid var(--border-default); border-radius: var(--r-lg); overflow: hidden; background: var(--bg-surface); animation: frame-in 0.7s ease 0.1s both; transition: max-width 0.4s ease, margin 0.4s ease; }
+    @keyframes frame-in { from { opacity: 0; transform: translateY(28px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+    .browser-frame.mobile-view { max-width: 360px; margin: 0 auto; }
+    .browser-bar { background: var(--bg-surface-raised); border-bottom: 1px solid var(--border-subtle); padding: 10px 16px; display: flex; align-items: center; gap: 12px; }
+    .browser-dots { display: flex; gap: 5px; }
+    .bdot { width: 10px; height: 10px; border-radius: 50%; } .bdot-r { background: #ff5f57; } .bdot-y { background: #febc2e; } .bdot-g { background: #28c840; }
+    .browser-url-bar { flex: 1; background: var(--bg-base); border: 1px solid var(--border-subtle); border-radius: var(--r-sm); padding: 4px 12px; font-family: var(--font-mono); font-size: 11px; color: var(--text-tertiary); }
+    .view-toggles { display: flex; gap: 4px; margin-left: auto; }
+    .vt { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-tertiary); background: transparent; border: 1px solid var(--border-subtle); padding: 3px 8px; border-radius: var(--r-sm); cursor: pointer; transition: all var(--duration-base); }
+    .vt:hover { border-color: var(--brand); color: var(--brand); } .vt.active { background: var(--brand); border-color: var(--brand); color: var(--bg-base); }
+    .browser-content { aspect-ratio: 16/10; overflow: hidden; background: var(--bg-overlay); position: relative; transition: aspect-ratio 0.4s ease; }
+    .browser-frame.mobile-view .browser-content { aspect-ratio: 9/19; }
+    .browser-content img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+    .browser-content .bfallback { width: 100%; height: 100%; display: none; align-items: center; justify-content: center; }
+    .sobre-section { padding: var(--s16) 0; border-top: 1px solid var(--border-subtle); background: var(--bg-surface); }
+    .sobre-headline { font-family: var(--font-display); font-size: clamp(22px, 3.5vw, 38px); font-weight: 700; letter-spacing: -0.025em; color: var(--text-primary); line-height: 1.2; margin-bottom: var(--s6); max-width: 720px; }
+    .sobre-body { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s10); margin-bottom: var(--s10); }
+    @media (max-width: 640px) { .sobre-body { grid-template-columns: 1fr; } }
+    .sobre-text h4 { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--brand); margin-bottom: var(--s3); }
+    .sobre-text p { font-size: 14px; color: var(--text-secondary); line-height: 1.8; }
+    .metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    @media (max-width: 768px) { .metrics-grid { grid-template-columns: repeat(2, 1fr); } }
+    .metric { background: var(--bg-surface-raised); border: 1px solid var(--border-subtle); border-radius: var(--r-md); padding: var(--s4); }
+    .metric-label { font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 4px; }
+    .metric-value { font-family: var(--font-mono); font-size: 11px; color: var(--brand); letter-spacing: 0.05em; }
+    .feat-section { padding: var(--s16) 0; border-top: 1px solid var(--border-subtle); }
+    .feat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    @media (max-width: 768px) { .feat-grid { grid-template-columns: 1fr; } }
+    .feat-card { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--r-xl); padding: var(--s6); transition: border-color var(--duration-base), transform var(--duration-slow); }
+    .feat-card:hover { border-color: rgba(var(--brand-rgb),.3); transform: translateY(-3px); }
+    .feat-num { font-family: var(--font-display); font-size: 48px; font-weight: 800; color: rgba(var(--brand-rgb),.1); line-height: 1; margin-bottom: var(--s3); letter-spacing: -0.04em; }
+    .feat-icon { width: 40px; height: 40px; color: var(--brand); background: rgba(var(--brand-rgb),.1); border: 1px solid rgba(var(--brand-rgb),.2); border-radius: var(--r-sm); display: flex; align-items: center; justify-content: center; margin-bottom: var(--s4); }
+    .feat-title { font-family: var(--font-display); font-size: 18px; font-weight: 700; letter-spacing: -0.02em; color: var(--text-primary); margin-bottom: var(--s3); }
+    .feat-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.75; }
+    .design-section { padding: var(--s16) 0; border-top: 1px solid var(--border-subtle); background: var(--bg-surface); }
+    .color-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: var(--s12); }
+    @media (max-width: 900px) { .color-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 480px) { .color-grid { grid-template-columns: repeat(2, 1fr); } }
+    .cb { border-radius: var(--r-lg); padding: var(--s5) var(--s4); min-height: 150px; display: flex; flex-direction: column; justify-content: flex-end; gap: 4px; border: 1px solid rgba(255,255,255,.06); }
+    .cb-label { font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.6; }
+    .cb-hex { font-family: var(--font-mono); font-size: 13px; font-weight: 500; }
+    .cb-use { font-size: 11px; opacity: 0.6; line-height: 1.4; margin-top: 2px; }
+    .cb-light { color: #dcdcdc; } .cb-dark { color: #0a0a0a; }
+    .type-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    @media (max-width: 640px) { .type-grid { grid-template-columns: 1fr; } }
+    .type-card { background: var(--bg-surface-raised); border: 1px solid var(--border-subtle); border-radius: var(--r-lg); padding: var(--s5); }
+    .type-role { font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: var(--s3); }
+    .type-specimen { font-family: var(--font-display); font-size: 28px; font-weight: 800; color: var(--text-primary); line-height: 1; margin-bottom: var(--s2); }
+    .type-specimen.mono { font-family: var(--font-mono); font-size: 20px; font-weight: 400; }
+    .type-specimen.body { font-family: var(--font-body); font-size: 18px; font-weight: 400; }
+    .type-meta { font-family: var(--font-mono); font-size: 10px; color: var(--text-tertiary); }
+    .stack-section { padding: var(--s16) 0; border-top: 1px solid var(--border-subtle); }
+    .stack-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: var(--s8); }
+    @media (max-width: 640px) { .stack-grid { grid-template-columns: 1fr; } }
+    .si { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--r-lg); padding: var(--s5); display: flex; gap: var(--s4); align-items: flex-start; transition: border-color var(--duration-base); }
+    .si:hover { border-color: rgba(var(--brand-rgb),.25); }
+    .si-icon { width: 36px; height: 36px; flex-shrink: 0; background: rgba(var(--brand-rgb),.08); border: 1px solid rgba(var(--brand-rgb),.15); border-radius: var(--r-sm); display: flex; align-items: center; justify-content: center; color: var(--brand); font-family: var(--font-mono); font-size: 10px; font-weight: 600; }
+    .si-name { font-family: var(--font-display); font-size: 16px; font-weight: 700; letter-spacing: -0.01em; color: var(--text-primary); margin-bottom: 3px; }
+    .si-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.6; }
+    .gh-link { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-tertiary); border: 1px solid var(--border-subtle); padding: 6px 14px; border-radius: var(--r-sm); opacity: 0.5; cursor: not-allowed; }
+    .cta-section { padding: var(--s20) 0; }
+    .cta-wrap { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--r-xl); padding: 72px 40px; text-align: center; position: relative; overflow: hidden; }
+    .cta-wrap::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(114,184,114,.18) 1px, transparent 1px); background-size: 24px 24px; pointer-events: none; }
+    .cta-wrap > * { position: relative; z-index: 1; }
+    .hud { position: absolute; width: 20px; height: 20px; } .hud-tl { top: 16px; left: 16px; border-top: 1.5px solid var(--accent-primary); border-left: 1.5px solid var(--accent-primary); } .hud-tr { top: 16px; right: 16px; border-top: 1.5px solid var(--accent-primary); border-right: 1.5px solid var(--accent-primary); } .hud-bl { bottom: 16px; left: 16px; border-bottom: 1.5px solid var(--accent-primary); border-left: 1.5px solid var(--accent-primary); } .hud-br { bottom: 16px; right: 16px; border-bottom: 1.5px solid var(--accent-primary); border-right: 1.5px solid var(--accent-primary); }
+    .cta-heading { font-family: var(--font-display); font-size: clamp(26px, 4vw, 42px); font-weight: 700; letter-spacing: -0.025em; color: var(--text-primary); line-height: 1.1; margin-bottom: var(--s4); }
+    .cta-heading .accent { color: var(--accent-primary); }
+    .cta-sub { font-size: 15px; color: var(--text-secondary); max-width: 440px; margin: 0 auto var(--s8); line-height: 1.8; }
+    .cta-group { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; justify-content: center; margin-bottom: var(--s4); }
+    .cta-note { font-size: 11px; color: var(--text-tertiary); font-family: var(--font-mono); }
+    .ctag { display: inline-flex; gap: 6px; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent-primary); background: rgba(114,184,114,.08); border: 1px solid rgba(114,184,114,.2); padding: 4px 12px; border-radius: var(--r-full); margin-bottom: var(--s5); }
+    @media (max-width: 640px) { .cta-wrap { padding: 48px 24px; } }
+    footer { border-top: 1px solid var(--border-subtle); padding: var(--s12) 0 var(--s8); }
+    .fg { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: var(--s12); margin-bottom: var(--s10); }
+    .fb img { height: 40px; margin-bottom: var(--s4); } .fb p { font-size: 12px; color: var(--text-tertiary); line-height: 1.7; max-width: 240px; }
+    .fc h5 { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: var(--s4); }
+    .fc ul { list-style: none; display: flex; flex-direction: column; gap: var(--s3); }
+    .fc a { font-size: 12px; color: var(--text-secondary); transition: color var(--duration-base); } .fc a:hover { color: var(--accent-primary); }
+    .fbot { border-top: 1px solid var(--border-subtle); padding-top: var(--s6); display: flex; align-items: center; justify-content: space-between; gap: var(--s4); flex-wrap: wrap; }
+    .fcopy { font-size: 11px; color: var(--text-disabled); font-family: var(--font-mono); }
+    .fbrand { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; color: var(--text-disabled); transition: color var(--duration-base); } .fbrand:hover { color: var(--accent-primary); }
+    @media (max-width: 768px) { .fg { grid-template-columns: 1fr 1fr; } .fb { grid-column: 1/-1; } }
+    @media (max-width: 480px) { .fg { grid-template-columns: 1fr; gap: var(--s8); } .fbot { flex-direction: column; text-align: center; } }
+  </style>
+</head>
+<body>
+  <div class="ticker" aria-hidden="true"><div class="ticker-track"><span>NODEGRID&nbsp;&nbsp;·&nbsp;&nbsp;<em>WEB APPS À MEDIDA</em>&nbsp;&nbsp;·&nbsp;&nbsp;AUTOMAÇÕES&nbsp;&nbsp;·&nbsp;&nbsp;<em>PLATAFORMAS</em>&nbsp;&nbsp;·&nbsp;&nbsp;CÓDIGO LIMPO&nbsp;&nbsp;·&nbsp;&nbsp;STARTUPS&nbsp;&nbsp;·&nbsp;&nbsp;<em>PMEs PORTUGUESAS</em>&nbsp;&nbsp;·&nbsp;&nbsp;ENTREGA RÁPIDA&nbsp;&nbsp;·&nbsp;&nbsp;</span><span>NODEGRID&nbsp;&nbsp;·&nbsp;&nbsp;<em>WEB APPS À MEDIDA</em>&nbsp;&nbsp;·&nbsp;&nbsp;AUTOMAÇÕES&nbsp;&nbsp;·&nbsp;&nbsp;<em>PLATAFORMAS</em>&nbsp;&nbsp;·&nbsp;&nbsp;CÓDIGO LIMPO&nbsp;&nbsp;·&nbsp;&nbsp;STARTUPS&nbsp;&nbsp;·&nbsp;&nbsp;<em>PMEs PORTUGUESAS</em>&nbsp;&nbsp;·&nbsp;&nbsp;ENTREGA RÁPIDA&nbsp;&nbsp;·&nbsp;&nbsp;</span></div></div>
+  <div class="nav-wrapper"><nav class="nav"><a href="../index.html"><img src="../logo-nodegrid.svg" alt="NodeGrid" height="44"></a><ul class="nav-links"><li><a href="../index.html#servicos">Serviços</a></li><li><a href="../index.html#processo">Como Funciona</a></li><li><a href="../portfolio.html" class="active">Portfolio</a></li><li><a href="../index.html#faq">FAQ</a></li></ul><a class="btn btn-primary" href="https://wa.me/351916530789" target="_blank" rel="noopener" style="padding:10px 20px;font-size:13px;">Falar Connosco</a></nav></div>
+  <div class="page-header"><div class="container"><nav class="breadcrumb"><a href="../portfolio.html">← Portfolio</a><span class="sep">/</span><span class="current">HIDDEN HYPE</span></nav><div class="prevnext"><a class="pn-btn" href="video-taskmanager.html">← PREV</a><a class="pn-btn" href="hype-gest.html">NEXT →</a></div></div></div>
+
+  <section class="hero-project">
+    <div class="container">
+      <span class="hero-cat">[EVENTOS &amp; TICKETING]</span>
+      <h1 class="hero-name">Hidden<br>Hype</h1>
+      <div class="hero-meta"><span class="hero-url">hiddenhype.nodegrid.dev</span><span class="hero-by">Desenvolvido pela NodeGrid</span></div>
+    </div>
+  </section>
+
+  <div class="tabs-wrap"><div class="tabs"><button class="tab active" data-tab="preview">VISÃO GERAL</button><button class="tab" data-tab="funcionalidades">FUNCIONALIDADES</button><button class="tab" data-tab="stack">STACK</button><button class="tab" data-tab="design">DESIGN</button></div></div>
+
+  <section class="preview-section" id="preview">
+    <div class="container">
+      <div class="s-num">01</div><div class="s-label">// APP_PREVIEW · DESKTOP / MOBILE</div>
+      <div class="browser-frame" id="browser-frame">
+        <div class="browser-bar"><div class="browser-dots"><span class="bdot bdot-r"></span><span class="bdot bdot-y"></span><span class="bdot bdot-g"></span></div><div class="browser-url-bar">hiddenhype.nodegrid.dev</div><div class="view-toggles"><button class="vt active" data-view="desktop">DESKTOP</button><button class="vt" data-view="mobile">MOBILE</button></div></div>
+        <div class="browser-content">
+          <img src="../assets/screenshots/hidden-hype.png" alt="Hidden Hype app preview" onerror="if(this.src.includes('.png')){this.src=this.src.replace('.png','.svg')}else{this.style.display='none';this.nextElementSibling.style.display='flex';}">
+          <div class="bfallback"><svg width="100%" height="100%" viewBox="0 0 1000 600" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect width="1000" height="600" fill="#0a0a0a"/><defs><pattern id="dp" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#C9A84C" opacity="0.25"/></pattern><radialGradient id="dg" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#C9A84C" stop-opacity="0.3"/><stop offset="100%" stop-color="#C9A84C" stop-opacity="0"/></radialGradient></defs><rect width="1000" height="600" fill="url(#dp)"/><ellipse cx="500" cy="300" rx="350" ry="200" fill="url(#dg)"/><text x="50%" y="44%" font-family="monospace" font-size="14" fill="#C9A84C" opacity="0.5" text-anchor="middle" letter-spacing="4">HIDDEN HYPE</text><text x="50%" y="56%" font-family="sans-serif" font-size="32" font-weight="700" fill="#dcdcdc" text-anchor="middle">Eventos &amp; Ticketing</text><text x="50%" y="65%" font-family="monospace" font-size="12" fill="#C9A84C" opacity="0.4" text-anchor="middle" letter-spacing="2">hiddenhype.nodegrid.dev</text></svg></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sobre-section" id="sobre">
+    <div class="container">
+      <div class="s-num">02</div><div class="s-label">// SOBRE O PROJECTO</div>
+      <p class="sobre-headline">"Check-in manual em eventos com 500 pessoas. Resolvemos isso com um QR code."</p>
+      <div class="sobre-body">
+        <div class="sobre-text"><h4>O Problema</h4><p>Eventos com muitos participantes dependem de listas em papel ou Excel para check-in, criando filas, erros e falta de dados em tempo real para os organizadores.</p></div>
+        <div class="sobre-text"><h4>A Solução</h4><p>App PWA com check-in por QR code e autenticação por telemóvel — sem instalação, funciona offline, dados em tempo real no painel de admin.</p></div>
+      </div>
+      <div class="metrics-grid">
+        <div class="metric"><div class="metric-label">Stack</div><div class="metric-value">5 tecnologias</div></div>
+        <div class="metric"><div class="metric-label">Tipo</div><div class="metric-value">PWA</div></div>
+        <div class="metric"><div class="metric-label">Auth</div><div class="metric-value">Phone OTP</div></div>
+        <div class="metric"><div class="metric-label">Offline</div><div class="metric-value">Sim</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="feat-section" id="funcionalidades">
+    <div class="container">
+      <div class="s-num">03</div><div class="s-label">// FUNCIONALIDADES</div>
+      <div class="feat-grid">
+        <div class="feat-card"><div class="feat-num">01</div><div class="feat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="5" height="5"/><rect x="16" y="3" width="5" height="5"/><rect x="3" y="16" width="5" height="5"/><path d="M21 16h-3a2 2 0 0 0-2 2v3"/><path d="M15 21v-3a2 2 0 0 0-2-2h-3"/></svg></div><div class="feat-title">Check-in por QR Code</div><p class="feat-desc">Scanner instantâneo via câmera do telemóvel com validação em tempo real, feedback visual e sonoro e prevenção de entradas duplas.</p></div>
+        <div class="feat-card"><div class="feat-num">02</div><div class="feat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div><div class="feat-title">Autenticação OTP</div><p class="feat-desc">Login sem password via SMS — acesso imediato para staff e participantes sem necessidade de criar conta ou instalar app.</p></div>
+        <div class="feat-card"><div class="feat-num">03</div><div class="feat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div><div class="feat-title">Painel Admin</div><p class="feat-desc">Dashboard com contagem em tempo real de presentes, exportação de dados por evento e controlo de capacidade com alertas.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="design-section" id="design">
+    <div class="container">
+      <div class="s-num">04</div><div class="s-label">// PALETTE &amp; TIPOGRAFIA</div>
+      <div class="color-grid">
+        <div class="cb cb-light" style="background:#0a0a0a"><div class="cb-label">Background</div><div class="cb-hex">#0a0a0a</div><div class="cb-use">Preto puro</div></div>
+        <div class="cb cb-light" style="background:#111111"><div class="cb-label">Surface</div><div class="cb-hex">#111111</div><div class="cb-use">Cards e painéis</div></div>
+        <div class="cb cb-dark"  style="background:#C9A84C"><div class="cb-label">Accent</div><div class="cb-hex">#C9A84C</div><div class="cb-use">Gold primário</div></div>
+        <div class="cb cb-dark"  style="background:#C9A84C"><div class="cb-label">CTA</div><div class="cb-hex">#C9A84C</div><div class="cb-use">Gold — acções</div></div>
+        <div class="cb cb-dark"  style="background:#FFFFFF"><div class="cb-label">Text</div><div class="cb-hex">#FFFFFF</div><div class="cb-use">Texto primário</div></div>
+      </div>
+      <div class="type-grid">
+        <div class="type-card"><div class="type-role">Display / Headings</div><div class="type-specimen">Space Grotesk</div><div class="type-meta">800w · clamp(20px, 4vw, 48px) · -0.03em</div></div>
+        <div class="type-card"><div class="type-role">Body / UI Text</div><div class="type-specimen body">Inter</div><div class="type-meta">400–600w · 13–15px · 1.6 leading</div></div>
+        <div class="type-card"><div class="type-role">Labels / Code / Mono</div><div class="type-specimen mono">JetBrains</div><div class="type-meta">400–500w · 9–12px · 0.1em tracking</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stack-section" id="stack">
+    <div class="container">
+      <div class="s-num">05</div><div class="s-label">// STACK BREAKDOWN</div>
+      <div class="stack-grid">
+        <div class="si"><div class="si-icon">NX</div><div class="si-body"><div class="si-name">Next.js 15</div><div class="si-desc">Framework com App Router e suporte PWA nativo para instalação e cache offline.</div></div></div>
+        <div class="si"><div class="si-icon">SB</div><div class="si-body"><div class="si-name">Supabase</div><div class="si-desc">Auth com Phone OTP via SMS, base de dados PostgreSQL e realtime subscriptions.</div></div></div>
+        <div class="si"><div class="si-icon">PW</div><div class="si-body"><div class="si-name">next-pwa</div><div class="si-desc">Progressive Web App — service worker, cache offline e prompt de instalação no ecrã inicial.</div></div></div>
+        <div class="si"><div class="si-icon">QR</div><div class="si-body"><div class="si-name">html5-qrcode</div><div class="si-desc">Scanner de QR code via câmera do browser — sem app nativa, funciona em qualquer dispositivo.</div></div></div>
+        <div class="si"><div class="si-icon">TS</div><div class="si-body"><div class="si-name">TypeScript</div><div class="si-desc">Tipagem estática em todo o projecto — componentes, API routes e tipos de base de dados.</div></div></div>
+      </div>
+      <a class="gh-link" href="#" aria-disabled="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>Ver no GitHub (em breve)</a>
+    </div>
+  </section>
+
+  <section class="cta-section"><div class="container"><div class="cta-wrap"><div class="hud hud-tl"></div><div class="hud hud-tr"></div><div class="hud hud-bl"></div><div class="hud hud-br"></div><div class="ctag">Queres algo assim?</div><h2 class="cta-heading">Construímos o teu<br>próximo <span class="accent">projecto</span>.</h2><p class="cta-sub">Conta-nos a tua ideia. Em menos de 24h tens uma proposta concreta.</p><div class="cta-group"><a class="btn btn-primary" href="https://wa.me/351916530789" target="_blank" rel="noopener" style="font-size:15px;padding:14px 36px;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Falar no WhatsApp</a><a class="btn btn-ghost" href="mailto:hello@nodegrid.dev"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Enviar email</a></div><div class="cta-note">Resposta em menos de 24h · Sem compromisso · 100% Português</div></div></div></section>
+
+  <footer><div class="container"><div class="fg"><div class="fb"><img src="../logo-nodegrid.svg" alt="NodeGrid"><p>Arquitectura de Software Modular para startups e PMEs portuguesas.</p></div><div class="fc"><h5>Serviços</h5><ul><li><a href="../index.html#servicos">Web Apps</a></li><li><a href="../index.html#servicos">Landing Pages</a></li><li><a href="../portfolio.html">Portfolio</a></li></ul></div><div class="fc"><h5>Contacto</h5><ul><li><a href="https://wa.me/351916530789" target="_blank" rel="noopener">WhatsApp</a></li><li><a href="mailto:hello@nodegrid.dev">Email</a></li></ul></div></div><div class="fbot"><span class="fcopy">© 2025 NodeGrid · Arquitectura de Software Modular</span><a class="fbrand" href="../brand/">Brand Design System →</a></div></div></footer>
+
+  <script>(function(){var frame=document.getElementById('browser-frame');document.querySelectorAll('.vt').forEach(function(b){b.addEventListener('click',function(){document.querySelectorAll('.vt').forEach(function(x){x.classList.remove('active')});this.classList.add('active');frame.classList.toggle('mobile-view',this.dataset.view==='mobile')})});document.querySelectorAll('.tab').forEach(function(t){t.addEventListener('click',function(){var el=document.getElementById(this.dataset.tab);if(el)el.scrollIntoView({behavior:'smooth',block:'start'})})});var sections=document.querySelectorAll('section[id]');var tabs=document.querySelectorAll('.tab');var io=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){tabs.forEach(function(t){t.classList.remove('active')});var m=document.querySelector('.tab[data-tab="'+e.target.id+'"]');if(m)m.classList.add('active')}})},{threshold:0.25,rootMargin:'-10% 0px -65% 0px'});sections.forEach(function(s){io.observe(s)})}());</script>
+</body>
+</html>

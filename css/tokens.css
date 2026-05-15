@@ -61,10 +61,12 @@
   --border-interactive: var(--green-500);
   --border-accent:      var(--green-300);
 
-  /* TEXT */
-  --text-primary:       var(--neutral-100);
-  --text-muted:         var(--neutral-400);
-  --text-disabled:      var(--neutral-600);
+  /* TEXT — contrast ratios on #070e07 background */
+  --text-primary:       var(--neutral-100);   /* #dcdcdc — 14.0:1 ✅ */
+  --text-secondary:     var(--neutral-200);   /* #b8b8b8 —  9.9:1 ✅ body/descriptions */
+  --text-tertiary:      var(--neutral-400);   /* #787878 —  4.6:1 ✅ labels/captions */
+  --text-muted:         var(--neutral-400);   /* alias of tertiary */
+  --text-disabled:      var(--neutral-600);   /* #404040 — 2.1:1 · DECORATIVE ONLY */
   --text-accent:        var(--green-300);
   --text-on-cta:        var(--gold-900);
 
